@@ -66,6 +66,8 @@ exports.userLogin = (req, res, error) => {
                                 else{
                                     let userData = {
                                         id: user._id.toString(),
+                                        firstname: user.firstname,
+                                        lastname: user.lastname,
                                         email: user.email,
                                         admin: user.admin,
                                         connected: 1
@@ -140,4 +142,34 @@ exports.userLogout = (req, res, error) => {
         console.log(error);
         res.json({message: 'Utilisateur connecté non trouvé'});
     }
+}
+
+// Afficher tous les utilisateurs
+exports.listAllUsers = (req, res) => {
+    User.find({}, (error, users) => {
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Erreur serveur"});
+        }
+        else{
+            res.status(200);
+            res.json(users);
+        }
+    });
+}
+
+// Afficher un utilisateur par id
+exports.aUser = (req, res) => {
+    User.findById(req.params.userId, (error, user) => {
+        if(error){
+            res.status(401);
+            res.json({message: "Utilisateur connecté non trouvé"});
+            console.log(error);
+        }
+        else{
+            res.status(200);
+            res.json(user);
+        }
+    });
 }
