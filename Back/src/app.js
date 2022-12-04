@@ -21,8 +21,10 @@ mongoose.connect("mongodb://mongo/timerdb", {
 
 server.use(express.urlencoded());
 server.use(express.json());
-
 server.use(cors());
+
+const userRoute = require("./api/routes/userRoute");
+userRoute(server);
 
 server.listen(port, hostname);
 
