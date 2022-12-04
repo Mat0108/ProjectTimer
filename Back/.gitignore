@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /mongo-volume
+package-lock.json
 
 # testing
 /coverage
