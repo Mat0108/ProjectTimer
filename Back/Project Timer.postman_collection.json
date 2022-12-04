@@ -71,7 +71,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3000/group/:groupId/add",
+			"name": "Post /group/:groupId/add",
 			"request": {
 				"method": "POST",
 				"header": [],
