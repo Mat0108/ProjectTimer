@@ -1,6 +1,8 @@
 const Groups = require("../models/groupsModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+
+
 exports.CreateGroups = (req, res) =>{
     let newGroups = new Groups(req.body);
     newGroups.save((error, groups) => {
@@ -16,6 +18,7 @@ exports.CreateGroups = (req, res) =>{
     });
 }
 
+
 exports.getGroup = (req,res) =>{
     Groups.findById(req.params.groupId,(error,group) =>{
         if(error){
@@ -29,6 +32,8 @@ exports.getGroup = (req,res) =>{
         }
     });
 }
+
+
 exports.addUser=(req,res) =>{
     Groups.findById(req.params.groupId,(error,group) =>{
         if(error){
