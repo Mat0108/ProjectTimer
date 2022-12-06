@@ -9,5 +9,6 @@ server.post("/user/logout/:userId", cors(), userController.userLogout);
 server.get("/users", cors(), userController.listAllUsers);
 server.get("/user/:userId", cors(), userController.aUser);
 server.put("/user/:userId", cors(), userController.updateUser);
+server.delete("/user/:userId", cors(), userController.deleteUser);
 
 }
