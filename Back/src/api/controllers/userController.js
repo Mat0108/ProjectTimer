@@ -173,3 +173,12 @@ exports.aUser = (req, res) => {
         }
     });
 }
+
+// Modifier tous les informations d'un utilisateur
+exports.updateUser= (req,res)=>{
+    User.findOneAndUpdate({userId:req.params.userId},req.body,{new:true,runValidators:true})
+    .then(result=>res.status(200).json({msg: "L'utilisateur est bien mis à jour", result}))
+    .catch((error)=>res.status(404).json({msg:"Utilisateur non trouvé"}))
+
+};
+
