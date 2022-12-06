@@ -70,7 +70,9 @@ exports.userLogin = (req, res, error) => {
                                         lastname: user.lastname,
                                         email: user.email,
                                         admin: user.admin,
-                                        connected: 1
+                                        connected: 1,
+                                        groups: [user.groups],
+                                        projects: [user.projects]
                                     }
 
                                     jwt.sign(userData, process.env.JWT_KEY, { expiresIn: "30 days" }, (error, token) => {
@@ -183,7 +185,6 @@ exports.updateUser = (req, res) => {
 };
 
 // Supprimer l'utilisateur
-
 exports.deleteUser = (req, res) => {
     User.deleteOne({ _id: req.params.userId })
         .then(result => res.status(200).json({ msg: "L'utilisateur est bien supprimé", result }))
