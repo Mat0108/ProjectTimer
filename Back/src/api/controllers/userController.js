@@ -181,18 +181,3 @@ exports.updateUser= (req,res)=>{
     .catch((error)=>res.status(404).json({msg:"Utilisateur non trouvé"}))
 
 };
-
-// Supprimer l'utilisateur 
-exports.deleteUser=(req, res) => {
-    User.deleteOne({_id:req.params.userId})
-        .then(result => res.status(200).json({msg: "L'utilisateur est bien supprimé", result }))
-        .catch((error) => res.status(404).json({msg: "Utilisateur non trouvé" }))
-};
-
-// Modifier quelques informations de l'utilisateur
-exports.patchUser= (req,res)=>{
-    User.findByIdAndUpdate({userId:req.params.userId},req.body,{new:true})
-    .then(result=>res.status(200).json({msg: "L'utilisateur est bien mis à jour", result}))
-    .catch((error)=>res.status(404).json({msg:"Utilisateur  non trouvé"}))
-
-};
