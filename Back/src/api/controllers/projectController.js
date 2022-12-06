@@ -21,7 +21,7 @@ exports.CreateProject = (req, res) =>{
 }
 
 
-// Rechercher Project
+// Get Project
 
 exports.getProject = (req,res) =>{
     Project.findById(req.params.projectId,(error,project) =>{
@@ -40,5 +40,5 @@ exports.getProject = (req,res) =>{
 // Delete project
 
 // Ajout de group
-
+//Faire un udap
 // Ajout de User
