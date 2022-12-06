@@ -11,4 +11,8 @@ server.get("/user/:userId", cors(), userController.aUser);
 
 server.put("/user/:userId", cors(), userController.updateUser);
 
+server.delete("/user/:_id", cors(), userController.deleteUser);
+
+
+
 }
