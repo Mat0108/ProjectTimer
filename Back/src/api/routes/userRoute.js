@@ -13,6 +13,7 @@ server.put("/user/:userId", cors(), userController.updateUser);
 
 server.delete("/user/:_id", cors(), userController.deleteUser);
 
+server.patch("/user/:userId", cors(), userController.patchUser);
 
 
 }
