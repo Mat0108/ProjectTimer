@@ -182,3 +182,10 @@ exports.updateUser= (req,res)=>{
 
 };
 
+// Supprimer l'utilisateur 
+exports.deleteUser=(req, res) => {
+    User.deleteOne({_id:req.params.userId})
+        .then(result => res.status(200).json({msg: "L'utilisateur est bien supprimé", result }))
+        .catch((error) => res.status(404).json({msg: "Utilisateur non trouvé" }))
+};
+
