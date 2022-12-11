@@ -53,27 +53,17 @@ exports.getGroup = (req,res) =>{
     });
 }
 exports.addUser=(req,res) =>{
-    Groups.findById(req.params.groupId,(error,group) =>{
+    Groups.findByIdAndUpdate({_id:req.params.groupId},{listuser:req.body.mail},{new: true},(error,group2)=>{
         if(error){
             res.status(500);
             console.log(error);
             res.json({message: "Group non trouvé"});
         }
         else{
-
-            Groups.findByIdAndUpdate({_id:req.params.groupId},{listuser:group.listuser+","+req.body.mail},{new: true},(error,group2)=>{
-                if(error){
-                    res.status(500);
-                    console.log(error);
-                    res.json({message: "Group non trouvé"});
-                }
-                else{
-                    res.status(200);
-                    res.json({message: `Group update : ${group2}`});
-                }
-            })
+            res.status(200);
+            res.json({message: `Group update : ${group2}`});
         }
-    });    
+    }) 
 }
 exports.deleteGroup=(req,res)=>{
     Groups.findByIdAndDelete(req.params.groupId,(error,group) =>{

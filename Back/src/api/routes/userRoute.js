@@ -8,5 +8,6 @@ server.post("/user/logout/:userId", cors(), userController.userLogout);
 
 server.get("/users", cors(), userController.listAllUsers);
 server.get("/user/:userId", cors(), userController.aUser);
+server.get("/users/mail",cors(),userController.getUsersbymail);
 
 }
