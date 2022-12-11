@@ -7,7 +7,7 @@ let GroupsSchema = new Schema({
         required: true,
     },
     listuser: {
-        type: String,
+        type: Array,
         required: true,
     },
     mailadmin: {
