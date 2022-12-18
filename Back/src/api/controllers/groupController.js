@@ -77,8 +77,8 @@ exports.deleteGroupById = (req, res) => {
     });
 }
 
-// Ajouter un utilisateur à un groupe
-exports.addUser = (req, res) => {
+// Ajouter les utilisateurs voulus dans un groupe
+exports.addUsers = (req, res) => {
     Group.findById({_id: req.params.groupId}, (error, group) => {
         if(error){
             res.status(500);
@@ -100,6 +100,43 @@ exports.addUser = (req, res) => {
                                         let groups = datas.groups;
                                         groups.push(group.name);
     
+                                        axios.patch("http://localhost:3000/users/" + datas._id, {groups: groups});
+                                    }
+                                });
+                            })
+                        })
+                    });
+                }
+            })
+            res.status(200);
+            res.json({message: `${group.name} est bien modifié`})
+        }
+    }) 
+}
+
+// Supprimer les utilisateurs voulus dans un groupe
+exports.deleteUsers = (req, res) => {
+    Group.findById({_id: req.params.groupId}, (error, group) => {
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Groupe non trouvé"});
+        }
+        else{
+            let groupUsers = group.users;
+
+            req.body.users.map(user => {
+                if(groupUsers.includes(user)){
+                    groupUsers = groupUsers.filter(group1 => !req.body.users.includes(group1))
+                    
+                    Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {
+                        axios.get("http://localhost:3000/users").then(async result => {
+                            await req.body.users.map(user => {
+                                result.data.map(datas => {
+                                    if(datas.email == user){
+                                        let groups = datas.groups;
+                                        groups = groups.filter(group2 => group2 != groupUpdate.name)
+
                                         axios.patch("http://localhost:3000/users/" + datas._id, {groups: groups});
                                     }
                                 });

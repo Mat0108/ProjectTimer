@@ -9,7 +9,8 @@ server.get("/groups", cors(), groupController.getAllGroups);
 server.route("/groups/:groupId")
 .all(cors())
 .get(groupController.getGroupById)
-.patch(groupController.addUser)
+.patch(groupController.addUsers)
 .delete(groupController.deleteGroupById);
 
+server.patch("/groups/:groupId/deleteUsers", cors(), groupController.deleteUsers)
 }
