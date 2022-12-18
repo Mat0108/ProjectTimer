@@ -1,10 +1,10 @@
 const Project = require("../models/projectModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 
 
-// Creation de project 
-
+// Creation d'un nouveau project
 exports.CreateProject = (req, res) =>{
     let newProject = new Project(req.body);
     newProject.save((error, groups) => {
@@ -21,21 +21,56 @@ exports.CreateProject = (req, res) =>{
 }
 
 
-// Get Project
 
-exports.getProject = (req,res) =>{
-    Project.findById(req.params.projectId,(error,project) =>{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Afficher tous les projects
+exports.getAllProjects = (req, res) => {
+    Project.find({}, (error, projects) =>{
         if(error){
             res.status(500);
             console.log(error);
-            res.json({message: "Project non trouvé"});
+            res.json({message: "Erreur serveur"});
         }
         else{
             res.status(200);
-            res.json({message: `Project trouvé : ${project}`});
+            res.json(projects);
         }
     });
 }
+
+// // Afficher un groupe par id
+// exports.getProjectById = (req,res) =>{
+//     Project.findById(req.params.projectId,(error,project) =>{
+//         if(error){
+//             res.status(500);
+//             console.log(error);
+//             res.json({message: "Project non trouvé"});
+//         }
+//         else{
+//             res.status(200);
+//             res.json({message: `Project trouvé : ${project}`});
+//         }
+//     });
+// }
 
 // Delete project
 
