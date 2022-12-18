@@ -4,4 +4,6 @@ module.exports = (server) => {
 
 server.post("/timer", cors(), timerController.startTimer);
 
+server.patch("/timers/:timerId/pause", cors(), timerController.pauseTimer);
+
 }
