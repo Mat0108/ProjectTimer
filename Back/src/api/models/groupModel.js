@@ -13,6 +13,10 @@ let groupSchema = new Schema({
     admin: {
         type: String,
         required: true,
+    },
+    projects: {
+        type: Array,
+        default: null,
     }
 });
 
