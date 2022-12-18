@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const axios = require("axios")
 
 // Inscription d'utilisateur
 exports.userRegister = (req, res, error) => {
@@ -199,4 +200,15 @@ exports.patchUser = (req, res) => {
 
 };
 
-
+exports.getUsersbymail = (req,res)=>{
+    User.find({email:{$in:req.body.listmail.split(",")}}, async (error, users) => {
+        if(error){
+            res.status(401);
+            res.json({message: "Utilisateur non trouvé"});
+            console.log(error);
+        }else{
+            res.status(200);
+            res.json(users);
+        }
+    })
+}
