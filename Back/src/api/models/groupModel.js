@@ -1,19 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let GroupsSchema = new Schema({
+let groupSchema = new Schema({
     name: {
         type: String,
         required: true,
     },
-    listuser: {
+    users: {
+        type: Array,
+        required: true,
+    },
+    admin: {
         type: String,
         required: true,
     },
-    mailadmin: {
-        type: String,
-        required: true,
+    projects: {
+        type: Array,
+        default: null,
     }
 });
 
-module.exports = mongoose.model("Groups", GroupsSchema);
+module.exports = mongoose.model("group", groupSchema);

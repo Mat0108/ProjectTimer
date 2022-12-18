@@ -23,6 +23,14 @@ let userSchema = new Schema({
         type: Boolean,
         required: true,
         default: 0
+    },
+    groups: {
+        type: Array,
+        default: null
+    },
+    projects: {
+        type: Array,
+        default: null
     }
 });
 

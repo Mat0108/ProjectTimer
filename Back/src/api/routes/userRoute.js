@@ -7,6 +7,14 @@ server.post("/user/login", cors(), userController.userLogin);
 server.post("/user/logout/:userId", cors(), userController.userLogout);
 
 server.get("/users", cors(), userController.listAllUsers);
+
+server.route("/users/:userId")
+.all(cors())
+.get(userController.aUser)
+.put(userController.updateUser)
+.delete(userController.deleteUser)
+.patch(userController.patchUser);
+
 server.get("/user/:userId", cors(), userController.aUser);
 
 }
