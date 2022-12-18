@@ -199,16 +199,3 @@ exports.patchUser = (req, res) => {
         .catch((error) => res.status(404).json({ msg: "Utilisateur  non trouvé" }))
 
 };
-
-exports.getUsersbymail = (req,res)=>{
-    User.find({email:{$in:req.body.listmail.split(",")}}, async (error, users) => {
-        if(error){
-            res.status(401);
-            res.json({message: "Utilisateur non trouvé"});
-            console.log(error);
-        }else{
-            res.status(200);
-            res.json(users);
-        }
-    })
-}
