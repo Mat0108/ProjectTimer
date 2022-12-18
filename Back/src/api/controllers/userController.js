@@ -180,22 +180,22 @@ exports.aUser = (req, res) => {
 // Modifier tous les informations d'un utilisateur
 exports.updateUser = (req, res) => {
     User.findOneAndUpdate({ userId: req.params.userId }, req.body, { new: true, runValidators: true })
-        .then(result => res.status(200).json({ msg: "L'utilisateur est bien mis à jour", result }))
-        .catch((error) => res.status(404).json({ msg: "Utilisateur non trouvé" }))
+        .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
+        .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))
 
 };
 
 // Supprimer l'utilisateur
 exports.deleteUser = (req, res) => {
     User.deleteOne({ _id: req.params.userId })
-        .then(result => res.status(200).json({ msg: "L'utilisateur est bien supprimé", result }))
-        .catch((error) => res.status(404).json({ msg: "Utilisateur non trouvé" }))
+        .then(result => res.status(200).json({ message: "Utilisateur est bien supprimé", result }))
+        .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))
 };
 
 // Modifier quelques informations de l'utilisateur
 exports.patchUser = (req, res) => {
-    User.findByIdAndUpdate({ userId: req.params.userId }, req.body, { new: true })
-        .then(result => res.status(200).json({ msg: "L'utilisateur est bien mis à jour", result }))
-        .catch((error) => res.status(404).json({ msg: "Utilisateur  non trouvé" }))
+    User.findByIdAndUpdate({ _id: req.params.userId }, req.body, { new: true })
+        .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
+        .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))
 
 };
