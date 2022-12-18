@@ -7,98 +7,100 @@ const axios = require("axios")
 exports.userRegister = (req, res, error) => {
     let newUser = new User(req.body);
 
-    if(newUser.password){
+    if (newUser.password) {
         bcrypt.hash(newUser.password, 10, (error, hash) => {
-            if(error){
+            if (error) {
                 res.status(401);
                 console.log(error);
-                res.json({message: "Impossible de crypter le mot de passe"});
+                res.json({ message: "Impossible de crypter le mot de passe" });
             }
-            else{
+            else {
                 newUser.password = hash;
 
                 newUser.save((error, user) => {
-                    if(error){
+                    if (error) {
                         res.status(401);
                         console.log(error);
-                        res.json({message: "Rêquete invalide"});
+                        res.json({ message: "Rêquete invalide" });
                     }
-                    else{
+                    else {
                         res.status(200);
-                        res.json({message: `Utilisateur crée : ${user.email}`});
+                        res.json({ message: `Utilisateur crée : ${user.email}` });
                     }
                 });
             }
         })
     }
-    else{
+    else {
         res.status(401);
-        res.json({message: "Mot de passe est vide"});
+        res.json({ message: "Mot de passe est vide" });
         console.log(error);
     }
 }
 
 // Connexion d'utilisateur
 exports.userLogin = (req, res, error) => {
-    User.findOne({email: req.body.email}, (error, user) => {
-        if(error){
+    User.findOne({ email: req.body.email }, (error, user) => {
+        if (error) {
             res.status(500);
             console.log(error);
-            res.json({message: "Utilisateur non trouvé"});
+            res.json({ message: "Utilisateur non trouvé" });
         }
-        else{
-            if(user.email == req.body.email){
+        else {
+            if (user.email == req.body.email) {
                 bcrypt.compare(req.body.password, user.password, (error, result) => {
-                    if(error){
+                    if (error) {
                         res.status(401);
                         console.log(error);
-                        res.json({message: "Mot de passe incorrect"})
+                        res.json({ message: "Mot de passe incorrect" })
                     }
-                    else{
-                        if(!user.connected){
-                           user.connected = 1;
+                    else {
+                        if (!user.connected) {
+                            user.connected = 1;
 
-                           user.save((error, user) => {
-                                if(error){
+                            user.save((error, user) => {
+                                if (error) {
                                     res.status(401);
                                     console.log(error);
-                                    res.json({message: "Rêquete invalide"});
+                                    res.json({ message: "Rêquete invalide" });
                                 }
-                                else{
+                                else {
                                     let userData = {
                                         id: user._id.toString(),
                                         firstname: user.firstname,
                                         lastname: user.lastname,
                                         email: user.email,
                                         admin: user.admin,
-                                        connected: 1
+                                        connected: 1,
+                                        groups: [user.groups],
+                                        projects: [user.projects]
                                     }
-                
-                                    jwt.sign(userData, process.env.JWT_KEY, {expiresIn: "30 days"}, (error, token) => {
-                                        if(error){
+
+                                    jwt.sign(userData, process.env.JWT_KEY, { expiresIn: "30 days" }, (error, token) => {
+                                        if (error) {
                                             res.status(500);
                                             console.log(error);
-                                            res.json({message: "Impossible de générer le token"})
+                                            res.json({ message: "Impossible de générer le token" })
                                         }
-                                        else{
+                                        else {
                                             res.status(200);
-                                            res.json({message: `Utilisateur connecté : ${user.email}`, token, user: userData});
+                                            res.json({ message: `Utilisateur connecté : ${user.email}`, token, user: userData });
                                         }
                                     });
                                 }
                             });
                         }
-                        else{
+                        else {
                             res.status(401);
                             console.log(error);
-                            res.json({message: "Utilisateur est déjà connecté"});
+                            res.json({ message: "Utilisateur est déjà connecté" });
                         }
                     }
                 })
             }
-            else{
+            else {
                 res.status(401);
-                res.json({message: "Email ou mot de passe incorrect"});
+                res.json({ message: "Email ou mot de passe incorrect" });
                 console.log(error);
             }
         }
@@ -107,33 +109,33 @@ exports.userLogin = (req, res, error) => {
 
 // Déconnexion d'utilisateur
 exports.userLogout = (req, res, error) => {
-    if(req.params.userId){
+    if (req.params.userId) {
         User.findById(req.params.userId, (error, user) => {
-            if(error){
+            if (error) {
                 res.status(401);
                 console.log(error);
-                res.json({message: "Utilisateur connecté non trouvé"});
+                res.json({ message: "Utilisateur connecté non trouvé" });
             }
-            else{
-                if(user.connected){
+            else {
+                if (user.connected) {
                     user.connected = 0;
 
                     user.save((error, user) => {
-                        if(error){
+                        if (error) {
                             res.status(401);
                             console.log(error);
-                            res.json({message: "Rêquete invalide"});
+                            res.json({ message: "Rêquete invalide" });
                         }
-                        else{
+                        else {
                             res.status(200);
-                            res.json({message: `Utilisateur déconnecté : ${user.email}`});
+                            res.json({ message: `Utilisateur déconnecté : ${user.email}` });
                         }
                     });
                 }
                 else {
                     res.status(401);
                     console.log(error);
-                    res.json({message: 'Utilisateur connecté non trouvé'});
+                    res.json({ message: 'Utilisateur connecté non trouvé' });
                 }
             }
         })
@@ -141,19 +143,19 @@ exports.userLogout = (req, res, error) => {
     else {
         res.status(401);
         console.log(error);
-        res.json({message: 'Utilisateur connecté non trouvé'});
+        res.json({ message: 'Utilisateur connecté non trouvé' });
     }
 }
 
 // Afficher tous les utilisateurs
 exports.listAllUsers = (req, res) => {
     User.find({}, (error, users) => {
-        if(error){
+        if (error) {
             res.status(500);
             console.log(error);
-            res.json({message: "Erreur serveur"});
+            res.json({ message: "Erreur serveur" });
         }
-        else{
+        else {
             res.status(200);
             res.json(users);
         }
@@ -163,17 +165,41 @@ exports.listAllUsers = (req, res) => {
 // Afficher un utilisateur par id
 exports.aUser = (req, res) => {
     User.findById(req.params.userId, (error, user) => {
-        if(error){
+        if (error) {
             res.status(401);
-            res.json({message: "Utilisateur connecté non trouvé"});
+            res.json({ message: "Utilisateur connecté non trouvé" });
             console.log(error);
         }
-        else{
+        else {
             res.status(200);
             res.json(user);
         }
     });
 }
+
+// Modifier tous les informations d'un utilisateur
+exports.updateUser = (req, res) => {
+    User.findOneAndUpdate({ userId: req.params.userId }, req.body, { new: true, runValidators: true })
+        .then(result => res.status(200).json({ msg: "L'utilisateur est bien mis à jour", result }))
+        .catch((error) => res.status(404).json({ msg: "Utilisateur non trouvé" }))
+
+};
+
+// Supprimer l'utilisateur
+exports.deleteUser = (req, res) => {
+    User.deleteOne({ _id: req.params.userId })
+        .then(result => res.status(200).json({ msg: "L'utilisateur est bien supprimé", result }))
+        .catch((error) => res.status(404).json({ msg: "Utilisateur non trouvé" }))
+};
+
+// Modifier quelques informations de l'utilisateur
+exports.patchUser = (req, res) => {
+    User.findByIdAndUpdate({ userId: req.params.userId }, req.body, { new: true })
+        .then(result => res.status(200).json({ msg: "L'utilisateur est bien mis à jour", result }))
+        .catch((error) => res.status(404).json({ msg: "Utilisateur  non trouvé" }))
+
+};
+
 exports.getUsersbymail = (req,res)=>{
     User.find({email:{$in:req.body.listmail.split(",")}}, async (error, users) => {
         if(error){
