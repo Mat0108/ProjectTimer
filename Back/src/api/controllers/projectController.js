@@ -57,20 +57,20 @@ exports.getAllProjects = (req, res) => {
     });
 }
 
-// // Afficher un groupe par id
-// exports.getProjectById = (req,res) =>{
-//     Project.findById(req.params.projectId,(error,project) =>{
-//         if(error){
-//             res.status(500);
-//             console.log(error);
-//             res.json({message: "Project non trouvé"});
-//         }
-//         else{
-//             res.status(200);
-//             res.json({message: `Project trouvé : ${project}`});
-//         }
-//     });
-// }
+// Afficher un groupe par id
+exports.getProjectById = (req,res) =>{
+    Project.findById(req.params.projectId,(error,project) =>{
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Project non trouvé"});
+        }
+        else{
+            res.status(200);
+            res.json(project);
+        }
+    });
+}
 
 // Delete project
 
