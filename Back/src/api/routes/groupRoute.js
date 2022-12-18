@@ -4,9 +4,11 @@ module.exports = (server) => {
 
 server.post("/group/:userId", cors(), groupController.createGroup);
 
-server.route("/group/:groupId")
+server.get("/groups", cors(), groupController.getAllGroups);
+
+server.route("/groups/:groupId")
 .all(cors())
-.get(groupController.getGroup)
+.get(groupController.getGroupById)
 .post(groupController.addUser)
 .delete(groupController.deleteGroup);
 
