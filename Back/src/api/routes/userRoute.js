@@ -15,4 +15,7 @@ server.route("/users/:userId")
 .delete(userController.deleteUser)
 .patch(userController.patchUser);
 
+server.get("/user/:userId", cors(), userController.aUser);
+server.get("/users/mail",cors(),userController.getUsersbymail);
+
 }
