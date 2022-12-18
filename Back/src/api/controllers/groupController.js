@@ -2,6 +2,7 @@ const Group = require("../models/groupModel");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 
+// Créer un nouveau groupe
 exports.createGroup = (req, res) =>{     
     let newGroup = new Group({
         name: req.body.name, 
@@ -17,21 +18,37 @@ exports.createGroup = (req, res) =>{
         }
         else{
             res.status(200);
-            res.json({message: `Group crée : ${group.name}`, groupData: newGroup});
+            res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup});
         }
     });   
 }   
 
-exports.getGroup = (req,res) =>{
-    Group.findById(req.params.groupId,(error,group) =>{
+// Afficher tous les groupes
+exports.getAllGroups = (req, res) =>{
+    Group.find({}, (error, groups) =>{
         if(error){
             res.status(500);
             console.log(error);
-            res.json({message: "Group non trouvé"});
+            res.json({message: "Erreur serveur"});
         }
         else{
             res.status(200);
-            res.json({message: `Group trouvé : ${group}`});
+            res.json(groups);
+        }
+    });
+}
+
+// Afficher un groupe par id
+exports.getGroupById = (req, res) =>{
+    Group.findById(req.params.groupId, (error, group) =>{
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Groupe non trouvé"});
+        }
+        else{
+            res.status(200);
+            res.json(group);
         }
     });
 }
