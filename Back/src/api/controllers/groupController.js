@@ -3,28 +3,37 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 
 // Créer un nouveau groupe
-exports.createGroup = (req, res) =>{     
-    let newGroup = new Group({
-        name: req.body.name, 
-        users: [req.params.userId], 
-        admin: req.params.userId
-    });
+exports.createGroup = (req, res) => {   
+    axios.get("http://localhost:3000/users/" + req.params.userId).then(result => {   
+        let newGroup = new Group({
+            name: req.body.name, 
+            users: result.data.email, 
+            admin: result.data.email
+        });
 
-    newGroup.save((error, group) => {
-        if(error){
-            res.status(401);
-            console.log(error);
-            res.json({message: "Rêquete invalide"});
-        }
-        else{
-            res.status(200);
-            res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup});
-        }
-    });   
+        newGroup.save((error, group) => {
+            if(error){
+                res.status(401);
+                console.log(error);
+                res.json({message: "Rêquete invalide"});
+            }
+            else{
+                axios.get("http://localhost:3000/users/" + req.params.userId).then(result1 => {
+                    let groups = result1.data.groups;
+                    groups.push(group.name);
+
+                    axios.patch("http://localhost:3000/users/" + req.params.userId, {groups: groups}).then(result2 => {
+                        res.status(200);
+                        res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup});
+                    })
+                })
+            }
+        });   
+    })
 }   
 
 // Afficher tous les groupes
-exports.getAllGroups = (req, res) =>{
+exports.getAllGroups = (req, res) => {
     Group.find({}, (error, groups) =>{
         if(error){
             res.status(500);
@@ -39,7 +48,7 @@ exports.getAllGroups = (req, res) =>{
 }
 
 // Afficher un groupe par id
-exports.getGroupById = (req, res) =>{
+exports.getGroupById = (req, res) => {
     Group.findById(req.params.groupId, (error, group) =>{
         if(error){
             res.status(500);
@@ -54,7 +63,7 @@ exports.getGroupById = (req, res) =>{
 }
 
 // Supprimer un groupe par id
-exports.deleteGroupById = (req, res)=>{
+exports.deleteGroupById = (req, res) => {
     Group.findByIdAndDelete(req.params.groupId, (error, group) =>{
         if(error){
             res.status(500);
@@ -68,26 +77,39 @@ exports.deleteGroupById = (req, res)=>{
     });
 }
 
-exports.addUser=(req,res) =>{
-    Group.findByIdAndUpdate({_id:req.params.groupId},{listuser:req.body.mail},{new: true},(error,group2)=>{
+// Ajouter un utilisateur à un groupe
+exports.addUser = (req, res) => {
+    Group.findById({_id: req.params.groupId}, (error, group) => {
         if(error){
             res.status(500);
             console.log(error);
-            res.json({message: "Group non trouvé"});
+            res.json({message: "Groupe non trouvé"});
         }
         else{
+            let groupUsers = group.users;
+
+            req.body.users.map(user => {
+                if(!groupUsers.includes(user)){
+                    groupUsers.push(user);
+
+                    Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {
+                        axios.get("http://localhost:3000/users").then(async result => {
+                            await req.body.users.map(user => {
+                                result.data.map(datas => {
+                                    if(datas.email == user){
+                                        let groups = datas.groups;
+                                        groups.push(group.name);
+    
+                                        axios.patch("http://localhost:3000/users/" + datas._id, {groups: groups});
+                                    }
+                                });
+                            })
+                        })
+                    });
+                }
+            })
             res.status(200);
-            res.json({message: `Group update : ${group2}`});
+            res.json({message: `${group.name} est bien modifié`})
         }
     }) 
 }
-
-
-
-/*axios.get("http://localhost:3000/users").then(resultat => {   
-    const emails = [];
-
-    resultat.data.map(datas => {
-        emails.push(datas.email);
-    })
-});*/
