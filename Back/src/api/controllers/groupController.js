@@ -53,16 +53,17 @@ exports.getGroupById = (req, res) =>{
     });
 }
 
-exports.deleteGroup=(req,res)=>{
-    Group.findByIdAndDelete(req.params.groupId,(error,group) =>{
+// Supprimer un groupe par id
+exports.deleteGroupById = (req, res)=>{
+    Group.findByIdAndDelete(req.params.groupId, (error, group) =>{
         if(error){
             res.status(500);
             console.log(error);
-            res.json({message: "Group non trouvé"});
+            res.json({message: "Groupe non trouvé"});
         }
         else{
             res.status(200);
-            res.json({message: `Group trouvé : ${group}`});
+            res.json({message: `Groupe supprimé: ${group.name}`});
         }
     });
 }

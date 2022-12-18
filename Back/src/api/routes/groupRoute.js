@@ -10,6 +10,6 @@ server.route("/groups/:groupId")
 .all(cors())
 .get(groupController.getGroupById)
 .post(groupController.addUser)
-.delete(groupController.deleteGroup);
+.delete(groupController.deleteGroupById);
 
 }
