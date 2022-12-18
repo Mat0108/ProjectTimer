@@ -28,10 +28,12 @@ server.use(cors());
 const userRoute = require("./api/routes/userRoute");
 const groupRoute = require("./api/routes/groupRoute");
 const projectRoute = require("./api/routes/projectRoute");
+const timerRoute = require("./api/routes/timerRoute");
 
 userRoute(server);
 groupRoute(server);
 projectRoute(server);
+timerRoute(server);
 
 server.listen(port, hostname);
 
