@@ -24,9 +24,10 @@ server.use(express.json());
 server.use(cors());
 
 const userRoute = require("./api/routes/userRoute");
-const groupsRoute = require("./api/routes/groupsRoute")
+const groupRoute = require("./api/routes/groupRoute");
+
 userRoute(server);
-groupsRoute(server)
+groupRoute(server)
 
 server.listen(port, hostname);
 
