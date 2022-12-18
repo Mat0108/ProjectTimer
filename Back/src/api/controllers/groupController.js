@@ -1,6 +1,7 @@
 const Group = require("../models/groupModel");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
 
 // Créer un nouveau groupe
 exports.createGroup = (req, res) => {   
@@ -23,8 +24,17 @@ exports.createGroup = (req, res) => {
                     groups.push(group.name);
 
                     axios.patch("http://localhost:3000/users/" + req.params.userId, {groups: groups}).then(result2 => {
-                        res.status(200);
-                        res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup});
+                        jwt.sign(result2.data.result, process.env.JWT_KEY, { expiresIn: "30 days" }, (error, token) => {
+                            if (error) {
+                                res.status(500);
+                                console.log(error);
+                                res.json({ message: "Impossible de générer le token" })
+                            }
+                            else {
+                                res.status(200);
+                                res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup, token});
+                            }
+                        });
                     })
                 })
             }
@@ -93,9 +103,9 @@ exports.addUsers = (req, res) => {
                     groupUsers.push(user);
 
                     Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {
-                        axios.get("http://localhost:3000/users").then(async result => {
+                        axios.get("http://localhost:3000/users").then(async result2 => {
                             await req.body.users.map(user => {
-                                result.data.map(datas => {
+                                result2.data.map(datas => {
                                     if(datas.email == user){
                                         let groups = datas.groups;
                                         groups.push(group.name);
