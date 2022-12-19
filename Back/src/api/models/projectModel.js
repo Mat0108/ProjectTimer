@@ -6,15 +6,11 @@ let ProjectSchema = new Schema({
         type: String,
         required: true,
     },
-    listgroup:{
-        type: Array,
-        required: true,
-    },
-    listusers:{
-        type: Array,
-        required: true,
-    },
     mailadmin: {
+        type: String,
+        required: true,
+    },
+    timer: {
         type: String,
         required: true,
     }
