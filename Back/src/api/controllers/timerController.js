@@ -106,3 +106,18 @@ exports.stopTimer = (req, res) => {
         }
     });
 }
+
+// Afficher tous les timers
+exports.getAllTimers = (req, res) => {
+    TimerModel.find({}, (error, result) => {
+        if(error){
+            res.status(401);
+            console.log(error);
+            res.json({message: "Timers non trouvés"});
+        }
+        else{
+            res.status(200);
+            res.json(result);
+        }
+    });
+}
