@@ -52,3 +52,32 @@ exports.pauseTimer = (req, res) => {
         }
     });
 }
+
+// Redémarrer le timer
+exports.resumeTimer = (req, res) => {
+    TimerModel.findById(req.params.timerId, (error, result) => {
+        if(timer.isPaused()){
+            let resumed = result.resumedAt;
+
+            timer.resume();
+
+            resumed.push(timer.format("%hh %mm %ss %msms"))
+
+            TimerModel.findByIdAndUpdate(req.params.timerId, {resumedAt: resumed}, {new: true}, (error, result) => {
+                if(error){
+                    res.status(401);
+                    console.log(error);
+                    res.json({message: "Rêquete invalide"});
+                }
+                else{
+                    res.status(200);
+                    res.json(result);
+                }
+            })
+        }
+        else{
+            res.status(500);
+            res.json("Timer n'a pas pausé");
+        }
+    });
+}
