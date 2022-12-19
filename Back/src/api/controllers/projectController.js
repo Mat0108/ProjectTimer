@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const axios = require("axios");
 
 
-// Creation d'un nouveau project
+// Create a new project
+
 exports.CreateProject = (req, res) =>{
     let newProject = new Project(req.body);
     newProject.save((error, groups) => {
@@ -42,7 +43,8 @@ exports.CreateProject = (req, res) =>{
 
 
 
-// Afficher tous les projects
+// Show all the projects
+
 exports.getAllProjects = (req, res) => {
     Project.find({}, (error, projects) =>{
         if(error){
@@ -57,7 +59,8 @@ exports.getAllProjects = (req, res) => {
     });
 }
 
-// Afficher un groupe par id
+// Show a project by id
+
 exports.getProjectById = (req,res) =>{
     Project.findById(req.params.projectId,(error,project) =>{
         if(error){
@@ -72,8 +75,59 @@ exports.getProjectById = (req,res) =>{
     });
 }
 
-// Delete project
+// Delete project by id
 
-// Ajout de group
+exports.deleteProjectById = (req, res) => {
+    Project.findByIdAndDelete(req.params.projectId, (error, project) =>{
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Project non trouvé"});
+        }
+        else{
+            res.status(200);
+            res.json({message: `Project supprimé: ${project.name}`});
+        }
+    });
+}
+
+// Add groups in a project
+
+exports.addGroups = (req, res) => {
+    Project.findById({_id: req.params.projectId}, (error, project) => {
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Project non trouvé"});
+        }
+        else{
+            let projectGroups = project.groups;
+
+            req.body.groups.map(group => {
+                if(!projectGroups.includes(group)){
+                    projectGroups.push(group);
+
+                    Project.findByIdAndUpdate({_id: req.params.projectId}, {groups: projectGroups}, {new: true}, (error, projectUpdate) => {
+                        axios.get("http://localhost:3000/groups").then(async result2 => {
+                            await req.body.groups.map(project => {
+                                result2.data.map(datas => {
+                                    if(datas.email == user){
+                                        let projects = datas.projects;
+                                        projects.push(project.name);
+    
+                                        axios.patch("http://localhost:3000/groups/" + datas._id, {projects: projects});
+                                    }
+                                });
+                            })
+                        })
+                    });
+                }
+            })
+            res.status(200);
+            res.json({message: `${project.name} est bien modifié`})
+        }
+    }) 
+}
+
 //Faire un udap
 // Ajout de User
