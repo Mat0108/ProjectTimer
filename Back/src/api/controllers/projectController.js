@@ -6,7 +6,7 @@ const axios = require("axios");
 
 // Create a new project
 
-exports.CreateProject = (req, res) =>{
+exports.createProject = (req, res) =>{
     let newProject = new Project(req.body);
     newProject.save((error, groups) => {
         if(error){
