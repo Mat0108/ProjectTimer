@@ -81,3 +81,28 @@ exports.resumeTimer = (req, res) => {
         }
     });
 }
+
+// Arrêter le timer
+exports.stopTimer = (req, res) => {
+    TimerModel.findById(req.params.timerId, (error, result) => {
+        if(timer.isRunning()){
+            timer.stop();
+
+            TimerModel.findByIdAndUpdate(req.params.timerId, {stoppedAt: timer.format("%hh %mm %ss %msms")}, {new: true}, (error, result) => {
+                if(error){
+                    res.status(401);
+                    console.log(error);
+                    res.json({message: "Rêquete invalide"});
+                }
+                else{
+                    res.status(200);
+                    res.json(result);
+                }
+            })
+        }
+        else{
+            res.status(500);
+            res.json("Timer n'a pas démarré");
+        }
+    });
+}
