@@ -21,28 +21,6 @@ exports.createProject = (req, res) =>{
     });
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Show all the projects
 
 exports.getAllProjects = (req, res) => {
