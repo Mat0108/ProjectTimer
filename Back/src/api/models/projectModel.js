@@ -7,7 +7,11 @@ let ProjectSchema = new Schema({
         required: true,
     },
     listgroup:{
-        type: String,
+        type: Array,
+        required: true,
+    },
+    listusers:{
+        type: Array,
         required: true,
     },
     mailadmin: {
