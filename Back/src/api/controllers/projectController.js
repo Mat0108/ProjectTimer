@@ -107,5 +107,40 @@ exports.addGroups = (req, res) => {
     }) 
 }
 
-//Faire un udap
-// Ajout de User
+// Delete groups in a project
+
+exports.deleteGroups = (req, res) => {
+    Project.findById({_id: req.params.projectId}, (error, project) => {
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Project non trouvé"});
+        }
+        else{
+            let projectGroups = project.groups;
+
+            req.body.groups.map(group => {
+                if(projectGroups.includes(group)){
+                    projectGroups = projectGroups.filter(project1 => !req.body.groups.includes(project1))
+                    
+                    Project.findByIdAndUpdate({_id: req.params.projectId}, {groups: projectGroups}, {new: true}, (error, projectUpdate) => {
+                        axios.get("http://localhost:3000/groups").then(async result => {
+                            await req.body.groups.map(group => {
+                                result.data.map(datas => {
+                                    if(datas.email == user){
+                                        let projects = datas.projects;
+                                        projects = projects.filter(project2 => project2 != projectUpdate.name)
+
+                                        axios.patch("http://localhost:3000/users/" + datas._id, {projects: projects});
+                                    }
+                                });
+                            })
+                        })
+                    });
+                }
+            })
+            res.status(200);
+            res.json({message: `${project.name} est bien modifié`})
+        }
+    }) 
+}
