@@ -6,6 +6,14 @@ let ProjectSchema = new Schema({
         type: String,
         required: true,
     },
+    listgroup:{
+        type: String,
+        required: true,
+    },
+    listuser: {
+        type: String,
+        required: true,
+    },
     mailadmin: {
         type: String,
         required: true,
