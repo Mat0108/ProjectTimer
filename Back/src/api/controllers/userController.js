@@ -3,7 +3,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios")
 
+
 // Inscription d'utilisateur
+
 exports.userRegister = (req, res, error) => {
     let newUser = new User(req.body);
 
@@ -38,7 +40,9 @@ exports.userRegister = (req, res, error) => {
     }
 }
 
+
 // Connexion d'utilisateur
+
 exports.userLogin = (req, res, error) => {
     User.findOne({ email: req.body.email }, (error, user) => {
         if (error) {
@@ -108,6 +112,7 @@ exports.userLogin = (req, res, error) => {
 }
 
 // Déconnexion d'utilisateur
+
 exports.userLogout = (req, res, error) => {
     if (req.params.userId) {
         User.findById(req.params.userId, (error, user) => {
@@ -147,7 +152,9 @@ exports.userLogout = (req, res, error) => {
     }
 }
 
+
 // Afficher tous les utilisateurs
+
 exports.listAllUsers = (req, res) => {
     User.find({}, (error, users) => {
         if (error) {
@@ -162,7 +169,9 @@ exports.listAllUsers = (req, res) => {
     });
 }
 
+
 // Afficher un utilisateur par id
+
 exports.aUser = (req, res) => {
     User.findById(req.params.userId, (error, user) => {
         if (error) {
