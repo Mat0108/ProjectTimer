@@ -6,12 +6,13 @@ let groupSchema = new Schema({
         type: String,
         required: true,
     },
-    users: {
-        type: Array,
-        required: true,
-    },
+    users: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
+    }],
     admin: {
-        type: String,
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
         required: true,
     },
     projects: {
