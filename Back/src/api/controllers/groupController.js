@@ -1,45 +1,55 @@
 const Group = require("../models/groupModel");
+const User = require("../models/userModel");
+
 const bcrypt = require("bcrypt");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 
 // Créer un nouveau groupe
-exports.createGroup = (req, res) => {   
-    axios.get("http://localhost:3000/users/" + req.params.userId).then(result => {   
-        let newGroup = new Group({
-            name: req.body.name, 
-            users: result.data.email, 
-            admin: result.data.email
-        });
-
-        newGroup.save((error, group) => {
-            if(error){
-                res.status(401);
-                console.log(error);
-                res.json({message: "Rêquete invalide"});
-            }
-            else{
-                axios.get("http://localhost:3000/users/" + req.params.userId).then(result1 => {
-                    let groups = result1.data.groups;
-                    groups.push(group.name);
-
-                    axios.patch("http://localhost:3000/users/" + req.params.userId, {groups: groups}).then(result2 => {
-                        jwt.sign(result2.data.result, process.env.JWT_KEY, { expiresIn: "30 days" }, (error, token) => {
-                            if (error) {
-                                res.status(500);
+exports.createGroup = async (req, res) => {  
+    User.findOne({ email: req.body.admin }, (error, admin) => {
+        if (error) {
+            res.status(500);
+            console.log(error);
+            res.json({ message: "Utilisateur non trouvé" });
+        }
+        else {
+            if(req.body.users){
+                User.find({ email: {$in:req.body.users} }, (error, users) => {
+                    if (error) {
+                        res.status(500);
+                        console.log(error);
+                        res.json({ message: "Utilisateur non trouvé" });
+                    }
+                    else {
+                       
+                        let newGroup = new Group({
+                            name: req.body.name, 
+                            users: users.map(e=>{return e._id}), 
+                            admin: admin._id
+                        }); 
+                        newGroup.save((error, group) => {
+                            if(error){
+                                res.status(401);
                                 console.log(error);
-                                res.json({ message: "Impossible de générer le token" })
+                                res.json({message: newGroup});
                             }
-                            else {
+                            else{
                                 res.status(200);
-                                res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup, token});
+                                res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup});
                             }
-                        });
-                    })
+                        })
+                    }
                 })
             }
-        });   
+        }
+
+   
+
+
+
     })
+    
 }   
 
 // Afficher tous les groupes
@@ -59,7 +69,8 @@ exports.getAllGroups = (req, res) => {
 
 // Afficher un groupe par id
 exports.getGroupById = (req, res) => {
-    Group.findById(req.params.groupId, (error, group) =>{
+    console.log(req.params.groupId)
+    Group.findById(req.params.groupId).populate("users").populate("admin").exec(function (error, group){
         if(error){
             res.status(500);
             console.log(error);
