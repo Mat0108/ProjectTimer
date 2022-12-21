@@ -24,15 +24,15 @@ let userSchema = new Schema({
         required: true,
         default: 0
     },
-    groups: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'group',
+    groups: {
+        type: Schema.Types.ObjectId,
+        ref: "Group",
         default: []
-    }],
+    },
     projects: {
         type: Schema.Types.ObjectId,
         ref: "Project",
-        default: null
+        default: []
     },
     loggedTimes: [{
         type: Schema.Types.ObjectId, 
