@@ -30,9 +30,15 @@ let userSchema = new Schema({
         default: []
     }],
     projects: {
-        type: Array,
+        type: Schema.Types.ObjectId,
+        ref: "Project",
         default: null
-    }
+    },
+    loggedTimes: [{
+        type: Schema.Types.ObjectId, 
+        ref: "Time",
+        required: true
+    }]
 });
 
 module.exports = mongoose.model("User", userSchema);
