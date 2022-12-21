@@ -10,7 +10,7 @@ server.get("/groups", cors(), groupController.getAllGroups);
 server.route("/groups/:groupId")
 .all(cors())
 .get(groupController.getGroupById)
-.patch(jwtMiddleware.authenticate,groupController.addUsers)
+.patch(groupController.addUsers)
 .delete(jwtMiddleware.authenticate, groupController.deleteGroupById);
 
 server.patch("/groups/:groupId/deleteUsers", jwtMiddleware.authenticate, cors(), groupController.deleteUsers)
