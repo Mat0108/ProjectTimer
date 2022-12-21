@@ -8,6 +8,8 @@ const server = express();
 
 const mongoose = require("mongoose");
 
+process.env.TZ = 'Europe/Paris'
+ 
 mongoose.connect("mongodb://mongo/timerdb", {
     useNewUrlParser: true,
     user: "timer",
@@ -28,12 +30,12 @@ server.use(cors());
 const userRoute = require("./api/routes/userRoute");
 const groupRoute = require("./api/routes/groupRoute");
 const projectRoute = require("./api/routes/projectRoute");
-const timerRoute = require("./api/routes/timerRoute");
+const timeRoute = require("./api/routes/timeRoute");
 
 userRoute(server);
 groupRoute(server);
 projectRoute(server);
-timerRoute(server);
+timeRoute(server);
 
 server.listen(port, hostname);
 
