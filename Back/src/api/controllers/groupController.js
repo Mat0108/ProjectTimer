@@ -1,10 +1,6 @@
 const Group = require("../models/groupModel");
 const User = require("../models/userModel");
 
-const bcrypt = require("bcrypt");
-const axios = require("axios");
-const jwt = require("jsonwebtoken");
-
 // Créer un nouveau groupe
 exports.createGroup = async (req, res) => {  
     User.findOne({ email: req.body.admin }, (error, admin) => {
@@ -37,16 +33,17 @@ exports.createGroup = async (req, res) => {
                             else{
                                 users.map(e=>{
                                     let groupUsers = e.groups;
-                                    groupUsers.push(group._id);    
-                                    User.findByIdAndUpdate({ _id: e._id },{groups: groupUsers}, { new: true })
-                                    .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
-                                    .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))
+                                    groupUsers.push(group._id);   
+                                    console.log('groupUsers : ', groupUsers)
 
+                                    User.findByIdAndUpdate({ _id: e._id }, {groups: groupUsers}, { new: true })
+                                    .then(result => console.log('result : ', result))
+                                    .catch((error) => console.log('error : ', error))
                                     
                                     
                                 })
                                 res.status(200);
-                                res.json({message: `Groupe crée : ${group.name}`, groupData: newGroup});
+                                res.json({message: newGroup});
                             }
                         })
                     }
@@ -127,9 +124,9 @@ exports.addUsers = (req, res) => {
                     let groupUsers = group.users;
                     users.map(e=>{if(!groupUsers.includes(e._id)){
                         groupUsers.push(e._id);
-                        User.findByIdAndUpdate({ _id: e._id },{groups: group._id}, { new: true })
-                                    .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
-                                    .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))    
+                        User.findByIdAndUpdate({ _id: e._id },{groups: group._id}, { new: true })  
+                        .then(result => console.log('result : ', result))
+                        .catch((error) => console.log('error : ', error)) 
                     }})
                     Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {});
 
@@ -156,22 +153,38 @@ exports.deleteUsers = (req, res) => {
                     res.json({ message: "Utilisateur non trouvé" });
                 }
                 else {
-                    console.log('users : ', users)
                     let groupUsers = group.users;
-                    console.log('group : ', group)
-                    users.map(e=>{
-                        if(groupUsers.includes(e._id)){
-                        
-                            let groupUser = e.groups;
-                            console.log('groupUser : ', groupUser)
-                            groupUser = groupUser.filter(group1=> group1 != group._id)
-                            console.log('groupUser 2 : ', groupUser)
-                            User.findByIdAndUpdate({ _id: e._id },{groups: groupUser}, { new: true })
-                            .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
-                            .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))    
-                     }})
-                    groupUsers = groupUsers.filter(group1 => !users.includes(group1))
-                    Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {});
+                    let newgroup = new Array();
+                    
+                    groupUsers.map(e=>{ //parcourt les users d'un group selectionnée
+                        users.map(f=>{  //parcourt les users passé en parametre
+                            console.log('f : ', f)
+                            console.log('e : ', e)
+                            console.log('f._id.equals(e) : ', f._id.equals(e))
+                            if(f._id.equals(e)){ 
+                                console.log('f.groups : ', f.groups)
+                                let newgroupuser = new Array();
+                                f.groups.map(g=>{ 
+                                    console.log('g : ', g)
+                                    console.log('Group._id  : ', group._id )
+                                    console.log('g.equals(Group._id) : ', g.equals(group._id))
+                                    if(!g.equals(group._id) ){
+                                        newgroupuser.push(g)
+                                    }
+                                })
+                                User.findByIdAndUpdate({ _id: f._id },{groups: newgroupuser}, { new: true })
+                                .then(result => console.log('result : ', result))
+                                .catch((error) => console.log('error : ', error))
+                                console.log('newgroupuser : ', newgroupuser)
+                            }else{
+                                newgroup.push(e)
+                            }
+                            
+                        })
+                    })
+                    console.log('newgroup : ', newgroup)
+                    Group.findByIdAndUpdate({_id: req.params.groupId}, {users: newgroup}, {new: true}, (error, groupUpdate) => {});
+                    
 
                 }})
             res.status(200);
