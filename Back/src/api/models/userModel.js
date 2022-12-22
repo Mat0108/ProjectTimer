@@ -33,12 +33,7 @@ let userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Project",
         default: []
-    },
-    loggedTimes: [{
-        type: Schema.Types.ObjectId, 
-        ref: "Time",
-        required: true
-    }]
+    }
 });
 
 module.exports = mongoose.model("User", userSchema);
