@@ -6,6 +6,11 @@ let timeSchema = new Schema({
         type: Array,
         required: false,
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
 });
 
 module.exports = mongoose.model("Time", timeSchema);
