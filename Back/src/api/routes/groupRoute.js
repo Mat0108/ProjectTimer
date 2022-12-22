@@ -13,5 +13,5 @@ server.route("/groups/:groupId")
 .patch(groupController.addUsers)
 .delete(jwtMiddleware.authenticate, groupController.deleteGroupById);
 
-server.patch("/groups/:groupId/deleteUsers", jwtMiddleware.authenticate, cors(), groupController.deleteUsers)
+server.patch("/groups/:groupId/deleteUsers", cors(), groupController.deleteUsers)
 }
