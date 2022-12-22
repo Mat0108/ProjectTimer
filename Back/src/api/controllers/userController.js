@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -73,8 +74,7 @@ exports.userLogin = (req, res, error) => {
                                         admin: user.admin,
                                         connected: 1,
                                         groups: user.groups,
-                                        projects: user.projects,
-                                        loggedTimes: user.loggedTimes
+                                        projects: user.projects
                                     }
 
                                     jwt.sign(userData, process.env.JWT_KEY, { expiresIn: "30 days" }, (error, token) => {
@@ -150,8 +150,8 @@ exports.userLogout = (req, res, error) => {
 
 
 // Afficher tous les utilisateurs
-exports.listAllUsers = (req, res) => {
-    User.find({}, (error, users) => {
+exports.getAllUsers = (req, res) => {
+    User.find({}).populate("groups").populate("projects").exec(function (error, users) {
         if (error) {
             res.status(500);
             console.log(error);
@@ -166,8 +166,8 @@ exports.listAllUsers = (req, res) => {
 
 
 // Afficher un utilisateur par id
-exports.aUser = (req, res) => {
-    User.findById(req.params.userId, (error, user) => {
+exports.getUserById = (req, res) => {
+    User.findById(req.params.userId).populate("groups").populate("projects").exec(function (error, user) {
         if (error) {
             res.status(401);
             res.json({ message: "Utilisateur connecté non trouvé" });
