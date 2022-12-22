@@ -27,7 +27,7 @@ function timeToMs(time){
 // Démarrer le time
 exports.startTime = (req, res) => {
     timer.start();
-    
+
     let newTime = new Time({
         times: [
             {
@@ -39,7 +39,8 @@ exports.startTime = (req, res) => {
                         startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         start: msToTime(timer.ms()),
-                        end: msToTime(timer.ms())
+                        end: msToTime(timer.ms()),
+                        user: req.body.user
                     }
                 ]
             }
@@ -76,7 +77,8 @@ exports.continueTime = (req, res) => {
                     startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                     endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                     start: timeHistory[historyLength-1].end,
-                    end: timeHistory[historyLength-1].end
+                    end: timeHistory[historyLength-1].end,
+                    user: req.body.user
                 }
 
                 timeHistory.push(newHistory)
@@ -115,7 +117,8 @@ exports.continueTime = (req, res) => {
                         startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         start: msToTime(timer.ms()),
-                        end: msToTime(timer.ms())
+                        end: msToTime(timer.ms()),
+                        user: req.body.user
                     }
                 ]
             };
@@ -157,7 +160,8 @@ exports.stopTime = (req, res) => {
                             startTimestamp: timeHistory[historyLength-1].startTimestamp,
                             endTimestamp: new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
                             start: timeHistory[historyLength-1].start,
-                            end: msToTime(newEnd)
+                            end: msToTime(newEnd),
+                            user: timeHistory[historyLength-1].user
                         }
 
                         let timeUpdate = {
@@ -193,7 +197,8 @@ exports.stopTime = (req, res) => {
                             startTimestamp: timeHistory[historyLength-1].startTimestamp,
                             endTimestamp: new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
                             start: timeHistory[historyLength-1].start,
-                            end: msToTime(newEnd)
+                            end: msToTime(newEnd),
+                            user: timeHistory[historyLength-1].user
                         }
 
                         let timeUpdate = {
