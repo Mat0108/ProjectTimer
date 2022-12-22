@@ -27,12 +27,10 @@ let userSchema = new Schema({
     groups: [{
         type: Schema.Types.ObjectId,
         ref: "Group",
-        default: []
     }],
     projects: [{
         type: Schema.Types.ObjectId,
         ref: "Project",
-        default: []
     }]
 });
 
