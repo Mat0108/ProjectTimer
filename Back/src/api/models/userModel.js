@@ -25,19 +25,14 @@ let userSchema = new Schema({
         default: 0
     },
     groups: [{
-        type: Schema.Types.ObjectId, 
-        ref: 'group',
+        type: Schema.Types.ObjectId,
+        ref: "Group",
         default: []
     }],
-    projects: {
+    projects: [{
         type: Schema.Types.ObjectId,
         ref: "Project",
-        default: null
-    },
-    loggedTimes: [{
-        type: Schema.Types.ObjectId, 
-        ref: "Time",
-        required: true
+        default: []
     }]
 });
 
