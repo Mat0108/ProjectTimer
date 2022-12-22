@@ -149,28 +149,31 @@ exports.deleteUsers = (req, res) => {
             res.json({message: "Groupe non trouvé"});
         }
         else{
-            let groupUsers = group.users;
-
-            req.body.users.map(user => {
-                if(groupUsers.includes(user)){
-                    groupUsers = groupUsers.filter(group1 => !req.body.users.includes(group1))
-                    
-                    Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {
-                        axios.get("http://localhost:3000/users").then(async result => {
-                            await req.body.users.map(user => {
-                                result.data.map(datas => {
-                                    if(datas.email == user){
-                                        let groups = datas.groups;
-                                        groups = groups.filter(group2 => group2 != groupUpdate.name)
-
-                                        axios.patch("http://localhost:3000/users/" + datas._id, {groups: groups});
-                                    }
-                                });
-                            })
-                        })
-                    });
+            User.find({ email: {$in:req.body.users} }, (error, users) => {
+                if (error) {
+                    res.status(500);
+                    console.log(error);
+                    res.json({ message: "Utilisateur non trouvé" });
                 }
-            })
+                else {
+                    console.log('users : ', users)
+                    let groupUsers = group.users;
+                    console.log('group : ', group)
+                    users.map(e=>{
+                        if(groupUsers.includes(e._id)){
+                        
+                            let groupUser = e.groups;
+                            console.log('groupUser : ', groupUser)
+                            groupUser = groupUser.filter(group1=> group1 != group._id)
+                            console.log('groupUser 2 : ', groupUser)
+                            User.findByIdAndUpdate({ _id: e._id },{groups: groupUser}, { new: true })
+                            .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
+                            .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))    
+                     }})
+                    groupUsers = groupUsers.filter(group1 => !users.includes(group1))
+                    Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {});
+
+                }})
             res.status(200);
             res.json({message: `${group.name} est bien modifié`})
         }
