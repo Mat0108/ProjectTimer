@@ -40,4 +40,14 @@ const Input = styled.input`
   margin: 10px 0;
   padding: 10px;
 `;
+
+const Button = styled.button`
+  width: 40%;
+  border: none;
+  padding: 15px 20px;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+`;
 export default Login;
