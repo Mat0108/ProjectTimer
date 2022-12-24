@@ -14,3 +14,12 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+const Wrapper = styled.div`
+  width: 40%;
+  padding: 20px;
+  background-color: white;
+  border: 3px solid teal;
+  ${mobile({ width: "75%" })}
+
+`;
