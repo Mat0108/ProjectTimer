@@ -21,5 +21,15 @@ const Wrapper = styled.div`
   background-color: white;
   border: 3px solid teal;
   ${mobile({ width: "75%" })}
-
 `;
+
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 300;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
