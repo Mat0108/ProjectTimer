@@ -50,4 +50,11 @@ const Button = styled.button`
   cursor: pointer;
   margin-bottom: 10px;
 `;
+
+const Link = styled.a`
+  margin: 5px 0px;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+`;
 export default Login;
