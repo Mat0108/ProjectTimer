@@ -39,8 +39,8 @@ exports.createGroup = async (req, res) => {
                                     let groupUsers = e.groups;
                                     groupUsers.push(group._id);    
                                     User.findByIdAndUpdate({ _id: e._id },{groups: groupUsers}, { new: true })
-                                    .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
-                                    .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))
+                                    .then(result => console.log('result : ', result))
+                                    .catch((error) => console.log('error : ', error))
 
                                     
                                     
@@ -128,8 +128,8 @@ exports.addUsers = (req, res) => {
                     users.map(e=>{if(!groupUsers.includes(e._id)){
                         groupUsers.push(e._id);
                         User.findByIdAndUpdate({ _id: e._id },{groups: group._id}, { new: true })
-                                    .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
-                                    .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))    
+                        .then(result => console.log('result : ', result))
+                        .catch((error) => console.log('error : ', error))
                     }})
                     Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {});
 
@@ -167,8 +167,8 @@ exports.deleteUsers = (req, res) => {
                             groupUser = groupUser.filter(group1=> group1 != group._id)
                             console.log('groupUser 2 : ', groupUser)
                             User.findByIdAndUpdate({ _id: e._id },{groups: groupUser}, { new: true })
-                            .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
-                            .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))    
+                            .then(result => console.log('result : ', result))
+                            .catch((error) => console.log('error : ', error))
                      }})
                     groupUsers = groupUsers.filter(group1 => !users.includes(group1))
                     Group.findByIdAndUpdate({_id: req.params.groupId}, {users: groupUsers}, {new: true}, (error, groupUpdate) => {});
