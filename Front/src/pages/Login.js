@@ -24,4 +24,8 @@ const Wrapper = styled.div`
   ${mobile({ width: "75%" })}
 `;
 
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 300;
+`;
 export default Login;
