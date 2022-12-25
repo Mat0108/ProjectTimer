@@ -16,8 +16,7 @@ module.exports = {
         'av-bold': ['AvenirNextCyrBold', 'sans-serif']
       },
       gridTemplateColumns:{
-        'rectangle':'200px 300px 700px 150px',
-        'rectangle2':'250px 200px 700px 300px 200px',
+        'groups':'100px 250px 250px 250px'
 
       },
       gridTemplateRows:{

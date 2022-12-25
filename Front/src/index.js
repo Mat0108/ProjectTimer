@@ -11,7 +11,7 @@ import './index.css';
 
 const App =() => {
 
-  return <div className=''>
+  return <div className='bg-lightgrey w-screen h-screen text-white'>
           <Nav />
 
           <Router>
