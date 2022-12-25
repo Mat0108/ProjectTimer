@@ -1,7 +1,7 @@
-import { React } from 'react';
-import { getGroups } from './../services/group';
+import React,{useState,useEffect}  from 'react';
+import { getGroups } from '../services/group';
 
-const Group =()=>{
+const Groups =()=>{
     const [groups, setGroups] = useState([]);   
     useEffect(()=>{
         const fetchData = async() =>{
@@ -12,7 +12,7 @@ const Group =()=>{
         fetchData();
         
     },[]);
-
+    return <h1>liste des groups</h1>
 
 }
-export default Group;
+export default Groups;
