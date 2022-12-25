@@ -64,7 +64,7 @@ exports.createGroup = async (req, res) => {
 
 // Afficher tous les groupes
 exports.getAllGroups = (req, res) => {
-    Group.find({}, (error, groups) =>{
+    Group.find({}).populate("users").populate("admin").exec(function (error, groups){
         if(error){
             res.status(500);
             console.log(error);
