@@ -1,9 +1,8 @@
-const colors = require('./constants/AppColors')
+const colors = require('./src/constants/AppColors')
 module.exports = {
   darkMode: 'class',
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
@@ -17,18 +16,11 @@ module.exports = {
         'av-bold': ['AvenirNextCyrBold', 'sans-serif']
       },
       gridTemplateColumns:{
-        'teamcol':'50px 339px 180px 339px 50px',
-        'mediumscreenteam':'40px 339px 100px 339px 50px',
-        'lowscreenteam':'30px 339px 50px 339px 50px',
-        'messageteam':'130px 20px 40px 20px 40px'
+        'rectangle':'200px 300px 700px 150px',
+        'rectangle2':'250px 200px 700px 300px 200px',
+
       },
       gridTemplateRows:{
-        'teamrow':'repeat(16, minmax(0,300px)',
-        'teamadd':'120px 85px 280px 40px 50px',
-        'driveraddpopup':"165px 90px 90px 90px 90px 90px",
-        'driverinfopopup':"225px 125px 125px 230px 100px",
-        'vehiclesinfopopup':"225px 125px 125px 130px 100px"
-
       },
       gridRow: {
         'span-16': 'span 16 / span 16',
@@ -76,6 +68,8 @@ module.exports = {
       'xl': '1.25rem',
       '2xl': '1.5rem',
       '3xl': '1.875rem',
+      '4xl': '2.125rem',
+      '5xl': '2.325rem'
     }
   },
   variants: {
