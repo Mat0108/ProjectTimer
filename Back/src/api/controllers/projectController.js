@@ -107,6 +107,13 @@ exports.addGroups = (req, res) => {
     }) 
 }
 
+// Update project (Niehl)
+
+exports.updateProjects = (req, res) => {
+}
+
+
+
 // Delete groups in a project
 
 exports.deleteGroups = (req, res) => {
