@@ -5,6 +5,7 @@ import {Route,Routes} from 'react-router';
 import Login from './pages/Login';
 // import Register from './pages/Register';
 import Groups from './pages/Groups';
+import Group from './pages/Group';
 import Nav from './pages/Nav';
 import './index.css';
 
@@ -12,14 +13,16 @@ import './index.css';
 const App =() => {
 
   return <div className='bg-lightgrey w-screen h-screen text-white'>
-          <Nav />
-
+          
           <Router>
+            <div><Nav /></div> 
               <Routes>
                   {/* <Route path="/" element={<Home/>}></Route> */}
                   <Route path="/Login" element ={<Login />}></Route>
                   {/*<Route path="/Register" element={<Register />}></Route>*/}
-                  {/*<Route path="/" element={<Groups/>}></Route>*/}
+
+                  <Route path="/Groups" element={<Groups/>}></Route>
+                  <Route path="/Groups/:groupId" element={<Group/>}></Route>
                   </Routes>
           </Router>
       </div>
