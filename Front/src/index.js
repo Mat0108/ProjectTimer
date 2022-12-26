@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {Route,Routes} from 'react-router';
-import reportWebVitals from './reportWebVitals';
 // import Login from './pages/Login';
 // import Register from './pages/Register';
 import Groups from './pages/Groups';
 import Nav from './pages/Nav';
 import './index.css';
+
 
 const App =() => {
 
