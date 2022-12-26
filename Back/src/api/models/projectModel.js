@@ -6,21 +6,18 @@ let ProjectSchema = new Schema({
         type: String,
         required: true,
     },
-    listgroup:{
-        type: String,
-        required: true,
-    },
-    listuser: {
-        type: String,
-        required: true,
-    },
-    mailadmin: {
-        type: String,
+    groups: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Group',
+    }],
+    admin: {
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
         required: true,
     },
     timer: {
-        type: String,
-        required: true,
+        type: Schema.Types.ObjectId, 
+        ref: 'Time',
     }
 });
 
