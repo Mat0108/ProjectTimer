@@ -1,27 +1,26 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let ProjectSchema = new Schema({
+let projectSchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
-    listgroup:{
-        type: String,
-        required: true,
-    },
-    listuser: {
-        type: String,
-        required: true,
-    },
-    mailadmin: {
-        type: String,
+    groups: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
+    }],
+    admin: {
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
         required: true,
     },
     timer: {
-        type: String,
+        type: Array,
         required: true,
-    }
+        default: [],
+    }   
 });
 
-module.exports = mongoose.model("Project", ProjectSchema);
+module.exports = mongoose.model("Project", projectSchema);

@@ -79,7 +79,6 @@ exports.getAllGroups = (req, res) => {
 
 // Afficher un groupe par id
 exports.getGroupById = (req, res) => {
-    console.log(req.params.groupId)
     Group.findById(req.params.groupId).populate("users").populate("admin").exec(function (error, group){
         if(error){
             res.status(500);
@@ -156,16 +155,12 @@ exports.deleteUsers = (req, res) => {
                     res.json({ message: "Utilisateur non trouvé" });
                 }
                 else {
-                    console.log('users : ', users)
                     let groupUsers = group.users;
-                    console.log('group : ', group)
                     users.map(e=>{
                         if(groupUsers.includes(e._id)){
                         
                             let groupUser = e.groups;
-                            console.log('groupUser : ', groupUser)
                             groupUser = groupUser.filter(group1=> group1 != group._id)
-                            console.log('groupUser 2 : ', groupUser)
                             User.findByIdAndUpdate({ _id: e._id },{groups: groupUser}, { new: true })
                             .then(result => console.log('result : ', result))
                             .catch((error) => console.log('error : ', error))
