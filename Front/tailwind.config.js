@@ -20,6 +20,8 @@ module.exports = {
 
       },
       gridTemplateRows:{
+        'group':'100px 300px 300px',
+        'group2':'50px 250px'
       },
       gridRow: {
         'span-16': 'span 16 / span 16',
