@@ -1,30 +1,32 @@
 const Project = require("../models/projectModel");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const axios = require("axios");
+const Group = require("../models/groupModel");
+const User = require("../models/userModel");
 
-
-// Create a new project
-
+// Créer un nouveau projet
 exports.createProject = (req, res) =>{
-    let newProject = new Project(req.body);
-    newProject.save((error, groups) => {
-        if(error){
-            res.status(401);
-            console.log(error);
-            res.json({message: "Rêquete invalide"});
-        }
-        else{
-            res.status(200);
-            res.json({message: `Project crée : ${project.name}`});
-        }
-    });
+    User.findOne({email: req.body.admin}, (error, admin) => {
+        let newProject = new Project({
+            name: req.body.name,
+            admin: admin._id
+        });
+
+        newProject.save((error, project) => {
+            if(error){
+                res.status(401);
+                console.log(error);
+                res.json({message: "Rêquete invalide"});
+            }
+            else{
+                res.status(200);
+                res.json({message: `Project crée : ${project.name}`, projectData: project});
+            }
+        });
+    })
 }
 
-// Show all the projects
-
+// Afficher tous les projets
 exports.getAllProjects = (req, res) => {
-    Project.find({}, (error, projects) =>{
+    Project.find({}).populate("admin").populate("groups").populate("timer").exec((error, projects) =>{
         if(error){
             res.status(500);
             console.log(error);
@@ -37,10 +39,9 @@ exports.getAllProjects = (req, res) => {
     });
 }
 
-// Show a project by id
-
+// Afficher un projet par id
 exports.getProjectById = (req,res) =>{
-    Project.findById(req.params.projectId,(error,project) =>{
+    Project.findById(req.params.projectId).populate("admin").populate("groups").populate("timer").exec((error,project) =>{
         if(error){
             res.status(500);
             console.log(error);
@@ -53,8 +54,7 @@ exports.getProjectById = (req,res) =>{
     });
 }
 
-// Delete project by id
-
+// Supprimer un projet par id
 exports.deleteProjectById = (req, res) => {
     Project.findByIdAndDelete(req.params.projectId, (error, project) =>{
         if(error){
@@ -63,59 +63,92 @@ exports.deleteProjectById = (req, res) => {
             res.json({message: "Project non trouvé"});
         }
         else{
-            res.status(200);
-            res.json({message: `Project supprimé: ${project.name}`});
+            User.findOne({_id: project.admin}, (error, admin) => {
+                if(req.body.admin == admin.email){
+                    project.groups.map(group => {
+                        Group.findById({_id: group._id}, (error, result) => {
+                            let projectsGroup = result.projects.filter(projectId => projectId.valueOf() !== req.params.projectId);
+
+                            Group.findByIdAndUpdate({_id: group._id}, {projects: projectsGroup}, {new: true}, (error, result) => {
+                                if(result.users.length != 0){
+                                    result.users.map(user => {
+                                        User.findById({_id: user}, (error, resultUser) => {
+                                            let projectsUser = resultUser.projects.filter(projectId => projectId.valueOf()  !== req.params.projectId);
+                                            
+                                            User.findByIdAndUpdate({_id: user}, {projects: projectsUser}, {new: true}, (error, result) => {})
+                                        })
+                                    })
+                                }
+                            })
+                        })
+                    })
+
+                    res.status(200);
+                    res.json({message: `Project supprimé: ${project.name}`});
+                }
+                else {
+                    res.status(500);
+                    res.json({message: "Vous ne pouvez pas supprimer ce projet parce que vous n'êtes pas un admin du projet !"})
+                }
+            })
         }
     });
 }
 
-// Add groups in a project
-
+// Ajouter des groupes dans un projet
 exports.addGroups = (req, res) => {
-    Project.findById({_id: req.params.projectId}, (error, project) => {
+    Project.findById({_id: req.params.projectId},(error, project) => {
         if(error){
             res.status(500);
             console.log(error);
             res.json({message: "Project non trouvé"});
         }
         else{
-            let projectGroups = project.groups;
+            User.findOne({_id: project.admin}, (error, admin) => {
+                if(req.body.admin == admin.email){
+                    let projectGroups = project.groups;
+                
+                    req.body.groups.map(group => {
+                        Group.findOne({_id: group}, (error, result) => {
+                            if(!projectGroups.includes(group)){
+                                projectGroups.push(group);
+                            
+                                Project.findByIdAndUpdate({_id: req.params.projectId}, {groups: projectGroups}, {new: true}, (error, projectUpdate) => {
+                                    if(!result.projects.includes(project)){
+                                        result.projects.push(project);
 
-            req.body.groups.map(group => {
-                if(!projectGroups.includes(group)){
-                    projectGroups.push(group);
+                                        Group.findOneAndUpdate({_id: group}, {projects: result.projects}, {new: true}, (error, group) => {
+                                            if(result.users.length != 0){
+                                                result.users.map(user => {
+                                                    User.findById({_id: user._id}, (error, user) => {
+                                                        if(!user.projects.includes(project)){
+                                                            user.projects.push(project);
 
-                    Project.findByIdAndUpdate({_id: req.params.projectId}, {groups: projectGroups}, {new: true}, (error, projectUpdate) => {
-                        axios.get("http://localhost:3000/groups").then(async result2 => {
-                            await req.body.groups.map(project => {
-                                result2.data.map(datas => {
-                                    if(datas.email == user){
-                                        let projects = datas.projects;
-                                        projects.push(project.name);
-    
-                                        axios.patch("http://localhost:3000/groups/" + datas._id, {projects: projects});
+                                                            User.findByIdAndUpdate({_id: user._id}, {projects: user.projects}, {new: true}, (error, result) => {});
+                                                        }
+                                                    })
+                                                })
+                                            }
+                                        })
                                     }
                                 });
-                            })
+                            }
                         })
-                    });
+                    })
+
+                    res.status(200);
+                    res.json({message: `${project.name} est bien modifié`})
+                }
+                else {
+                    res.status(500);
+                    res.json({message: "Vous ne pouvez pas ajouter des groupes dans ce projet parce que vous n'êtes pas un admin du projet !"})
                 }
             })
-            res.status(200);
-            res.json({message: `${project.name} est bien modifié`})
         }
     }) 
 }
 
-// Update project (Niehl)
-
-exports.updateProjects = (req, res) => {
-}
-
-
-
-// Delete groups in a project
-
+// Supprimer des groupes dans un projet
 exports.deleteGroups = (req, res) => {
     Project.findById({_id: req.params.projectId}, (error, project) => {
         if(error){
@@ -124,30 +157,44 @@ exports.deleteGroups = (req, res) => {
             res.json({message: "Project non trouvé"});
         }
         else{
-            let projectGroups = project.groups;
+            User.findOne({_id: project.admin}, (error, admin) => {
+                if(req.body.admin == admin.email){
+                    let projectGroups = project.groups;
 
-            req.body.groups.map(group => {
-                if(projectGroups.includes(group)){
-                    projectGroups = projectGroups.filter(project1 => !req.body.groups.includes(project1))
-                    
-                    Project.findByIdAndUpdate({_id: req.params.projectId}, {groups: projectGroups}, {new: true}, (error, projectUpdate) => {
-                        axios.get("http://localhost:3000/groups").then(async result => {
-                            await req.body.groups.map(group => {
-                                result.data.map(datas => {
-                                    if(datas.email == user){
-                                        let projects = datas.projects;
-                                        projects = projects.filter(project2 => project2 != projectUpdate.name)
+                    req.body.groups.map(group => {
+                        Group.findOne({_id: group}, (error, result) => {
+                            let updateProject = projectGroups.filter(groupId => groupId.valueOf() !== group);
+                   
+                            Project.findByIdAndUpdate({_id: req.params.projectId}, {groups: updateProject}, {new: true}, (error, projectUpdate) => {
+                                    let updateProjectGroup = result.projects.filter(projectId => projectId.valueOf() !== req.params.projectId);
 
-                                        axios.patch("http://localhost:3000/users/" + datas._id, {projects: projects});
-                                    }
-                                });
-                            })
+                                    Group.findOneAndUpdate({_id: group}, {projects: updateProjectGroup}, {new: true}, (error, group) => {
+                                        if(result.users.length != 0){
+                                            result.users.map(user => {
+                                                User.findById({_id: user._id}, (error, user) => {
+                                                    let updateProjectUser = user.projects.filter(projectId => projectId.valueOf() !== req.params.projectId);
+
+                                                    User.findByIdAndUpdate({_id: user._id}, {projects: updateProjectUser}, {new: true}, (error, result) => {});
+                                                })
+                                            })
+                                        }
+                                    })
+                            });
                         })
-                    });
+                    })
+
+                    res.status(200);
+                    res.json({message: `${project.name} est bien modifié`})
+                }
+                else {
+                    res.status(500);
+                    res.json({message: "Vous ne pouvez pas supprimer des groupes dans ce projet parce que vous n'êtes pas un admin du projet !"})
                 }
             })
-            res.status(200);
-            res.json({message: `${project.name} est bien modifié`})
         }
     }) 
+}
+
+// Modifier le timer dans un projet
+exports.updateTimer = (req, res) => {
 }
