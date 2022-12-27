@@ -121,11 +121,8 @@ exports.deleteGroupById = (req, res) => {
 
                     group.projects.map(project => {
                         if(user.projects.includes(project._id)){
-                            console.log(user.projects)
-                            console.log("user.projects")
                             let newProjects = user.projects.filter(userProject => userProject.valueOf() !== project._id.valueOf());
-
-                            console.log(newProjects)
+                            
                             User.findByIdAndUpdate({_id: user._id}, {projects: newProjects}, {new: true}, (error, adminUpdate) =>{})
                         }
                         
