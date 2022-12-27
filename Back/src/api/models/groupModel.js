@@ -17,7 +17,8 @@ let groupSchema = new Schema({
         required: true,
     },
     projects: {
-        type: Array,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         default: null,
     }
 });

@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let ProjectSchema = new Schema({
+let projectSchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     groups: [{
         type: Schema.Types.ObjectId, 
@@ -21,4 +22,4 @@ let ProjectSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model("Project", ProjectSchema);
+module.exports = mongoose.model("Project", projectSchema);
