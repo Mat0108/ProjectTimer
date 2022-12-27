@@ -1,13 +1,13 @@
 import React,{useState,useEffect}  from 'react';
 import { getGroups } from '../services/group';
-
+import { useNavigate } from "react-router-dom";
 const Groups =()=>{
-    const [groups, setGroups] = useState([]);   
+    const [groups, setGroups] = useState([]);  
+    let navigate = useNavigate(); 
     useEffect(()=>{
         const fetchData = async() =>{
             const groups = await getGroups();
             setGroups(groups);
-            console.log(groups)
         };
         fetchData();
         
@@ -16,8 +16,8 @@ const Groups =()=>{
     const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
     const view = <img src="/images/view.png" alt="image" width={20} height={20} ></img>
     const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
-    function getButton(color,text){
-        return <div><button className={`p-2 ${color} rounded-xl`}>{text}</button></div>
+    function getButton(color,text,onclickvar){
+        return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
     return (
         <div >
@@ -42,7 +42,7 @@ const Groups =()=>{
                                 <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>nb de users associés : {Object.keys(item.users).length}</div>{getButton("bg-green",link)}</div></td>
                                 <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>nb de project associés: {Object.keys(item.projects).length}</div>{getButton("bg-green",link)}</div></td>
                                 <td className='w-[200px]'><div className='grid grid-cols-3 w-full'>
-                                    <div className='col-start-1'>{getButton("bg-blue",view)}</div>
+                                    <div className='col-start-1'>{getButton("bg-blue",view,()=>navigate(`/Groups/${item._id}`))}</div>
                                     <div className='col-start-2'>{getButton("bg-green",edit)}</div>
                                     <div className='col-start-3'>{getButton("bg-red",bin)}</div>
                                     </div></td>
