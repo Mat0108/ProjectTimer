@@ -52,6 +52,27 @@ const Register = () => {
                     </div>
                 
 
+                    <div class="col-2">
+                    <label class="Rlabel" for="lastname">Lastname</label>
+                </div>
+                <div class="col-10">
+                    <input type="text" onChange={onChangeHandler} value = {user.lastname} class="form-control Rinput" placeholder="Enter your lastname"  id="lastname"></input>
+                </div>
+
+
+                <div class="col-2">
+                    <label class="Rlabel" for="email">Email</label>
+                    </div>
+                <div class="col-10">
+                    <input type="text" onChange={onChangeHandler} value = {user.email} class="form-control Rinput" placeholder="Entrez votre email"  id="email"></input>
+                </div>
+                
+
+                
+                
+
+                
+
             </div>
         </form>
 
