@@ -16,10 +16,10 @@ let groupSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    projects: {
-        type: Array,
-        default: null,
-    }
+    projects: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Project',
+    }],
 });
 
 module.exports = mongoose.model("Group", groupSchema);
