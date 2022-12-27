@@ -34,6 +34,13 @@ const Register = () => {
         }
         
     }
+
+    const onChangeHandler = (event) =>{
+        const {id,value}= event.target
+        setUser({...user,[id]:value})
+    }
+
+    
     
 }
    
