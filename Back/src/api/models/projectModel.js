@@ -9,7 +9,7 @@ let projectSchema = new Schema({
     },
     groups: [{
         type: Schema.Types.ObjectId, 
-        ref: 'User',
+        ref: 'Group',
     }],
     admin: {
         type: Schema.Types.ObjectId, 
@@ -17,10 +17,9 @@ let projectSchema = new Schema({
         required: true,
     },
     timer: {
-        type: Array,
-        required: true,
-        default: [],
-    }   
+        type: Schema.Types.ObjectId, 
+        ref: 'Time',
+    }
 });
 
 module.exports = mongoose.model("Project", projectSchema);
