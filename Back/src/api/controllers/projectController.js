@@ -1,6 +1,7 @@
 const Project = require("../models/projectModel");
 const Group = require("../models/groupModel");
 const User = require("../models/userModel");
+const { Timer } = require("timer-node");
 
 // Créer un nouveau projet
 exports.createProject = (req, res) =>{
@@ -209,4 +210,41 @@ exports.deleteGroups = (req, res) => {
 
 // Modifier le timer dans un projet
 exports.updateTimer = (req, res) => {
+    Project.findById({_id: req.params.projectId}, (error, project) => {
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Project non trouvé"});
+        }
+        else{
+            User.findOne({_id: project.admin}, (error, admin)=>{
+                if(req.body.admin == admin.email){
+                    let timerProjet=req.body.timer;
+
+                    Timer.findOneAndUpdate({ timerId: timerProjet._id }, req.body.timer, { new: true, runValidators: true });
+
+
+
+                    res.status(200);
+                    res.json({message: `Timer de ${project.timer} est bien modifié`});
+
+                }else{
+                    res.status(500);
+                    res.json({message: "Vous ne pouvez pas modifier le timer  dans ce projet parce que vous n'êtes pas un admin du projet !"});
+                }
+            })
+
+        }
+    
+    })
 }
+
+
+
+// Modifier tous les informations d'un utilisateur
+exports.updateUser = (req, res) => {
+    User.findOneAndUpdate({ userId: req.params.userId }, req.body, { new: true, runValidators: true })
+        .then(result => res.status(200).json({ message: "Utilisateur est bien mis à jour", result }))
+        .catch((error) => res.status(404).json({ message: "Utilisateur non trouvé" }))
+
+};
