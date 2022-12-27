@@ -68,6 +68,14 @@ const Register = () => {
                 </div>
 
 
+                <div class="col-2">
+                    <label class="Rlabel" for="cf_email">Confirm Email</label>
+                    </div>
+                <div class="col-10">
+                    <input type="text" onChange={onChangeHandler} value = {user.cf_email} class="form-control Rinput" placeholder="Confirm your email"  id="cf_email"></input>
+                </div>
+
+                
                 
                 
             </div>
