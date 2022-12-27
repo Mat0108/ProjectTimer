@@ -40,7 +40,22 @@ const Register = () => {
         setUser({...user,[id]:value})
     }
 
-    
+    return (
+        <form onSubmit={onClick}>
+            <div class="row Rfoam cardcolor">
+                <h2 className="CH1">Register</h2>
+                <div class="col-2">
+                    <label class="Rlabel" for="firstname">Firstname</label>
+                </div>
+                <div class="col-10">
+                    <input type="text" onChange={onChangeHandler} value = {user.firstname} class="form-control Rinput" placeholder="Enter your firstname" id="firstname"></input>
+                    </div>
+                
+
+            </div>
+        </form>
+
+    )
     
 }
    
