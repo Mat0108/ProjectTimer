@@ -20,7 +20,7 @@ const Login = () => {
                 setMessages([...messages,{type:"alert alert-success",msg:"vous êtes connecté !"}]);
             
                 
-                //navigate("/category/2"); 
+                //navigate("/"); 
             }catch (error){
                 if (error.response){
                     setMessages([...messages,{type:"alert alert-danger",msg:error.response.data}]);
