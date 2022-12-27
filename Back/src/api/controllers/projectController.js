@@ -17,6 +17,14 @@ exports.createProject = (req, res) =>{
                 res.json({message: "Rêquete invalide"});
             }
             else{
+                User.findById({_id: admin._id}, (error, admin) => {
+                    if(!admin.projects.includes(project)){
+                        admin.projects.push(project);
+
+                        User.findByIdAndUpdate({_id: admin._id}, {projects: admin.projects}, {new: true}, (error, result) => {});
+                    }
+                })
+
                 res.status(200);
                 res.json({message: `Project crée : ${project.name}`, projectData: project});
             }
@@ -79,6 +87,10 @@ exports.deleteProjectById = (req, res) => {
                                         })
                                     })
                                 }
+
+                                let projectsAdmin = admin.projects.filter(projectId => projectId.valueOf()  !== req.params.projectId);
+                                
+                                User.findByIdAndUpdate({_id: admin._id}, {projects: projectsAdmin}, {new: true}, (error, result) => {})
                             })
                         })
                     })
