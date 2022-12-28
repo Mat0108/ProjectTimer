@@ -122,22 +122,25 @@ exports.deleteGroupById = (req, res) => {
                                 group.users.map(user => {
                                     let userGroups = user.groups.filter(group => group.valueOf() !== req.params.groupId);
                                     User.findByIdAndUpdate({_id: user._id}, {groups: userGroups}, {new: true}, (error, userUpdate) =>{})
-
-                                    group.projects.map(project => {
-                                        if(user.projects.includes(project._id)){
-                                            let newProjects = user.projects.filter(userProject => userProject.valueOf() !== project._id.valueOf());
-                                            
-                                            User.findByIdAndUpdate({_id: user._id}, {projects: newProjects}, {new: true}, (error, adminUpdate) =>{})
-                                        }
-                                        
-                                    })
                                 })
-                            }
 
-                            if(group.projects.length != 0){
-                                group.projects.map(project => {  
-                                    let projectGroups = project.groups.filter(group => group.valueOf() !== req.params.groupId);
-                                    Project.findByIdAndUpdate({_id: project._id}, {groups: projectGroups}, {new: true}, (error, userUpdate) =>{})                   
+                                group.users.map(user => {
+                                    User.findById(user._id).populate("projects").populate("groups").exec((error, user) => {
+                                        user.projects.map(project => {
+                                            let newGroups = project.groups.filter(groupId => groupId._id.valueOf() !== req.params.groupId);
+                                            
+                                            project.groups = newGroups
+                                        })
+
+                                        let groups = [];
+                                        user.groups.map(group => {
+                                            groups.push(group._id.valueOf())
+                                        })
+
+                                        Project.find({groups: {$in: groups}}, (error, projects) => {
+                                            User.findByIdAndUpdate({_id: user._id}, {projects: projects}, {new: true}, (error, userUpdate) =>{})
+                                        })
+                                    })
                                 })
                             }
 
@@ -149,27 +152,31 @@ exports.deleteGroupById = (req, res) => {
 
                                 if(group.projects.length != 0){
                                     if(admin.projects.length != 0){
-                                        admin.projects.map(projectId => {
-                                            Project.findById({_id: projectId}).exec((error, project) => {
-                                                if(project.groups.length){
-                                                    if(project.groups.includes(req.params.groupId)){
-                                                        let newGroups = project.groups.filter(groupId => groupId.valueOf() !== req.params.groupId);
-                                                    
-                                                        let updateProject = {
-                                                            _id: adminProject._id,
-                                                            name: adminProject.name,
-                                                            groups: newGroups,
-                                                            __v: adminProject.__v
-                                                        }
-                        
-                                                        User.findByIdAndUpdate({_id: group.admin}, {projects: updateProject}, {new: true}, (error, adminUpdate) =>{})
-                                                    }
+                                        User.findById(group.admin).populate("projects").populate("groups").exec((error, admin) => {
+                                            admin.projects.map(project => {
+                                                let newGroups = project.groups.filter(groupId => groupId.valueOf() !== req.params.groupId);
+                                                
+                                                let updateProject = {
+                                                    _id: project._id,
+                                                    name: project.name,
+                                                    groups: newGroups,
+                                                    __v: project.__v
                                                 }
+                
+                                                User.findByIdAndUpdate({_id: group.admin}, {projects: updateProject}, {new: true}, (error, adminUpdate) =>{})
                                             })
                                         })
+                                    
                                     }
                                 }
                             })
+
+                            if(group.projects.length != 0){
+                                group.projects.map(project => {  
+                                    let projectGroups = project.groups.filter(group => group.valueOf() !== req.params.groupId);
+                                    Project.findByIdAndUpdate({_id: project._id}, {groups: projectGroups}, {new: true}, (error, userUpdate) =>{})                   
+                                })
+                            }
                             
                             res.status(200);
                             res.json({message: `Groupe supprimé: ${group.name}`});
