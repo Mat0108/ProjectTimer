@@ -44,6 +44,8 @@ const Register = () => {
         <form onSubmit={onClick}>
             <div class="row Rfoam cardcolor">
                 <h2 className="CH1">Register</h2>
+
+                
                 <div class="col-2">
                     <label class="Rlabel" for="firstname">Firstname</label>
                 </div>
@@ -92,11 +94,12 @@ const Register = () => {
                 </div>
 
 
-                
+                <div >
+                    <input class="Rbutton btn btn-succes" type="submit" name = "send" value = "Creation"></input>
+                </div>
+                <Link to='/Login' class="Rlink">Login</Link>
 
 
-                
-                
             </div>
         </form>
 
