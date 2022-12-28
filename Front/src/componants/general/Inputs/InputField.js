@@ -25,6 +25,7 @@ const InputField = ({
   optionalstyle,
   isDesc,
   inputStep,
+  className
 
 }) => {
   return (
@@ -62,10 +63,7 @@ const InputField = ({
               ? { border: "1px solid #C33131" }
               : { border: "1px solid #6EC331" }
           }
-          className={`bg-white2 dark:bg-charcoal
-          ${icon ? 'pl-10' : 'pl-5'}
-          rounded-xl w-full ${isDesc ? 'h-32' : 'h-12'} py-2 px-3
-          leading-tight focus:outline-none text-input text-black`}
+          className={`${className ? className :`bg-white2 dark:bg-charcoal ${icon ? 'pl-10' : 'pl-5'} rounded-md w-full ${isDesc ? 'h-32' : 'h-12'} py-2 px-3 leading-tight focus:outline-none text-input text-black`} `}
           name="username"
           type={inputType ? inputType : "email"}
           min={inputMin}
