@@ -13,4 +13,6 @@ server.route("/projects/:projectId")
 .delete(projectController.deleteProjectById);
 
 server.patch("/projects/:projectId/deleteGroups", cors(), projectController.deleteGroups)
+
+server.patch("/projects/:projectId/updateTimer", cors(), projectController.updateTimer);
 }
