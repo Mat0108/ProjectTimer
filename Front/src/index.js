@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import {Route,Routes} from 'react-router';
 import Login from './pages/Login';
-// import Register from './pages/Register';
+import Register from './pages/Register';
 import Groups from './pages/Groups';
 import Group from './pages/Group';
 import Nav from './pages/Nav';
@@ -24,8 +24,7 @@ const App =() => {
                 <Routes>
                   {/* <Route path="/" element={<Home/>}></Route> */}
                   <Route path="/Login" element ={<Login />}></Route>
-                  {/*<Route path="/Register" element={<Register />}></Route>*/}
-
+                  <Route path="/Register" element={<Register />}></Route>
                   <Route path="/Groups" element={<Groups/>}></Route>
                   <Route path="/Groups/:groupId" element={<Group/>}></Route>
                 </Routes>
