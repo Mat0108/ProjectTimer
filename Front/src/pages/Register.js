@@ -85,15 +85,14 @@ const Register = () => {
 
 
                 <div class="col-2">
-                    <label class="Rlabel" for="cf_password">Password</label>
+                    <label class="Rlabel" for="cf_password">Confirm Password</label>
                 </div>
                 <div class="col-10">
-                    <input type="password" onChange={onChangeHandler} value = {user.cf_password} class="form-control Rinput" placeholder="Rentrez votre password" id="cf_password"></input>
+                    <input type="password" onChange={onChangeHandler} value = {user.cf_password} class="form-control Rinput" placeholder="Confirm your password" id="cf_password"></input>
                 </div>
-                <div >
-                    <input class="Rbutton btn btn-succes" type="submit" name = "send" value = "Creation"></input>
-                </div>
-                <Link to='/Login' class="Rlink">Login</Link>
+
+
+                
 
 
                 
