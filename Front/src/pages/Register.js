@@ -76,6 +76,26 @@ const Register = () => {
                 </div>
 
                 
+                <div class="col-2">
+                    <label class="Rlabel" for="password">Password</label>
+                    </div>
+                <div class="col-10">
+                    <input type="password" onChange={onChangeHandler} value = {user.password} class="form-control Rinput"  placeholder="Enter your password"  id="password"></input>
+                </div>
+
+
+                <div class="col-2">
+                    <label class="Rlabel" for="cf_password">Password</label>
+                </div>
+                <div class="col-10">
+                    <input type="password" onChange={onChangeHandler} value = {user.cf_password} class="form-control Rinput" placeholder="Rentrez votre password" id="cf_password"></input>
+                </div>
+                <div >
+                    <input class="Rbutton btn btn-succes" type="submit" name = "send" value = "Creation"></input>
+                </div>
+                <Link to='/Login' class="Rlink">Login</Link>
+
+
                 
                 
             </div>
