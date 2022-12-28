@@ -56,26 +56,26 @@ const Register = () => {
                         <form className='max-w-[400px] w-full mx-auto rounded-lg bg-black-900 p-8 px-8'>
                             <h2 className='text-4xl dark:text-white font-bold text-center'>REGISTER</h2>
 
-                            <div className='flex flex-col text-gray-400 py-2'>
+                            <div className='flex flex-col text-gray-400 py-2 mb-2'>
                                 <label>Firstname</label>
                                 <input className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-black-800 focus:outline-none' type="text" onChange={onChangeHandler} value={user.firstname} class="form-control Cinput" placeholder="Enter your firstname "id="firstname"/>
                             </div>
 
-                            <div className='flex flex-col text-gray-400 py-2'>
+                            <div className='flex flex-col text-gray-400 py-2 mb-2'>
                                 <label>Lastname</label>
                                 <input className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-black-800 focus:outline-none' type="text" onChange={onChangeHandler} value={user.lastname} class="form-control Cinput" placeholder="Enter your lastname "id="lastname"/>
                             </div>
 
 
 
-                            <div className='flex flex-col text-gray-400 py-2'>
+                            <div className='flex flex-col text-gray-400 py-2 mb-2'>
                                 <label>Email</label>
                                 <input className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-black-800 focus:outline-none' type="text" onChange={onChangeHandler} value={user.email} class="form-control Cinput" placeholder="Enter your email "id="email"/>
                             </div>
 
-                            <div className='flex flex-col text-gray-400 py-2'>
+                            <div className='flex flex-col text-gray-400 py-2 mb-2'>
                                 <label>Confirm Email</label>
-                                <input className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-black-800 focus:outline-none' type="text" onChange={onChangeHandler} value={user.cf_email} class="form-control Cinput" placeholder="Confirm email "id="cf_email"/>
+                                <input className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-black-800 focus:outline-none mb-2' type="text" onChange={onChangeHandler} value={user.cf_email} class="form-control Cinput" placeholder="Confirm email "id="cf_email"/>
                             </div>
 
 
