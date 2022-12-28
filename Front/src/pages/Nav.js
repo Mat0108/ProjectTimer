@@ -11,7 +11,7 @@ const Nav = () =>{
                 <div className='col-start-1 col-span-2 ml-10 flex flex-row gap-4'>
                     <div><Link className="" to="/Groups">Group </Link></div>
                     <div><Link className="" to="/">Project </Link></div>
-                    <div><Link className="" to="/">Timer </Link></div>
+                    <div><Link className="" to="/TimeTracker">Time Tracker</Link></div>
                 </div>
                 <div className='col-start-3 flex flex-row gap-4'>
                     <div>logo</div>

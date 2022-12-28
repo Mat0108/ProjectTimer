@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Groups from './pages/Groups';
 import Group from './pages/Group';
+import TimeTracker from './pages/TimeTracker';
 import Nav from './pages/Nav';
 import './index.css';
 import { ModalProvider } from "./containers/Modal";
@@ -33,10 +34,8 @@ const App =() => {
               <Route path="/Register" element={<Register />}></Route>
               <Route path="/Groups" element={getPage(<Groups/>)}></Route>
               <Route path="/Groups/:groupId" element={getPage(<Group/>)}></Route>
+              <Route path="/TimeTracker" element={getPage(<TimeTracker/>)}></Route>
             </Routes>
-
-           
-              
           </Router>
           </ModalProvider>
       </div>
