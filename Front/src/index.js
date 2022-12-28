@@ -8,19 +8,18 @@ import Groups from './pages/Groups';
 import Group from './pages/Group';
 import Nav from './pages/Nav';
 import './index.css';
-
-
+import { ModalProvider } from "./containers/Modal";
 const App =() => {
 
-  return <div className='bg-lightgrey w-screen h-screen text-white flex flex-col'>
-         
+  return <div className='app bg-gray-silver w-screen h-screen text-white flex flex-col'>
+         <ModalProvider>
           {/* <div className='w-screen'><Nav /></div>  */}
           <Router>
             <div className='w-full'><Nav /></div> 
-            <div className='w-full h-full flex flex-row'> 
+            <div className='relative w-full h-[calc(100%-50px)] flex flex-row'> 
                
-              <div className='w-[250px] h-full bg-lightgrey'></div>
-              <div className='w-full h-full '>
+              <div className='w-[250px] h-full  '></div>
+              <div className='w-[calc(100%-250px)] h-full bg-grey-circle rounded-tl-[30px]'>
                 <Routes>
                   {/* <Route path="/" element={<Home/>}></Route> */}
                   <Route path="/Login" element ={<Login />}></Route>
@@ -33,6 +32,7 @@ const App =() => {
            
               
           </Router>
+          </ModalProvider>
       </div>
       
 
