@@ -31,16 +31,17 @@ exports.startTime = (req, res) => {
     let newTime = new Time({
         times: [
             {
+                name: req.body.name,
                 date: new Date(timer.startedAt()).toDateString(),
                 timestampTotal: new Date(timer.startedAt()).toTimeString().slice(0, 8) + ' - ' + new Date(timer.startedAt()).toTimeString().slice(0, 8),
                 timeTotal: msToTime(timer.ms()),
                 history: [
                     {
+                        user: req.body.user,
                         startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         start: msToTime(timer.ms()),
-                        end: msToTime(timer.ms()),
-                        user: req.body.user
+                        end: msToTime(timer.ms())
                     }
                 ]
             }
@@ -74,16 +75,17 @@ exports.continueTime = (req, res) => {
 
             if(timeHistory[historyLength-1]){
                 let newHistory = {
+                    user: req.body.user,
                     startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                     endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                     start: timeHistory[historyLength-1].end,
                     end: timeHistory[historyLength-1].end,
-                    user: req.body.user
                 }
 
                 timeHistory.push(newHistory)
 
                 let timeUpdate = {
+                    name: lastTime.name,
                     date: lastTime.date,
                     timestampTotal: lastTime.timestampTotal.slice(0,8) + ' - ' + new Date(timer.startedAt()).toTimeString().slice(0, 8),
                     timeTotal: timeHistory[historyLength-1].end,
@@ -109,16 +111,17 @@ exports.continueTime = (req, res) => {
             let timesUpdate = result.times;
 
             let newTime = {
+                name: lastTime.name,
                 date: new Date(timer.startedAt()).toDateString(),
                 timestampTotal: new Date(timer.startedAt()).toTimeString().slice(0, 8) + ' - ' + new Date(timer.startedAt()).toTimeString().slice(0, 8),
                 timeTotal: msToTime(timer.ms()),
                 history: [
                     {
+                        user: req.body.user,
                         startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
                         start: msToTime(timer.ms()),
-                        end: msToTime(timer.ms()),
-                        user: req.body.user
+                        end: msToTime(timer.ms())
                     }
                 ]
             };
@@ -157,14 +160,15 @@ exports.stopTime = (req, res) => {
 
                     if(timeHistory[historyLength-1]){
                         timeHistory[historyLength-1] = {
+                            user: timeHistory[historyLength-1].user,
                             startTimestamp: timeHistory[historyLength-1].startTimestamp,
                             endTimestamp: new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
                             start: timeHistory[historyLength-1].start,
                             end: msToTime(newEnd),
-                            user: timeHistory[historyLength-1].user
                         }
 
                         let timeUpdate = {
+                            name: lastTime.name,
                             date: lastTime.date,
                             timestampTotal: lastTime.timestampTotal.slice(0,8) + ' - ' + new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
                             timeTotal: msToTime(newEnd),
@@ -202,6 +206,7 @@ exports.stopTime = (req, res) => {
                         }
 
                         let timeUpdate = {
+                            name: lastTime.name,
                             date: lastTime.date + " - " + new Date(timer.stoppedAt()).toDateString(),
                             timestampTotal: lastTime.timestampTotal.slice(0,8) + ' - ' + new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
                             timeTotal: msToTime(newEnd),
@@ -249,7 +254,7 @@ exports.getAllTimes = (req, res) => {
 }
 
 // Afficher un time par id
-exports.getTimeById= (req, res) => {
+exports.getTimeById = (req, res) => {
     Time.findById(req.params.timeId, (error, result) => {
         if(error){
             res.status(401);
@@ -259,6 +264,21 @@ exports.getTimeById= (req, res) => {
         else{
             res.status(200);
             res.json(result);
+        }
+    });
+}
+
+// Supprimer un time par id
+exports.deleteTimeById = (req, res) => {
+    Time.findByIdAndDelete(req.params.timeId, (error, result) => {
+        if(error){
+            res.status(401);
+            console.log(error);
+            res.json({message: "Time non trouvé"});
+        }
+        else{
+            res.status(200);
+            res.json({message: "Time est bien supprimé"});
         }
     });
 }
