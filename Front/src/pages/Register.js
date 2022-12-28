@@ -92,7 +92,7 @@ const Register = () => {
 
 
 
-                            <button className='w-full my-5 py-2 bg-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg'>Sign Up</button>
+                            <button className='w-full my-5 py-2 bg-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg'>Sign In</button>
                             <Link to='/Login' class="Clink">I already have an account !</Link>
                         </form>
                     </div>
