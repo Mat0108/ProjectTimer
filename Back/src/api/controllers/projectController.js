@@ -34,7 +34,7 @@ exports.createProject = (req, res) =>{
 
 // Afficher tous les projets
 exports.getAllProjects = (req, res) => {
-    Project.find({}).populate("admin").populate("groups").populate("timer").exec((error, projects) =>{
+    Project.find({groups : {$in: ['63ab94a2d58879e4cc3265ad', "63ab9a88f38687ca7a676b6c"]}}).populate("admin").populate("groups").populate("timer").exec((error, projects) =>{
         if(error){
             res.status(500);
             console.log(error);
@@ -131,6 +131,7 @@ exports.addGroups = (req, res) => {
                     
                         req.body.groups.map(group => {
                             Group.findOne({_id: group}, (error, result) => {
+                                console.log(result)
                                 if(!projectGroups.includes(group)){
                                     projectGroups.push(group);
                                 
@@ -142,7 +143,7 @@ exports.addGroups = (req, res) => {
                                                 if(result.users.length != 0){
                                                     result.users.map(user => {
                                                         User.findById({_id: user._id}, (error, user) => {
-                                                            if(!user.projects.includes(project)){
+                                                            if(!user.projects.includes(project._id)){
                                                                 user.projects.push(project);
 
                                                                 User.findByIdAndUpdate({_id: user._id}, {projects: user.projects}, {new: true}, (error, result) => {});
@@ -229,4 +230,10 @@ exports.deleteGroups = (req, res) => {
 
 // Modifier le timer dans un projet
 exports.updateTimer = (req, res) => {
-}
+    Project.findByIdAndUpdate({ _id: req.params.projectId },{timer: req.body.timer},{ new: true, runValidators: true })
+    .then(result => res.status(200).json({ message: `Timer du projet ${result.name} est bien modifié`, result }))
+    .catch((error) => res.status(404).json({ message: error }));
+};
+
+
+
