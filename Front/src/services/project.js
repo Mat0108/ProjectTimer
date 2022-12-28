@@ -11,3 +11,11 @@ export const getProjectById= async (projectId)=>{
     
     return res.data;
 }
+
+export const saveProject= async (project)=>{
+    const res = await axios.post(`http://localhost:3000/project`,{project});
+
+    return res.data;
+}
+
+
