@@ -9,4 +9,8 @@ export const login = async (user) => {
     return res;
     
 }
-
+export const GetAlluser = async (user) => {
+    const res = await axios.get(`http://localhost:3000/users/`);
+    return res.data;
+    
+}
