@@ -21,7 +21,7 @@ const App =() => {
   function getLR(elem){
     return <div className='bg-gray-gainsboro'>{elem}</div>
   }
-  return <div className='app bg-gray-silver w-screen h-screen text-white flex flex-col'>
+  return <div className='app bg-gray-silver w-screen h-screen flex flex-col'>
          <ModalProvider>
           {/* <div className='w-screen'><Nav /></div>  */}
           <Router>
