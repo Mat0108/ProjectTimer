@@ -34,7 +34,7 @@ exports.createProject = (req, res) =>{
 
 // Afficher tous les projets
 exports.getAllProjects = (req, res) => {
-    Project.find({groups : {$in: ['63ab94a2d58879e4cc3265ad', "63ab9a88f38687ca7a676b6c"]}}).populate("admin").populate("groups").populate("timer").exec((error, projects) =>{
+    Project.find({}).populate("admin").populate("groups").populate("timer").exec((error, projects) =>{
         if(error){
             res.status(500);
             console.log(error);
