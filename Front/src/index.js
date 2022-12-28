@@ -7,21 +7,23 @@ import Register from './pages/Register';
 import Groups from './pages/Groups';
 import Group from './pages/Group';
 import Nav from './pages/Nav';
+import Menu from './pages/Menu';
+
 import './index.css';
 import { ModalProvider } from "./containers/Modal";
 const App =() => {
   function getPage(elem){
     return <div className='relative w-full h-[calc(100%-50px)] flex flex-row'> 
-      <div className='w-[250px] h-full  '></div>
-      <div className='w-[calc(100%-250px)] h-full bg-gray-gainsboro rounded-tl-[30px]'>
+      <div className='w-[250px] h-full flex '>{<Menu />}</div>
+      <div className='w-[calc(100%-250px)] h-full bg-grey-circle rounded-tl-[30px]'>
       {elem}
       </div>
       </div>
   }
   function getLR(elem){
-    return <div className='bg-gray-gainsboro'>{elem}</div>
+    return <div className='bg-grey-circle'>{elem}</div>
   }
-  return <div className='app bg-gray-silver w-screen h-screen text-white flex flex-col'>
+  return <div className='app w-screen h-screen bg-gray-silver flex flex-col'>
          <ModalProvider>
           {/* <div className='w-screen'><Nav /></div>  */}
           <Router>
@@ -29,8 +31,8 @@ const App =() => {
            
             <Routes>
               {/* <Route path="/" element={<Home/>}></Route> */}
-              <Route path="/Login" element ={<Login />}></Route>
-              <Route path="/Register" element={<Register />}></Route>
+              <Route path="/Login" element ={getLR(<Login />)}></Route>
+              <Route path="/Register" element={getLR(<Register />)}></Route>
               <Route path="/Groups" element={getPage(<Groups/>)}></Route>
               <Route path="/Groups/:groupId" element={getPage(<Group/>)}></Route>
             </Routes>
