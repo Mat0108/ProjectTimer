@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 // import Register from './pages/Register';
 import Groups from './pages/Groups';
 import Group from './pages/Group';
+import Projects from './pages/Projects';
 import Nav from './pages/Nav';
 import './index.css';
 
@@ -27,6 +28,7 @@ const App =() => {
                   <Route path="/Register" element={<Register />}></Route> */}
                   <Route path="/Groups" element={<Groups/>}></Route>
                   <Route path="/Groups/:groupId" element={<Group/>}></Route>
+                  <Route path="/Projects" element={<Projects/>}></Route>
                 </Routes>
               </div>
             </div>
