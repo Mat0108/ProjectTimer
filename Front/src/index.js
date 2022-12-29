@@ -1,40 +1,51 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router,useLocation  } from 'react-router-dom';
 import {Route,Routes} from 'react-router';
-import reportWebVitals from './reportWebVitals';
-// import Login from './pages/Login';
-// import Register from './pages/Register';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import Groups from './pages/Groups';
 import Group from './pages/Group';
 import Projects from './pages/Projects';
+import Project from './pages/Project';
 import Nav from './pages/Nav';
+import Menu from './pages/Menu';
+
 import './index.css';
-
+import { ModalProvider } from "./containers/Modal";
 const App =() => {
-
-  return <div className='bg-lightgrey w-screen h-screen text-white flex flex-col'>
-         
+  function getPage(elem){
+    return <div className='relative w-full h-[calc(100%-50px)] flex flex-row'> 
+      <div className='w-[250px] h-full flex '>{<Menu />}</div>
+      <div className='w-[calc(100%-250px)] h-full bg-grey-circle rounded-tl-[30px]'>
+      {elem}
+      </div>
+      </div>
+  }
+  function getLR(elem){
+    return <div className='bg-grey-circle'>{elem}</div>
+  }
+  return <div className='app w-screen h-screen bg-gray-silver flex flex-col'>
+         <ModalProvider>
           {/* <div className='w-screen'><Nav /></div>  */}
           <Router>
             <div className='w-full'><Nav /></div> 
-            <div className='w-full h-full flex flex-row'> 
-               
-              <div className='w-[250px] h-full bg-lightgrey'></div>
-              <div className='w-full h-full '>
-                <Routes>
-                  {/* <Route path="/" element={<Home/>}></Route> */}
-                  {/* <Route path="/Login" element ={<Login />}></Route>
-                  <Route path="/Register" element={<Register />}></Route> */}
-                  <Route path="/Groups" element={<Groups/>}></Route>
-                  <Route path="/Groups/:groupId" element={<Group/>}></Route>
-                  <Route path="/Projects" element={<Projects/>}></Route>
-                </Routes>
-              </div>
-            </div>
+           
+            <Routes>
+              {/* <Route path="/" element={<Home/>}></Route> */}
+              <Route path="/Login" element ={getLR(<Login />)}></Route>
+              <Route path="/Register" element={getLR(<Register />)}></Route>
+              <Route path="/Groups" element={getPage(<Groups/>)}></Route>
+              <Route path="/Groups/:groupId" element={getPage(<Group/>)}></Route>
+              <Route path="/Projects" element={<Projects/>}></Route>
+              <Route path="/Projects/:projectId" element={<Project/>}></Route>
+
+            </Routes>
+
            
               
           </Router>
+          </ModalProvider>
       </div>
       
 

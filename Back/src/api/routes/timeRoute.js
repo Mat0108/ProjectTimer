@@ -3,7 +3,11 @@ module.exports = (server) => {
     const cors = require('cors');
 
 server.get("/times", cors(), timeController.getAllTimes);
-server.get("/times/:timeId", cors(), timeController.getTimeById);
+
+server.route("/times/:timeId")
+.all(cors())
+.get(timeController.getTimeById)
+.delete(timeController.deleteTimeById);
 
 server.post("/time", cors(), timeController.startTime);
 server.patch("/times/:timeId/stop", cors(), timeController.stopTime);

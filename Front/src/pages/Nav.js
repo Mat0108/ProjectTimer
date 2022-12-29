@@ -12,6 +12,9 @@ const Nav = () =>{
                     <div><Link className="" to="/Groups">Group </Link></div>
                     <div><Link className="" to="/Projects">Project </Link></div>
                     <div><Link className="" to="/">Timer </Link></div>
+                    {/* <div><Link className="" to="/Groups">Group </Link></div>
+                    <div><Link className="" to="/">Project </Link></div>
+                    <div><Link className="" to="/">Timer </Link></div> */}
                 </div>
                 <div className='col-start-3 flex flex-row gap-4'>
                     <div>logo</div>
