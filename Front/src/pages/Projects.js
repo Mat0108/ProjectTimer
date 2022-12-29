@@ -57,7 +57,7 @@ const Projects=()=>{
                             <td className='w-[200px] text-center'>Nom du projet</td>
                          
                             <td className='w-[300px] text-center'>Admin</td>
-                            <td className='w-[300px] text-center'>Groupe</td>
+                          
                            
                             <td className='w-[200px] text-center'>Action</td>
                            
@@ -68,7 +68,7 @@ const Projects=()=>{
                             
                             <td className='w-[200px] text-center'>{item.name}</td>
                             <td className='w-[300px] text-center'><div className='flex flex-col'><div>{item.admin.firstname} {item.admin.lastname}</div><div>{item.admin.email}</div></div></td>
-                            <td className='w-[200px] text-center'>{item.groups}</td>
+                            
                           
                            
                             <td className='w-[200px]'><div className='grid grid-cols-3 '>
