@@ -26,6 +26,6 @@ export const continueTime = async (timeId, user) => {
 }
 
 export const deleteTimeById = async (timeId) => {
-    const res = await axios.delete(`http://localhost:3000/times${timeId}`);
+    const res = await axios.delete(`http://localhost:3000/times/${timeId}`);
     return res.data;
 }
