@@ -6,7 +6,7 @@ export const getAllTimes = async () => {
 }
 
 export const getTimeById = async (timeId) => {
-    const res = await axios.get(`http://localhost:3000/${timeId}`);
+    const res = await axios.get(`http://localhost:3000/times/${timeId}`);
     return res.data;
 }
 
