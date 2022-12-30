@@ -9,10 +9,8 @@ const Group = () =>{
         const fetchData = async() =>{
             const group = await getGroupbyId(groupId);
             setGroup(group);
-            console.log('group : ', group)
             
         };
-        console.log(groupId)
         if(groupId){fetchData();}
         
     },[]);
@@ -22,7 +20,7 @@ const Group = () =>{
     function getButton(color,text,onclickvar){
         return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
-    return (<div className='w-full h-full'>
+    return (<div className=''>
         <div className='grid grid-cols-3 grid-rows-group mt-5'>
             <div className='col-span-1 text-3xl ml-5'>Information du group</div>
             <div className="col-start-2 row-start-1 col-span-2 flex justify-end  ">
@@ -40,8 +38,8 @@ const Group = () =>{
                             {group && <tr key={`info-00`}>
                                 <td className="text-center text-sm">{group.name}</td>
                                 <td className="text-center text-sm flex flex-col"><div className='text-center w-full'>{group.admin.firstname} {group.admin.lastname}</div><div className='text-center w-full'>{group.admin.email}</div></td>
-                                <td className="text-center text-sm">{Object.keys(group.users).length}</td>
-                                <td className="text-center text-sm">{Object.keys(group.projects).length}</td>
+                                <td className="text-center text-sm">{group.users ? Object.keys(group.users).length : 0}</td>
+                                <td className="text-center text-sm">{group.projects ? Object.keys(group.projects).length : 0}</td>
                             </tr>}
                             </tbody>                
                         </table>
@@ -109,7 +107,7 @@ const Group = () =>{
                         <div className='col-start-3'>{getButton("bg-red",bin)}</div>
                         </div></td>
                         </tr>
-                    {group && group.projects.map((item, index) => <tr key={`vehicule-${index}`} >
+                    {group && group.projects && group.projects.map((item, index) => <tr key={`vehicule-${index}`} >
                         <td className="w-[100px] p-3" >{index}</td>
                         <td className="w-[250px] " >{item.name}</td>
                         <td className="w-[150px] " ></td>
