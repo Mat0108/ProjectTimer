@@ -25,7 +25,9 @@ export const continueTime = async (timeId, user) => {
     return res.data;
 }
 
-export const deleteTimeById = async (timeId) => {
-    const res = await axios.delete(`http://localhost:3000/times/${timeId}`);
+export const deleteTimeById = async (timeId, projectId) => {
+    const res = await axios.delete(`http://localhost:3000/times/${timeId}`, async () => {
+        await axios.patch(`http://localhost:3000/projects/${projectId}/updateTimer`, {timer: null}, {new: true})
+    });
     return res.data;
 }

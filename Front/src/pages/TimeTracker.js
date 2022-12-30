@@ -135,7 +135,7 @@ const TimeTracker = () => {
                                                     <div className="col-span-1 flex flex-row justify-evenly border-dotted order-6 border xl:border-0">
                                                         {getButton("text-green", play, () => {})}
                                                         {getButton("text-red", bin, () => {
-                                                            deleteTimeById(project.timer._id)
+                                                            deleteTimeById(project.timer._id, project._id)
                                                             window.location.reload();
                                                         })}
                                                     </div>
