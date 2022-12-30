@@ -107,12 +107,15 @@ const Projects = () => {
 
 
     return (<div >
+        <div>{getButton("absolute top-5 left-[300px] bg-green", "créer un groupe",()=>{modalChange(<CreateProject />);displayModalChange(true);})}</div>
 
         {displayModal && <div className={`fixed inset-0 z-[99999] justify-center h-full w-full `}>{DriverModal}</div>}
 
 
         <div className='relative text-white'>
             <h1 className='text-3xl text-center mt-2'>liste des projets</h1>
+
+             
 
 
 
@@ -168,7 +171,7 @@ const Projects = () => {
 
             </div>
 
-            <div>{getButton("absolute top-5 left-[120px] bg-green", "créer un groupe",()=>{modalChange(<CreateProject />);displayModalChange(true);})}</div>
+           
 
         </div>
 
