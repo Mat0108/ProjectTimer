@@ -7,6 +7,8 @@ import Register from './pages/Register';
 import Groups from './pages/Groups';
 import Group from './pages/Group';
 import TimeTracker from './pages/TimeTracker';
+import Projects from './pages/Projects';
+import Project from './pages/Project';
 import Nav from './pages/Nav';
 import Menu from './pages/Menu';
 
@@ -37,6 +39,9 @@ const App =() => {
               <Route path="/Groups" element={getPage(<Groups/>)}></Route>
               <Route path="/Groups/:groupId" element={getPage(<Group/>)}></Route>
               <Route path="/TimeTracker" element={getPage(<TimeTracker/>)}></Route>
+              <Route path="/Projects" element={getPage(<Projects/>)}></Route>
+              <Route path="/Projects/:projectId" element={getPage(<Project/>)}></Route>
+
             </Routes>
           </Router>
           </ModalProvider>
