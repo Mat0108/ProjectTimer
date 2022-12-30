@@ -6,11 +6,12 @@ export const register = async (user) => {
 }
 export const login = async (user) => {
     const res = await axios.post(`http://localhost:3000/user/login`,user);
-    return res;
+    return res.data;
     
 }
-export const GetAlluser = async (user) => {
+export const getAllUsers = async (user) => {
     const res = await axios.get(`http://localhost:3000/users/`);
     return res.data;
     
 }
+

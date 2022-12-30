@@ -1,5 +1,5 @@
-import React,{useState, useEffect, useContext}  from 'react';
-import { GetAlluser } from '../../services/auth';
+import React,{useState,useRef, useEffect, useContext}  from 'react';
+import { getAllUsers } from '../../services/user';
 import InputField from './../general/Inputs/InputField';
 import Select from 'react-select';
 import { ModalContext } from '../../containers/Modal';
@@ -15,7 +15,7 @@ const CreateGroup =()=>{
     const { displayModal, modalChange, displayModalChange } =useContext(ModalContext);
     useEffect(()=>{
         const fetchData = async() =>{
-            const users = await GetAlluser();
+            const users = await getAllUsers();
             if(users){setUsers(users.map(e=>{return {value:e.email,label:e.firstname+" "+e.lastname}}));}
             console.log(users)
         };
