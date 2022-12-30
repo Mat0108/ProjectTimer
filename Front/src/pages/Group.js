@@ -1,7 +1,7 @@
 import React,{useState,useEffect,useMemo}  from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
-import { GetAlluser } from '../services/auth';
+import { getAllUsers } from '../services/user';
 
 import Select from 'react-select';
 
@@ -24,7 +24,7 @@ const Group = () =>{
     },[]);
     useEffect(()=>{
         const fetchData = async() =>{
-            const users = await GetAlluser();
+            const users = await getAllUsers();
             if(users){setUsers(users.map(e=>{return {value:e.email,label:e.firstname+" "+e.lastname}}));}
 
         };
