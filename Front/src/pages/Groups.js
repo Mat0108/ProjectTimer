@@ -42,7 +42,7 @@ const Groups =()=>{
 
     return (<>       
         {displayModal && <div className={`fixed inset-0 z-[99999] justify-center h-full w-full `}>{DriverModal}</div>}
-        <div className='relative '>
+        <div className='relative text-white'>
             <h1 className='text-3xl text-center mt-2'>liste des groups</h1>
             <div className='h-[300px] w-full '>
                 <table className="ml-[122px] mt-[30px] table ">
