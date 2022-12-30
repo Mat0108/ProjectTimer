@@ -8,6 +8,9 @@ import CreateProject from "../componants/Projects/CreateProject";
 const Projects=()=>{
 
     const [projects,setProjects]=useState([]);
+    const [projet,setProjet]=useState([
+
+    ])
     const { displayModal, modalChange, displayModalChange } =useContext(ModalContext);
      let navigate =useNavigate();
 
@@ -43,12 +46,73 @@ const Projects=()=>{
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [displayModal]);
 
+      const [time, setTime] = useState({ h: 0, m: 0, s: 0 });
+  const [isActive, setIsActive] = useState(false);
+
+  function toggle() {
+    setIsActive(!isActive);
+  }
+
+  function reset() {
+    setTime({ h: 0, m: 0, s: 0 });
+    setIsActive(false);
+  }
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setTime(prevTime => {
+          let { h, m, s } = prevTime;
+          s++;
+          if (s === 60) {
+            m++;
+            s = 0;
+          }
+          if (m === 60) {
+            h++;
+            m = 0;
+          }
+          return { h, m, s };
+        });
+      }, 1000);
+    } else if (!isActive && time.s !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, time]);
+
+  function addLeadingZeros(time) {
+    let h = time.h;
+    let m = time.m;
+    let s = time.s;
+    if (h < 10) {
+      h = `0${h}`;
+    }
+    if (m < 10) {
+      m = `0${m}`;
+    }
+    if (s < 10) {
+      s = `0${s}`;
+    }
+    return `${h}:${m}:${s}`;
+  }
+
+
+
+
+
+
 
 
     return (<div >
+         
         
         <div className='relative text-white'>
         <h1 className='text-3xl text-center mt-2'>liste des projets</h1>
+
+        
+
         <div className='h-[300px] w-full '>
             <table className="ml-[122px] table ">
                     <thead className="flex">
@@ -60,6 +124,7 @@ const Projects=()=>{
                           
                            
                             <td className='w-[200px] text-center'>Action</td>
+                            <td className='w-[200px] text-center'>Timer</td>
                            
                         </tr>
                     </thead>
@@ -76,6 +141,23 @@ const Projects=()=>{
                                 <div className='col-start-2'>{getButton("bg-green",edit)}</div>
                                 <div className='col-start-3'>{getButton("bg-red",bin)}</div>
                                 </div></td>
+
+                                <td className='w-[200px]'><div className='grid grid-cols-3 '>
+
+                                <div className="app">
+      <div className="time">{addLeadingZeros(time)}</div>
+      <div className="row">
+        <button className={`button button-primary button-primary-${isActive ? 'active' : 'inactive'}`} onClick={toggle}>
+          {isActive ? 'Pause' : 'Start'}
+        </button>
+        <button className="button" onClick={reset}>
+          Reset
+        </button>
+      </div>
+    </div>
+                                    
+                                    
+                                    </div></td>
                         </tr>)} 
                     </tbody>
             </table> 
@@ -84,8 +166,16 @@ const Projects=()=>{
         </div>
         
     </div>
+
+  
+
+
+
+
     </div>
     )
 }
 
 export default Projects;
+
+
