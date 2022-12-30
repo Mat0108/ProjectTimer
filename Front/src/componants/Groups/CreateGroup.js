@@ -1,14 +1,12 @@
-import React,{useState,useRef, useEffect, useContext}  from 'react';
+import React,{useState, useEffect, useContext}  from 'react';
 import { GetAlluser } from '../../services/auth';
 import InputField from './../general/Inputs/InputField';
 import Select from 'react-select';
 import { ModalContext } from '../../containers/Modal';
+import { createGroup } from './../../services/group';
 
 
 const CreateGroup =()=>{
-    const nameref = useRef()
-    const userref = useRef();
-    const adminref = useRef();
     const [listusers, setListusers] = useState([]); 
     const [admin, setAdmin] = useState();
     const [users,setUsers] = useState();
@@ -25,8 +23,14 @@ const CreateGroup =()=>{
         
     },[]);
 
-    useEffect(()=>{console.log(admin)},[admin])
-
+    const CreateGroup = async() =>{
+        console.log('admin : ', admin.value)
+        console.log('listusers : ', listusers.map(e=>{return e.value}))
+        console.log('name : ', name)
+        if(admin && users && name){
+            await createGroup(name,admin.value,listusers.map(e=>{return e.value})).then(e=>{console.log(e);}).catch(e=>console.log("err:",e))
+        }
+    }
     return (
         <div className='relative w-[500px] h-[500px] bg-gray-normal rounded-xl grid grid-rows-creategroup'>
             <div className='row-start-1'>
@@ -64,7 +68,7 @@ const CreateGroup =()=>{
           <button onClick={()=>{modalChange(<div></div>);displayModalChange(false)}} className="min-w-[30%] text-red bg-white2 border-2 border-red px-6 py-2 rounded-3xl" type="button">
           <span className="font-[AvenirNextCyrDemi]">Annuler</span>
           </button>
-          <button onClick={""} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
+          <button onClick={()=>CreateGroup()} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
             <span className="font-[AvenirNextCyrDemi] ">Confirmer</span>
           </button>
         </div></div>
