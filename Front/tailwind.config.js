@@ -22,7 +22,7 @@ module.exports = {
       gridTemplateRows:{
         'group':'100px 300px 300px',
         'group2':'50px 250px',
-        "creategroup":"80px 100px 100px 100px 100px"
+        "creategroup":"80px 90px 80px 100px 100px"
       },
       gridRow: {
         'span-16': 'span 16 / span 16',

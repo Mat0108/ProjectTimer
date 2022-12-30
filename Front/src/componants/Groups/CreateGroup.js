@@ -1,9 +1,8 @@
-import React,{useState,useRef, useEffect, useMemo}  from 'react';
+import React,{useState,useRef, useEffect, useContext}  from 'react';
 import { GetAlluser } from '../../services/auth';
-import Select from './../general/SelectBox/Select';
-import SelectMulti from './../general/SelectBox/SelectMulti';
 import InputField from './../general/Inputs/InputField';
-
+import Select from 'react-select';
+import { ModalContext } from '../../containers/Modal';
 
 
 const CreateGroup =()=>{
@@ -15,35 +14,60 @@ const CreateGroup =()=>{
     const [users,setUsers] = useState();
     const [name, setName] = useState();
 
+    const { displayModal, modalChange, displayModalChange } =useContext(ModalContext);
     useEffect(()=>{
         const fetchData = async() =>{
             const users = await GetAlluser();
-            if(users){setUsers(users.map(e=>{return e.email}));}
+            if(users){setUsers(users.map(e=>{return {value:e.email,label:e.firstname+" "+e.lastname}}));}
             console.log(users)
         };
         fetchData();
         
     },[]);
-    function getButton(color,text,onclickvar){
-        return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
-    }
+
+    useEffect(()=>{console.log(admin)},[admin])
 
     return (
-        <div className='relative w-[300px] h-[500px] bg-gray-normal rounded-xl grid grid-rows-creategroup'>
+        <div className='relative w-[500px] h-[500px] bg-gray-normal rounded-xl grid grid-rows-creategroup'>
             <div className='row-start-1'>
                 <h1 className='text-3xl text-center mt-2'>Créer un groupe</h1>
             </div>
             <div className="row-start-2">
-                <InputField inputRef={nameref} title={"Nom du groupe"} titleStyle={"title label-input text-base "} value={name} onChange={(e) => {setName(e.target.value);}} style={"mx-auto w-[250px] "}/>
+                <label className='ml-[38px]'>Nom du groupe</label>
+                <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text" value={name} onChange={e=>setName(e.target.value)} />
+                            
             </div>
             {users && <><div className="row-start-3">
-                <Select options={users} title={"Admin"} titleStyle={"ml-[22px]"} arrowStyle={"absolute top-[70%] right-4 pointer-events-none"} selectedValue={admin} setSelectedValue={setAdmin} className={"ml-[22px] w-[250px] h-[48px] p-1 px-4 border-solid border-green dark:bg-charcoal focus-visible:outline-0 border-2 rounded-xl appearance-none text-black"} />
-                
+            <label className='ml-[40px]'>Admin</label>
+            <Select
+                    defaultValue={""}
+                    name="colors"
+                    options={users}
+                    className="basic-multi-select bg-gray-normal ml-[22px] w-[450px] text-black px-4 border-solid "
+                    classNamePrefix="select text-white"
+                    onChange={e=>setAdmin(e)}
+                /> 
             </div>
             <div className="row-start-4">
-                 <SelectMulti options={users} title={"Users"} titleStyle={"ml-[22px]"} arrowStyle={"absolute top-[60%] right-10 pointer-events-none"} multiplevar={true} selectedValue={listusers} setSelectedValue={setListusers} margin={"ml-[22px]"} className={"bg-white2 ml-[22px] w-[250px] h-[48px] p-1 px-4 border-solid border-green dark:bg-charcoal focus-visible:outline-0 border-2 rounded-xl appearance-none text-black"} />
-                
+            <label className='ml-[40px]'>Users</label>
+                 <Select
+                    defaultValue={""}
+                    isMulti
+                    name="colors"
+                    options={users}
+                    className="basic-multi-select bg-gray-normal ml-[22px] w-[450px] text-black px-4 border-solid "
+                    classNamePrefix="select text-white"
+                    onChange={e=>setListusers(e)}
+                />
             </div></>}
+            <div className='row-start-5'><div className="space-x-5 ml-[22%]">
+          <button onClick={()=>{modalChange(<div></div>);displayModalChange(false)}} className="min-w-[30%] text-red bg-white2 border-2 border-red px-6 py-2 rounded-3xl" type="button">
+          <span className="font-[AvenirNextCyrDemi]">Annuler</span>
+          </button>
+          <button onClick={""} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
+            <span className="font-[AvenirNextCyrDemi] ">Confirmer</span>
+          </button>
+        </div></div>
         </div>
         )
 
