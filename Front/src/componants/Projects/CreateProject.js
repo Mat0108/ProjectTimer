@@ -19,7 +19,7 @@ const CreateProject = () => {
 
     ]);
 
-    const [messages,setMessages]=useState();
+    const [messages, setMessages] = useState();
 
     const { displayModal, modalChange, displayModalChange } = useContext(ModalContext);
     useEffect(() => {
@@ -35,37 +35,58 @@ const CreateProject = () => {
     useEffect(() => { console.log(admin) }, [admin]);
 
 
-//onclick
+    //handleSubmit
 
-const onClick = async (event) =>{
-    event.preventDefault();
-    console.log(project);
-    setMessages([])
-    if(project.admin !== "" && project.name !== ""){
-        try{
-            await saveProject(project);
-            setMessages([...messages,{type:"alert alert-success",msg:"Projet enregistrer !"}]);
-        
-            
-            //navigate("/"); 
-        }catch (error){
-            if (error.response){
-                setMessages([...messages,{type:"alert alert-danger",msg:error.response.data}]);
-            }else{
-                setMessages([...messages,{type:"alert alert-danger",msg:"erreur : "+error.message}]);
-            }
-        }
-    }else{
-        setMessages([...messages,{type:"alert alert-info",msg:"merci de remplir les deux champs "}]);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(project);
+        // setMessages([])
+        // if( project.name !== ""){
+        //     try{
+        //         await saveProject(project);
+        //         setMessages([...messages,{type:"alert alert-success",msg:"Projet enregistrer !"}]);
+
+
+        //         //navigate("/"); 
+        //     }catch (error){
+        //         if (error.response){
+        //             setMessages([...messages,{type:"alert alert-danger",msg:error.response.data}]);
+        //         }else{
+        //             setMessages([...messages,{type:"alert alert-danger",msg:"erreur : "+error.message}]);
+        //         }
+        //     }
+        // }else{
+        //     setMessages([...messages,{type:"alert alert-info",msg:"merci de remplir les deux champs "}]);
+        // }
     }
-}
 
-//
+    //
 
-const onChangeHandler = (event) =>{
-    const {id, value}= event.target
-    setProject({...project, [id]:value})
-}
+    const handleChange = (event) => {
+
+        const { name, value } = event.target;
+        setProject(prevState => ({ ...prevState, [name]: value }));
+
+        console.log(event);
+        console.log(event.target.name);
+
+
+
+    };
+
+    const handleSelectedChange=(event)=>{
+        setProject({
+            ...project,
+            admin:event.target.value,
+        });
+    }
+
+    const handleNameChange=(event)=>{
+        setProject({
+            ...project,
+            name:event.target.value,
+        });
+    }
 
 
 
@@ -73,25 +94,29 @@ const onChangeHandler = (event) =>{
 
 
     return (
-        <><form onSubmit={onClick}>
+        <><form onSubmit={handleSubmit}>
             <div className='relative w-[500px] h-[500px] bg-gray-normal rounded-xl grid grid-rows-creategroup'>
                 <div className='row-start-1'>
                     <h1 className='text-3xl text-center mt-2'>Créer un projet</h1>
                 </div>
                 <div className="row-start-2">
                     <label className='ml-[38px]'>Nom du projet</label>
-                    <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text"  onChange={onChangeHandler} value={project.name} id="name" />
+                    <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text" name="name" value={project.name} onChange={handleNameChange} />
 
                 </div>
                 {users && <><div className="row-start-3">
                     <label className='ml-[40px]'>Admin</label>
-                    <Select
-                        defaultValue={""}
-                        name="colors"
+                    {<Select
+
+                    
+
                         options={users}
                         className="basic-multi-select bg-gray-normal ml-[22px] w-[450px] text-black px-4 border-solid "
                         classNamePrefix="select text-white"
-                        onChange={onChangeHandler} value={project.admin} id="project.admin" />
+                        name="admin"
+                        value={project.admin}
+                        onChange={handleSelectedChange}
+                    />}
                 </div>
                     <div className="row-start-4">
                         {/* <label className='ml-[40px]'>Timer</label> */}
@@ -101,14 +126,14 @@ const onChangeHandler = (event) =>{
                     <button onClick={() => { modalChange(<div></div>); displayModalChange(false); }} className="min-w-[30%] text-red bg-white2 border-2 border-red px-6 py-2 rounded-3xl" type="button">
                         <span className="font-[AvenirNextCyrDemi]">Annuler</span>
                     </button>
-                    <button onClick={""} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
-                        <span className="font-[AvenirNextCyrDemi] " type="submit">Confirmer</span>
+                    <button className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="submit">
+                        <span className="font-[AvenirNextCyrDemi] ">Confirmer</span>
                     </button>
                 </div></div>
             </div>
 
         </form>
-            </>
+        </>
     )
 
 }
