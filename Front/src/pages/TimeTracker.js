@@ -1,15 +1,14 @@
 import React, { useState, useEffect, Fragment }  from "react";
-import { deleteTimeById, getAllTimes, getTimeById } from "../services/time";
+import { deleteTimeById } from "../services/time";
 import { getAllProjects, getProjectById } from "../services/project";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Disclosure } from '@headlessui/react'
-import InputField from "../componants/general/Inputs/InputField";
-import { getUserProjectsById } from "../services/user";
+import { Disclosure, Menu } from '@headlessui/react'
 
 const TimeTracker = () => {
     const [projects, setProjects] = useState([]);  
-    const [time, setTime] = useState([]);  
+    const [selectedProject, setSelectedProject] = useState([]); 
     const location = useLocation();
+    
 
     let navigate = useNavigate(); 
     
@@ -66,15 +65,44 @@ const TimeTracker = () => {
     return (
         <div>
             <div className="mx-7 my-12 grid xl:grid-cols-9 xl:grid-rows-1 grid-cols-2 grid-rows-3 gap-y-7 gap-x-3 bg-white px-5 py-4 grid-rows-1">
-                <div className="xl:col-span-4 col-span-2">
+                <div className="xl:col-span-3 col-span-2">
                     <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-full"/>
                 </div>
-                <button className="text-green flex flex-row col-span-2 pt-3 ml-5">
-                    {add} &nbsp; <span>Project</span>
-                </button> 
+        
+                <div className="flex flex-row col-span-3">
+                    <Menu as="div" className="relative inline-block text-left">
+                        <div>
+                            <Menu.Button className="inline-flex w-full justify-center text-green rounded-md pt-3 ml-5 px-4 py-2 text-sm font-medium text-white hover:text-orange">
+                                {add} &nbsp; <span>Project</span>
+                            </Menu.Button>
+                        </div>
+                    
+                        <Menu.Items className="absolute left-0 mt-2 ml-12 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="px-1 py-1 ">
+                                {projects.map((project, index) => {
+                                    return(
+                                        <Menu.Item>
+                                            <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-lightgrey hover:text-white" onClick={() => { setSelectedProject(project)}}>
+                                                {project.name}
+                                            </button>
+                                        </Menu.Item>
+                                    )}
+                                )}
+                            </div>
+                        </Menu.Items>
+                    </Menu>
+                    
+                    {selectedProject.length !== 0 ?
+                        <span className="ml-10 text-sm py-3 font-bold text-pink flex flex-row"> {star} &nbsp; {selectedProject.name}</span>
+                        :
+                        <span className="ml-10 text-sm py-3 font-bold text-pink flex flex-row"></span>
+                    }
+                </div>
+
                 <div className="xl:col-span-1 col-span-1 xl:pt-3 font-bold text-right py-3 xl-py-0 mr-5 xl:mr-0">
                     00:00:00
                 </div>
+
                 <button className="bg-green rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto">Start</button>
                 {/*<button className="bg-red rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto">Stop</button>*/}      
             </div>
@@ -83,16 +111,11 @@ const TimeTracker = () => {
                 return(
                     <div className="w-full px-7 pt-2" key={`project-${index}`}>
                         <div className="mx-auto w-full max-w-l bg-white">
-                            
+
                             {project.timer && project.timer.times.map((time, i) => {
                                 return(
                                     <div key={`time-${i}`}>
-                                        {/*project.timer.times[i].date !== project.timer.times[project.timer.times.length-1].date ?
-                                            <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5">{project.timer.times[i].date}</div>
-                                            :
-                                            <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5">0</div>
-                                        */}
-                                        <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5">{time.date}</div>
+                                        <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5 font-bold">{time.date}</div>
 
                                         <Disclosure>
                                             {({ open }) => (
