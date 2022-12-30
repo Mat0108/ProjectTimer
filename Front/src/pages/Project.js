@@ -1,6 +1,7 @@
-const { useState, useEffect } = require("react");
-const { useParams,Link } = require("react-router-dom");
-const { getProjectById } = require("../services/project");
+import React,{useState,useEffect}  from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { getProjectById } from '../services/project';
+
 
 const Project =()=>{
     const {projectId}=useParams();
@@ -10,6 +11,7 @@ const Project =()=>{
         const fetchData=async()=>{
             const project= await getProjectById(projectId);
             setProject(project);
+            console.log({project})
         };
         if(projectId){fetchData();}
 
@@ -43,11 +45,15 @@ const Project =()=>{
                             {project && <tr key={`info-00`}>
                                 <td className="text-center text-sm">{project.name}</td>
                                 <td className="text-center text-sm flex flex-col"><div className='text-center w-full'>{project.admin.firstname} {project.admin.lastname}</div><div className='text-center w-full'>{project.admin.email}</div></td>
+                                <td>{project.timer}helllo</td>
+                             
                                
                             </tr>}
                             </tbody>                
                         </table>
                     </div>
+
+                    
             </div>
          
             
@@ -57,6 +63,8 @@ const Project =()=>{
 
    
     )
+
+    
 
 
 
