@@ -14,7 +14,6 @@ const Groups =()=>{
         const fetchData = async() =>{
             const groups = await getGroups();
             if(groups){setGroups(groups);}
-            console.log(groups)
         };
         fetchData();
         
@@ -25,6 +24,9 @@ const Groups =()=>{
     const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
     function getButton(color,text,onclickvar){
         return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
+    }
+    function getButtonBorder(className,color,text,onclickvar){
+        return <div><button className={`${className} p-2 border-2 bg-white border-${color} text-${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
     const DriverModal = useMemo(() => {
         if (displayModal) {
@@ -56,7 +58,7 @@ const Groups =()=>{
                                 <td className='w-[200px] text-center'>Action</td>
                             </tr>
                         </thead>
-                        <tbody className="max-h-[200px] flex flex-col overflow-hidden hover:overflow-auto bg-gray-silver rounded-2xl dark:bg-charleston-green divide-y" >
+                        <tbody className="max-h-[200px] flex flex-col bg-gray-silver rounded-2xl dark:bg-charleston-green divide-y" >
                         {groups && groups.map((item, index) => <tr key={`group-${index}`} >
                                 <td className='w-[100px] p-3 text-center'>{index}</td>
                                 <td className='w-[200px] text-center'>{item.name}</td>
@@ -72,7 +74,7 @@ const Groups =()=>{
                         </tbody>
                 </table>    
             </div>
-            <div>{getButton("absolute top-5 left-[120px] bg-green", "créer un groupe",()=>{modalChange(<CreateGroup />);displayModalChange(true);})}</div>
+            <div>{getButtonBorder("absolute top-5 left-[120px]","green", "créer un groupe",()=>{modalChange(<CreateGroup />);displayModalChange(true);})}</div>
         </div>
         </>
         )
