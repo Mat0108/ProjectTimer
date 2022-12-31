@@ -1,6 +1,6 @@
 
 import React, { useState, useContext, useEffect } from "react";
-import { GetAlluser } from '../../services/auth';
+import { getAllUsers } from '../../services/user';
 import { ModalContext } from '../../containers/Modal';
 import Select from 'react-select';
 import { saveProject } from "../../services/project";
@@ -25,7 +25,7 @@ const CreateProject = () => {
     const { displayModal, modalChange, displayModalChange } = useContext(ModalContext);
     useEffect(() => {
         const fetchData = async () => {
-            const users = await GetAlluser();
+            const users = await getAllUsers();
             if (users) { setUsers(users.map(e => { return { value: e.email, label: e.firstname + " " + e.lastname } })); }
             console.log(users)
         };
