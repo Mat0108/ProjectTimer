@@ -9,6 +9,7 @@ const CreateProject = () => {
     const [admin, setAdmin] = useState();
     const [users, setUsers] = useState();
     const [name, setName] = useState();
+    
     const [listusers, setListusers] = useState([]);
     const [project, setProject] = useState([
         {
@@ -62,17 +63,17 @@ const CreateProject = () => {
 
     //
 
-    const handleChange = (event) => {
+    // const handleChange = (event) => {
 
-        const { name, value } = event.target;
-        setProject(prevState => ({ ...prevState, [name]: value }));
+    //     const { name, value } = event.target;
+    //     setProject(prevState => ({ ...prevState, [name]: value }));
 
-        console.log(event);
-        console.log(event.target.name);
+    //     console.log(event);
+    //     console.log(event.target.name);
 
 
 
-    };
+    // };
 
     const handleSelectedChange=(event)=>{
         setProject({
@@ -94,14 +95,14 @@ const CreateProject = () => {
 
 
     return (
-        <><form onSubmit={handleSubmit}>
+        <>
             <div className='relative w-[500px] h-[500px] bg-gray-normal rounded-xl grid grid-rows-creategroup'>
                 <div className='row-start-1'>
                     <h1 className='text-3xl text-center mt-2'>Créer un projet</h1>
                 </div>
                 <div className="row-start-2">
                     <label className='ml-[38px]'>Nom du projet</label>
-                    <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text" name="name" value={project.name} onChange={handleNameChange} />
+                    <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text" name="name" value={name} onChange={e=>setName(e.target.value)} />
 
                 </div>
                 {users && <><div className="row-start-3">
@@ -114,8 +115,8 @@ const CreateProject = () => {
                         className="basic-multi-select bg-gray-normal ml-[22px] w-[450px] text-black px-4 border-solid "
                         classNamePrefix="select text-white"
                         name="admin"
-                        value={project.admin}
-                        onChange={handleSelectedChange}
+                       
+                        onChange={e=>setAdmin(e)}
                     />}
                 </div>
                     <div className="row-start-4">
@@ -126,13 +127,13 @@ const CreateProject = () => {
                     <button onClick={() => { modalChange(<div></div>); displayModalChange(false); }} className="min-w-[30%] text-red bg-white2 border-2 border-red px-6 py-2 rounded-3xl" type="button">
                         <span className="font-[AvenirNextCyrDemi]">Annuler</span>
                     </button>
-                    <button className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="submit">
+                    <button onClick={""} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
                         <span className="font-[AvenirNextCyrDemi] ">Confirmer</span>
                     </button>
                 </div></div>
             </div>
 
-        </form>
+        
         </>
     )
 
