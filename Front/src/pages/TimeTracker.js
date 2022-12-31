@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment }  from "react";
-import { deleteTimeById } from "../services/time";
+import { deleteTimeById, startTime } from "../services/time";
 import { getAllProjects, getProjectById } from "../services/project";
 import { useLocation } from "react-router-dom";
 import { Disclosure, Menu } from '@headlessui/react'
@@ -8,7 +8,8 @@ const TimeTracker = () => {
     const [projects, setProjects] = useState([]);  
     const [selectedProject, setSelectedProject] = useState([]); 
     const location = useLocation();
-    
+    const [timerName, setTimerName] = useState("");
+
     useEffect(()=>{
         const fetchData = async () => {
             const projects = await getAllProjects();
@@ -36,7 +37,13 @@ const TimeTracker = () => {
         
     }, []);
 
- 
+    const handleChange = (event) =>{
+        setTimerName(event.target.value);
+    }
+
+    function getButton(color, text, onclickvar){
+        return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
+    }
 
     const bin = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
         <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
@@ -55,15 +62,12 @@ const TimeTracker = () => {
         <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
     </svg>
   
-    function getButton(color, text, onclickvar){
-        return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
-    }
 
     return (
         <div>
             <div className="mx-7 my-12 grid xl:grid-cols-9 xl:grid-rows-1 grid-cols-2 grid-rows-3 gap-y-7 gap-x-3 bg-white px-5 py-4 grid-rows-1">
                 <div className="xl:col-span-3 col-span-2">
-                    <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-full"/>
+                    <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-full" id="timerName" onChange={handleChange} value={timerName}/>
                 </div>
         
                 <div className="flex flex-row col-span-3">
