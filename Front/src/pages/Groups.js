@@ -14,7 +14,6 @@ const Groups =()=>{
         const fetchData = async() =>{
             const groups = await getGroups();
             if(groups){setGroups(groups);}
-            console.log(groups)
         };
         fetchData();
         
@@ -25,6 +24,9 @@ const Groups =()=>{
     const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
     function getButton(color,text,onclickvar){
         return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
+    }
+    function getButtonBorder(className,color,text,onclickvar){
+        return <div><button className={`${className} p-2 border-2 bg-${color} border-${color} text-white rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
     const DriverModal = useMemo(() => {
         if (displayModal) {
@@ -43,26 +45,26 @@ const Groups =()=>{
     return (<>       
         {displayModal && <div className={`fixed inset-0 z-[99999] justify-center h-full w-full `}>{DriverModal}</div>}
         <div className='relative text-white'>
-            <h1 className='text-3xl text-center mt-2'>liste des groups</h1>
-            <div className='h-[300px] w-full '>
-                <table className="ml-[122px] mt-[30px] table ">
+            <h1 className='text-3xl text-center mt-8 text-black font-bold mb-20'>LIST OF GROUPS</h1>
+            <div className='h-[300px] w-full text-black'>
+                <table className="mx-auto mt-[30px] table ">
                         <thead className="flex">
-                            <tr className="flex">
-                                <td className='w-[100px] p-3 text-center'>nb</td>
-                                <td className='w-[200px] text-center'>Nom du group</td>
+                            <tr className="flex font-medium">
+                                <td className='w-[100px] text-center'>No.</td>
+                                <td className='w-[200px] text-center'>Group name</td>
                                 <td className='w-[300px] text-center'>Admin</td>
                                 <td className='w-[300px] text-center'>Users</td>
-                                <td className='w-[300px] text-center'>Project</td>
-                                <td className='w-[200px] text-center'>Action</td>
+                                <td className='w-[300px] text-center'>Projects</td>
+                                <td className='w-[200px] text-center'>Actions</td>
                             </tr>
                         </thead>
-                        <tbody className="max-h-[200px] flex flex-col overflow-hidden hover:overflow-auto bg-gray-silver rounded-2xl dark:bg-charleston-green divide-y" >
+                        <tbody className="max-h-[200px] flex flex-col bg-gray-silver rounded-2xl dark:bg-charleston-green divide-y text-black mt-5" >
                         {groups && groups.map((item, index) => <tr key={`group-${index}`} >
-                                <td className='w-[100px] p-3 text-center'>{index}</td>
+                                <td className='w-[100px] text-center'>{index}</td>
                                 <td className='w-[200px] text-center'>{item.name}</td>
                                 <td className='w-[300px] text-center'><div className='flex flex-col'><div>{item.admin.firstname} {item.admin.lastname}</div><div>{item.admin.email}</div></div></td>
-                                <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>nb de users associés : {item.users ? Object.keys(item.users).length : 0}</div>{getButton("bg-green",link)}</div></td>
-                                <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>nb de project associés: {item.projects ? Object.keys(item.projects).length : 0}</div>{getButton("bg-green",link)}</div></td>
+                                <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>Users associated : {item.users ? Object.keys(item.users).length : 0}</div>{getButton("bg-green",link)}</div></td>
+                                <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>Project associated : {item.projects ? Object.keys(item.projects).length : 0}</div>{getButton("bg-green",link)}</div></td>
                                 <td className='w-[200px]'><div className='grid grid-cols-3 w-full'>
                                     <div className='col-start-1'>{getButton("bg-blue",view,()=>navigate(`/Groups/${item._id}`))}</div>
                                     <div className='col-start-2'>{getButton("bg-green",edit)}</div>
@@ -72,7 +74,7 @@ const Groups =()=>{
                         </tbody>
                 </table>    
             </div>
-            <div>{getButton("absolute top-5 left-[120px] bg-green", "créer un groupe",()=>{modalChange(<CreateGroup />);displayModalChange(true);})}</div>
+            <div>{getButtonBorder("absolute top-12 ml-10 hover:bg-white hover:text-green hover:border-green","green", "Create a group",()=>{modalChange(<CreateGroup />);displayModalChange(true);})}</div>
         </div>
         </>
         )

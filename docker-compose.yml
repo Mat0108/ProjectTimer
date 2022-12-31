@@ -1,0 +1,82 @@
+version: '3.3'
+services:
+  front:
+    container_name: front
+    build:
+      context: .
+      dockerfile: ./Front
+    image: projecttimer:latest
+    working_dir: /home/node/app
+
+    command:
+      - /bin/sh
+      - '-c'
+      - 'npm run start'
+    ports:
+      - '4000:4000'
+    volumes:
+      - './Front:/home/node/app'
+
+  node:
+    container_name: node
+    image: 'node:latest'
+    working_dir: /home/node/app
+    env_file:
+      - ./Back/.env
+    command:
+      - /bin/sh
+      - '-c'
+      - 'npm install && npm run watch'
+    ports:
+      - '3000:3000'
+    volumes:
+      - './Back/src:/home/node/app'
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    networks:
+      - back
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_DATABASE: timerdb
+      MONGO_INITDB_ROOT_USERNAME: timer
+      MONGO_INITDB_ROOT_PASSWORD: timerpass
+    restart: always
+    volumes:
+      - ./Back/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./Back/mongo-volume:/data/db
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - back
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    container_name: mongo_express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_AUTH_DATABASE: timerdb
+      ME_CONFIG_MONGODB_AUTH_USERNAME: timer
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: timerpass
+      ME_CONFIG_BASICAUTH_USERNAME: timer
+      ME_CONFIG_BASICAUTH_PASSWORD: timerpass
+    ports:
+      - '8081:8081'
+    depends_on:
+      - mongo
+    networks:
+      - back
+
+networks:
+  back:
+    driver: bridge
