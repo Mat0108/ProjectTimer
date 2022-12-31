@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment }  from "react";
 import { deleteTimeById } from "../services/time";
 import { getAllProjects, getProjectById } from "../services/project";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Disclosure, Menu } from '@headlessui/react'
 
 const TimeTracker = () => {
@@ -9,22 +9,19 @@ const TimeTracker = () => {
     const [selectedProject, setSelectedProject] = useState([]); 
     const location = useLocation();
     
-
-    let navigate = useNavigate(); 
-    
     useEffect(()=>{
         const fetchData = async () => {
             const projects = await getAllProjects();
             const userProjects = [];
-
+            
             projects.map(project => {
-                if(project.admin.email === location.state.userEmail){
+                if(location.state.userEmail && project.admin.email === location.state.userEmail){
                     userProjects.push(project)
                 }
                 
                 project.groups.map(group => {
                     group.users.map(user => {
-                        if(user === location.state.userId){
+                        if(location.state.userId && user === location.state.userId){
                             userProjects.push(project)
                         }
                     })
