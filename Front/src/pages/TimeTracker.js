@@ -146,7 +146,7 @@ const TimeTracker = () => {
   
 
     return (
-        <div>
+        <div style={{zoom: "80%"}}>
             <div className="mx-7 my-12 grid xl:grid-cols-9 xl:grid-rows-1 grid-cols-2 grid-rows-3 gap-y-7 gap-x-3 bg-white px-5 py-4 grid-rows-1">
                 <div className="xl:col-span-3 col-span-2">
                     <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-full" id="timerName" onChange={handleChange} value={timerName}/>

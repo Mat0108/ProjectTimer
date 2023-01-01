@@ -7,7 +7,7 @@ const Nav = () =>{
     const [dropdown,setDropdown] = useState(false);
     
     return (
-        <nav className="px-2 bg-gray-silver text-white w-full h-[50px]">
+        <nav className="px-2 bg-gray-silver text-white w-full h-[50px]" style={{zoom: "80%"}}>
             <div className="grid grid-cols-5 items-center  w-full h-full">
                 <div className='col-start-1 col-span-2 ml-5 flex flex-row gap-4'>
                     <div><Link className="" to="/">{home} </Link></div>
