@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Fragment }  from "react";
-import { deleteTimeById } from "../services/time";
-import { getAllProjects, getProjectById } from "../services/project";
+import React, { useState, useEffect }  from "react";
+import { deleteTimeById, startTime, stopTime, continueTime } from "../services/time";
+import { getAllProjects } from "../services/project";
 import { useLocation } from "react-router-dom";
 import { Disclosure, Menu } from '@headlessui/react'
 
@@ -8,12 +8,19 @@ const TimeTracker = () => {
     const [projects, setProjects] = useState([]);  
     const [selectedProject, setSelectedProject] = useState([]); 
     const location = useLocation();
-    
-    useEffect(()=>{
+    const [newTimer, setNewTimer] = useState([]);
+    const [timerName, setTimerName] = useState("");
+    const [time, setTime] = useState({ h: 0, m: 0, s: 0 });
+    const [isActive, setIsActive] = useState(false);
+    const [filteredName, setFilteredName] = useState([]);
+    const [data, setData] = useState([]);
+    const [refreshData, setRefreshData] = useState(false);
+
+    useEffect(() => {
         const fetchData = async () => {
             const projects = await getAllProjects();
             const userProjects = [];
-            
+        
             projects.map(project => {
                 if(location.state.userEmail && project.admin.email === location.state.userEmail){
                     userProjects.push(project)
@@ -28,15 +35,98 @@ const TimeTracker = () => {
                 })
                 
             })
-
             setProjects(userProjects)
+            setData(projects)
         };
 
         fetchData();
-        
-    }, []);
 
- 
+        if(refreshData){
+            fetchData();
+        }
+
+    }, [refreshData]);
+
+    useEffect(() => {
+        let interval = null;
+        if (isActive) {
+            interval = setInterval(() => {
+                setTime(prevTime => {
+                    let { h, m, s } = prevTime;
+                    s++;
+                    if (s === 60) {
+                        m++;
+                        s = 0;
+                    }
+                    if (m === 60) {
+                        h++;
+                        m = 0;
+                    }
+                    return { h, m, s };
+                });
+            }, 1000);
+        } else if (!isActive && time.s !== 0) {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [isActive, time]);
+
+    const addLeadingZeros = (time) => {
+        let h = time.h;
+        let m = time.m;
+        let s = time.s;
+        if (h < 10) {
+            h = `0${h}`;
+        }
+        if (m < 10) {
+            m = `0${m}`;
+        }
+        if (s < 10) {
+            s = `0${s}`;
+        }
+        return `${h}:${m}:${s}`;
+    }
+
+    const handleChange = (event) =>{
+        setTimerName(event.target.value);
+    }
+
+    const toggle = () => {
+        setIsActive(!isActive);
+    }
+
+    const reset = () => {
+        setTime({ h: 0, m: 0, s: 0 });
+        setIsActive(false);
+    }
+
+    const createTimer = async () => {
+        toggle();
+        const newTime = await startTime(timerName, location.state.userEmail, selectedProject._id);
+        setNewTimer(newTime);
+    }
+
+    const stopTimer = async (timerId) => {
+        reset();
+        await stopTime(timerId);
+    }
+
+    const continueTimer = async (timerId) => {
+        await continueTime(timerId, location.state.userEmail);
+    }
+
+    const getButton = (color, text, onclickvar) => {
+        return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
+    }
+
+    const filterByProject = (projectSelected) => {
+        const filtered = projects.filter(project => project._id === projectSelected._id)
+        setData(filtered)
+    }
+
+    const allProjects = () => {
+        setData(projects)
+    }
 
     const bin = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
         <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
@@ -55,15 +145,12 @@ const TimeTracker = () => {
         <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
     </svg>
   
-    function getButton(color, text, onclickvar){
-        return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
-    }
 
     return (
         <div>
             <div className="mx-7 my-12 grid xl:grid-cols-9 xl:grid-rows-1 grid-cols-2 grid-rows-3 gap-y-7 gap-x-3 bg-white px-5 py-4 grid-rows-1">
                 <div className="xl:col-span-3 col-span-2">
-                    <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-full"/>
+                    <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-full" id="timerName" onChange={handleChange} value={timerName}/>
                 </div>
         
                 <div className="flex flex-row col-span-3">
@@ -78,8 +165,8 @@ const TimeTracker = () => {
                             <div className="px-1 py-1 ">
                                 {projects.map((project, index) => {
                                     return(
-                                        <Menu.Item>
-                                            <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-lightgrey hover:text-white" onClick={() => { setSelectedProject(project)}}>
+                                        <Menu.Item key={`project-${index}`}>
+                                            <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-lightgrey hover:text-white" onClick={() => {setSelectedProject(project)}}>
                                                 {project.name}
                                             </button>
                                         </Menu.Item>
@@ -97,71 +184,126 @@ const TimeTracker = () => {
                 </div>
 
                 <div className="xl:col-span-1 col-span-1 xl:pt-3 font-bold text-right py-3 xl-py-0 mr-5 xl:mr-0">
-                    00:00:00
+                    {addLeadingZeros(time)}
                 </div>
 
-                <button className="bg-green rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto">Start</button>
-                {/*<button className="bg-red rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto">Stop</button>*/}      
+                {!isActive ? 
+                    <button className="bg-green rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto" onClick={() => createTimer()}>
+                        Start
+                    </button>
+                    :
+                    <button className="bg-red rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto" onClick={() => {
+                        stopTimer(newTimer._id)
+                        setRefreshData(!refreshData)
+                    }}>
+                        Stop
+                    </button>
+                }
             </div>
 
-            {projects.map((project, index) => {
-                return(
-                    <div className="w-full px-7 pt-2" key={`project-${index}`}>
-                        <div className="mx-auto w-full max-w-l bg-white">
 
-                            {project.timer && project.timer.times.map((time, i) => {
-                                return(
-                                    <div key={`time-${i}`}>
-                                        <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5 font-bold">{time.date}</div>
-
-                                        <Disclosure>
-                                            {({ open }) => (
-                                                <>
-                                                    <div className="grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-2 w-full px-5 py-3 pt-6 pb-6 text-center text-base border font-medium">
-                                                        <Disclosure.Button className="col-span-1 order-1 hover:bg-black hover:bg-opacity-10 bg-blue bg-opacity-25 text-white text-center rounded-3xl w-7 h-8 ml-2 mt-1">
-                                                            {time.history.length}
-                                                        </Disclosure.Button>  
-                                                        
-                                                        <div className="col-span-1 pt-2 text-left order-2">{time.name}</div>    
-                                                        <div className="text-pink xl:col-span-6 col-span-2 pt-2 text-left xl:order-3 order-4 row-span-1 xl:my-0 my-4 flex flex-row">
-                                                            {star} &nbsp; {project.name}
-                                                        </div> 
-                                                        <div className="text-black text-opacity-40 col-span-2 xl:pt-2 xl:border-r xl:border-l border-l xl:border-0 border-t border-black-100 border-dotted xl:order-4 order-5 pt-7">{time.timestampTotal.slice(0, 5)} - {time.timestampTotal.slice(11, 16)}</div>
-                                                        <div className="font-bold text-black text-opacity-40 col-span-2 pt-2 xl:border-r border-dotted border-l gap-2 xl:order-5 order-3">{time.timeTotal.slice(0, 8)}</div>
-                                                    </div>
-                                                    <div className="col-span-1 flex flex-row justify-evenly border-dotted order-6 border xl:border-0">
-                                                        {getButton("text-green", play, () => {})}
-                                                        {getButton("text-red", bin, () => {
-                                                            deleteTimeById(project.timer._id, project._id)
-                                                            window.location.reload();
-                                                        })}
-                                                    </div>
-
-                                                    {time.history.map((history, i) => {
-                                                        return(
-                                                            <Disclosure.Panel as="ul" className="px-5 pt-6 pb-6 text-sm font-medium grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-3 border text-base text-center bg-black bg-opacity-5 hover:bg-black hover:bg-opacity-20" key={`history-${i}`}>
-                                                                <li className="col-span-2 text-left pl-2 pt-2 pb-2 order-1">{time.name}</li>    
-                                                                <li className="text-pink xl:col-span-3 col-span-2 text-left pt-2 pb-2 flex flex-row xl:my-0 my-4 row-span-1 order-3 xl:order-2">
-                                                                    {star} &nbsp; {project.name}
-                                                                </li> 
-                                                                <li className="text-orange xl:col-span-3 col-span-4 xl:text-left text-center xl:pt-2 xl:pb-2 pt-8 flex flex-row xl:my-0 my-4 row-span-1 order-5 xl:border-0 border-t border-dotted border-black-100 justify-center xl:order-3 xl:justify-start">
-                                                                    {user} &nbsp; {history.user}
-                                                                </li> 
-                                                                <li className="col-span-2 xl:border-r xl:border-l xl:border-0 border-l border-black-100 border-dotted xl:pt-2 xl:pb-2 pt-8 order-4">{history.startTimestamp.slice(0, 5)} - {history.endTimestamp.slice(0, 5)}</li>
-                                                                <li className="font-bold col-span-2 xl:pt-2 xl:pb-2 pt-7 xl:border-r border-dotted xl:border-0 border-l border-b order-2 xl:order-5">{history.end.slice(0, 8)}</li>
-                                                            </Disclosure.Panel>
-                                                        )
-                                                    })}
-                                                </>
-                                            )}
-                                        </Disclosure>
-                                    </div>
-                                );
-                            })}
-                        </div>
+            <Menu as="div" className="relative inline-block text-left">
+                <div className="flex flex-row">
+                    <Menu.Button className="inline-flex w-full justify-center text-black bg-white rounded-md pt-2 ml-7 px-4 py-2 text-sm font-medium hover:bg-black hover:bg-opacity-25 hover:text-white">
+                        {filteredName.length !== 0 ? filteredName : <span>Filter by project &nbsp; ▼</span>}
+                    </Menu.Button>
+                </div>
+                
+                
+                <Menu.Items className="absolute left-0 mt-2 ml-12 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="px-1 py-1 ">
+                        <Menu.Item>
+                            <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-lightgrey hover:text-white" onClick={() => {
+                                allProjects()
+                                setFilteredName("All")
+                            }}>
+                                All
+                            </button>
+                        </Menu.Item>
+                        {projects.map((project, index) => {
+                            return(
+                                <Menu.Item key={`project-${index}`}>
+                                    <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-lightgrey hover:text-white" onClick={() => {
+                                        filterByProject(project)
+                                        setFilteredName(project.name)
+                                    }}>
+                                        {project.name}
+                                    </button>
+                                </Menu.Item>
+                            )}
+                        )}
                     </div>
-                );
-            })} 
+                </Menu.Items>
+            </Menu>
+            <div className="overflow-y-scroll h-[37rem] mt-2">
+                {data.map((project, index) => {
+                    return(
+                        <div className="w-full px-7 pt-2" key={`project-${index}`}>
+                            <div className="mx-auto w-full max-w-l bg-white">
+                                {project.timer && project.timer.map((timer, i) => {
+                                    return(
+                                        <div key={`timer-${i}`}>
+                                        {timer.times.map((time, i) => {
+                                            return(
+                                                <div key={`time-${i}`}>
+                                                    <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5 font-bold">{time.date}</div>
+                                                
+                                                    <Disclosure>
+                                                        {({ open }) => (
+                                                            <>
+                                                                <div className="grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-2 w-full px-5 py-3 pt-6 pb-6 text-center text-base border font-medium">
+                                                                    <Disclosure.Button className="col-span-1 order-1 hover:bg-black hover:bg-opacity-10 bg-blue bg-opacity-25 text-white text-center rounded-3xl w-7 h-8 ml-2 mt-1">
+                                                                        {time.history.length}
+                                                                    </Disclosure.Button>  
+                                                                    
+                                                                    <div className="col-span-1 pt-2 text-left order-2">{time.name}</div>    
+                                                                    <div className="text-pink xl:col-span-6 col-span-2 pt-2 text-left xl:order-3 order-4 row-span-1 xl:my-0 my-4 flex flex-row">
+                                                                        {star} &nbsp; {project.name}
+                                                                    </div> 
+                                                                    <div className="text-black text-opacity-40 col-span-2 xl:pt-2 xl:border-r xl:border-l border-l xl:border-0 border-t border-black-100 border-dotted xl:order-4 order-5 pt-7">{time.timestampTotal.slice(0, 5)} - {time.timestampTotal.slice(11, 16)}</div>
+                                                                    <div className="font-bold text-black text-opacity-40 col-span-2 pt-2 xl:border-r border-dotted border-l gap-2 xl:order-5 order-3">{time.timeTotal.slice(0, 8)}</div>
+                                                                </div>
+                                                                <div className="col-span-1 flex flex-row justify-evenly border-dotted order-6 border xl:border-0">
+                                                                    {getButton("text-green", play, () => {
+                                                                        setTime({h: time.timeTotal.slice(1, 2), m: time.timeTotal.slice(4, 5), s: time.timeTotal.slice(7, 8)})
+                                                                        setIsActive(true)
+                                                                        continueTimer(timer._id)
+                                                                    })}
+                                                                    {getButton("text-red", bin, () => {
+                                                                        deleteTimeById(timer._id, project._id)
+                                                                        setRefreshData(!refreshData)
+                                                                    })}
+                                                                </div>
+
+                                                                {time.history.map((history, i) => {
+                                                                    return(
+                                                                        <Disclosure.Panel as="ul" className="px-5 pt-6 pb-6 text-sm font-medium grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-3 border text-base text-center bg-black bg-opacity-5 hover:bg-black hover:bg-opacity-20" key={`history-${i}`}>
+                                                                            <li className="col-span-2 text-left pl-2 pt-2 pb-2 order-1">{time.name}</li>    
+                                                                            <li className="text-pink xl:col-span-3 col-span-2 text-left pt-2 pb-2 flex flex-row xl:my-0 my-4 row-span-1 order-3 xl:order-2">
+                                                                                {star} &nbsp; {project.name}
+                                                                            </li> 
+                                                                            <li className="text-orange xl:col-span-3 col-span-4 xl:text-left text-center xl:pt-2 xl:pb-2 pt-8 flex flex-row xl:my-0 my-4 row-span-1 order-5 xl:border-0 border-t border-dotted border-black-100 justify-center xl:order-3 xl:justify-start">
+                                                                                {user} &nbsp; {history.user}
+                                                                            </li> 
+                                                                            <li className="col-span-2 xl:border-r xl:border-l xl:border-0 border-l border-black-100 border-dotted xl:pt-2 xl:pb-2 pt-8 order-4">{history.startTimestamp.slice(0, 5)} - {history.endTimestamp.slice(0, 5)}</li>
+                                                                            <li className="font-bold col-span-2 xl:pt-2 xl:pb-2 pt-7 xl:border-r border-dotted xl:border-0 border-l border-b order-2 xl:order-5">{history.end.slice(0, 8)}</li>
+                                                                        </Disclosure.Panel>
+                                                                    )
+                                                                })}
+                                                            </>
+                                                        )}
+                                                    </Disclosure>
+                                                </div>
+                                            );
+                                        })}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    );
+                })} 
+            </div>
         </div>
     )
 }
