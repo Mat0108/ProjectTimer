@@ -1,15 +1,15 @@
 import React,{useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import {register} from "../services/user";
 
 const Register = () => {
+    let navigate = useNavigate();
     const [user,setUser] = useState({
         
         'firstname':'',
         'lastname':'',
 
         'email':'',
-
         'password':''
         
     })
@@ -17,12 +17,16 @@ const Register = () => {
     const onClick = async (event) =>{
         event.preventDefault();
         console.log(user);
-        if(user.email === user.cf_email && 
-            user.password === user.cf_password && 
-            user.password.length >= 10 && user.email !== ""){
+        if(user.email !== "" && user.password !== ""){
             const res = await register(user);
             if (res.status === 200)
             { 
+                localStorage.setItem("userEmail", user.email)
+                localStorage.setItem("userId", user.id)
+                localStorage.setItem("userFirstname", user.firstname)
+                localStorage.setItem("userLastname", user.lastname)
+                
+                navigate("/Login");
             }
             console.log(res);
         }else{
