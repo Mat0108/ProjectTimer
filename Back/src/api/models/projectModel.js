@@ -16,10 +16,10 @@ let projectSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    timer: {
+    timer: [{
         type: Schema.Types.ObjectId, 
         ref: 'Time',
-    }
+    }]
 });
 
 module.exports = mongoose.model("Project", projectSchema);

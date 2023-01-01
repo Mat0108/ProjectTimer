@@ -19,12 +19,9 @@ const Login = () => {
                 const userData = await login(user);
                 setMessages([...messages,{type:"alert alert-success",msg:"vous êtes connecté !"}]);
 
-                navigate("/TimeTracker", {
-                    state: {
-                        userEmail: user.email,
-                        userId: userData.user.id
-                    }
-                });
+                localStorage.setItem("userEmail", user.email)
+                localStorage.setItem("userId", userData.user.id)
+                navigate("/TimeTracker");
             }catch (error){
                 if (error.response){
                     setMessages([...messages,{type:"alert alert-danger",msg:error.response.data}]);
