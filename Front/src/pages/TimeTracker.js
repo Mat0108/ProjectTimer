@@ -17,18 +17,19 @@ const TimeTracker = () => {
     const [refreshData, setRefreshData] = useState(false);
 
     useEffect(() => {
+        console.log(localStorage.getItem("userEmail"))
         const fetchData = async () => {
             const projects = await getAllProjects();
             const userProjects = [];
         
             projects.map(project => {
-                if(location.state.userEmail && project.admin.email === location.state.userEmail){
+                if(localStorage.getItem("userEmail") && project.admin.email === localStorage.getItem("userEmail")){
                     userProjects.push(project)
                 }
                 
                 project.groups.map(group => {
                     group.users.map(user => {
-                        if(location.state.userId && user === location.state.userId){
+                        if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
                             userProjects.push(project)
                         }
                     })
@@ -102,7 +103,7 @@ const TimeTracker = () => {
 
     const createTimer = async () => {
         toggle();
-        const newTime = await startTime(timerName, location.state.userEmail, selectedProject._id);
+        const newTime = await startTime(timerName, localStorage.getItem("userEmail"), selectedProject._id);
         setNewTimer(newTime);
     }
 
@@ -112,7 +113,7 @@ const TimeTracker = () => {
     }
 
     const continueTimer = async (timerId) => {
-        await continueTime(timerId, location.state.userEmail);
+        await continueTime(timerId, localStorage.getItem("userEmail"));
     }
 
     const getButton = (color, text, onclickvar) => {
@@ -235,7 +236,7 @@ const TimeTracker = () => {
                     </div>
                 </Menu.Items>
             </Menu>
-            <div className="overflow-y-scroll h-[37rem] mt-2">
+            <div className="overflow-y-scroll xl:h-[37rem] h-[28rem] mt-2">
                 {data.map((project, index) => {
                     return(
                         <div className="w-full px-7 pt-2" key={`project-${index}`}>
