@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Nav = () =>{
     
-    const home = <img className="mr-3"src="/images/home.png" width={30} height={30} ></img>
+    const home = <img className="mr-3"src="/images/home.png" width={30} height={30}></img>
     const [dropdown,setDropdown] = useState(false);
     
     return (
@@ -16,6 +16,9 @@ const Nav = () =>{
                     <div>TIMEROO</div>
                 </div>
                 <div className='col-start-5 relative flex justify-end mr-10'>
+                    
+                    {localStorage }
+
                 <div><button className="font-bold" onClick={()=>setDropdown(!dropdown)}>Connection &nbsp; ▼ </button></div>
                 {dropdown && <div className='absolute top-8 rigth-0 flex flex-col bg-white z-[999] rounded-b-lg text-black'>
                         <div className='hover:bg-black hover:bg-opacity-25 py-2 px-8 hover:text-white'><Link className="" to="/Login">Login</Link></div>
@@ -29,3 +32,6 @@ const Nav = () =>{
 }
 
 export default Nav;
+
+
+
