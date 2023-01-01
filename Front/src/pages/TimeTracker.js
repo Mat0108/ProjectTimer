@@ -236,7 +236,7 @@ const TimeTracker = () => {
                     </div>
                 </Menu.Items>
             </Menu>
-            <div className="overflow-y-scroll h-[37rem] mt-2">
+            <div className="overflow-y-scroll xl:h-[37rem] h-[28rem] mt-2">
                 {data.map((project, index) => {
                     return(
                         <div className="w-full px-7 pt-2" key={`project-${index}`}>
