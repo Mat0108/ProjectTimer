@@ -1,13 +1,11 @@
 import React, { useState, useEffect }  from "react";
 import { deleteTimeById, startTime, stopTime, continueTime } from "../services/time";
 import { getAllProjects } from "../services/project";
-import { useLocation } from "react-router-dom";
 import { Disclosure, Menu } from '@headlessui/react'
 
 const TimeTracker = () => {
     const [projects, setProjects] = useState([]);  
     const [selectedProject, setSelectedProject] = useState([]); 
-    const location = useLocation();
     const [newTimer, setNewTimer] = useState([]);
     const [timerName, setTimerName] = useState("");
     const [time, setTime] = useState({ h: 0, m: 0, s: 0 });
