@@ -21,6 +21,8 @@ const Login = () => {
 
                 localStorage.setItem("userEmail", user.email)
                 localStorage.setItem("userId", userData.user.id)
+                localStorage.setItem("userFirstname", user.firstname)
+                localStorage.setItem("userLastname", userData.lastname)
                 navigate("/TimeTracker");
             }catch (error){
                 if (error.response){
