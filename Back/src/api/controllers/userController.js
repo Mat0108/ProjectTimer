@@ -6,8 +6,9 @@ const bcrypt = require("bcrypt");
 // Inscription d'utilisateur
 exports.userRegister = (req, res, error) => {
     let newUser = new User(req.body);
-
-    if (newUser.password) {
+    
+// Modification inscription user : si le mdp ou le mail ou le firstname et le lastname ne sont pas remplie alors pas d'inscription possible
+    if (newUser.password && newUser.email && newUser.firstname && newUser.lastname) {
         bcrypt.hash(newUser.password, 10, (error, hash) => {
             if (error) {
                 res.status(401);
