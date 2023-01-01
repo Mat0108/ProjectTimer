@@ -19,10 +19,10 @@ const Login = () => {
                 const userData = await login(user);
                 setMessages([...messages,{type:"alert alert-success",msg:"vous êtes connecté !"}]);
 
-                localStorage.setItem("userEmail", user.email)
+                localStorage.setItem("userEmail", user.user.email)
                 localStorage.setItem("userId", userData.user.id)
-                localStorage.setItem("userFirstname", userData.firstname)
-                localStorage.setItem("userLastname", userData.lastname)
+                localStorage.setItem("userFirstname", userData.user.firstname)
+                localStorage.setItem("userLastname", userData.user.lastname)
                 navigate("/TimeTracker");
             }catch (error){
                 if (error.response){
