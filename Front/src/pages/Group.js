@@ -1,7 +1,7 @@
 import React,{useState,useEffect,useMemo}  from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
-import { GetAlluser } from '../services/auth';
+import { getAllUsers } from '../services/user';
 
 import Select from 'react-select';
 
@@ -24,7 +24,7 @@ const Group = () =>{
     },[]);
     useEffect(()=>{
         const fetchData = async() =>{
-            const users = await GetAlluser();
+            const users = await getAllUsers();
             if(users){setUsers(users.map(e=>{return {value:e.email,label:e.firstname+" "+e.lastname}}));}
 
         };
@@ -83,16 +83,16 @@ const Group = () =>{
     }
     return (<div className=''>
         <div className='grid grid-cols-3 grid-rows-group mt-5'>
-            <div className='col-span-1 text-3xl ml-5'>Information du group</div>
+            <div className='col-span-1 text-3xl ml-20'>GROUP INFORMATION</div>
             <div className="col-start-2 row-start-1 col-span-2 flex justify-end  ">
                     <div className="mr-[5%]">
                         <table className="text-lg">
                             <thead className="w-full ">
                             <tr className="border-b-2">
-                                <th className="w-[150px] text-center text-sm">Nom du groupe</th>
-                                <th className="w-[150px] text-sm">admin</th>
-                                <th className="w-[150px] text-sm">Nb d'users</th>
-                                <th className="w-[150px] text-sm">Nb de projects</th>
+                                <th className="w-[150px] text-center text-sm">Group name</th>
+                                <th className="w-[150px] text-sm">Admin</th>
+                                <th className="w-[150px] text-sm">Number of users</th>
+                                <th className="w-[150px] text-sm">Number of projects</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -103,9 +103,9 @@ const Group = () =>{
             </div>
          
             <div className="col-start-1 col-span-3 row-start-2 ml-[122px] grid grid-cols-2 grid-rows-group2 ">
-                <label className=" col-start-1 text-3xl" htmlFor="username">Utilisateurs du groupe</label>
-                <div className='col-start-2 row-start-1 mt-[2%] '>
-                    {!adduser && getButtonBorder("green","Rajouter un user",()=>setAdduser(!adduser))}
+                <label className=" col-start-1 text-2xl mt-3" htmlFor="username">LIST OF USERS</label>
+                <div className='col-start-2 row-start-1 mt-[2%]'>
+                    {!adduser && getButtonBorder("green","Add a user",()=>setAdduser(!adduser))}
                    {adduser && <div className='flex flex-row'>
                     <Select
                         defaultValue={""}
@@ -119,13 +119,13 @@ const Group = () =>{
                     {getButton("bg-green",check,()=>{setAdduser(!adduser);addUser()},"p-1 rounded-full")}                 
                     </div>}
                 </div>
-                <table className="col-start-1  table text-lg text-center mt-[1%]">
+                <table className="col-start-1 table text-lg text-center mt-[5%]">
                     <thead className="flex">
                     <tr className="flex ">
-                        <th className="w-[100px]">position</th>
-                        <th className="w-[250px]">Prénom</th>
-                        <th className="w-[150px]">Nom</th>
-                        <th className="w-[250px]">Mail</th>
+                        <th className="w-[100px]">No.</th>
+                        <th className="w-[250px]">First name</th>
+                        <th className="w-[150px]">Last name</th>
+                        <th className="w-[250px]">Email</th>
                         <th className="w-[200px]">Action</th>
             
                     </tr>
@@ -136,9 +136,9 @@ const Group = () =>{
                 </table>
             </div>
             <div className="col-start-1 col-span-3 row-start-3 ml-[122px] grid grid-cols-2 grid-rows-group2 ">
-                <label className=" col-start-1 text-3xl" htmlFor="username">Projets du groupe</label>
+                <label className=" col-start-1 text-2xl mt-3" htmlFor="username">LIST OF PROJECTS</label>
                 <div className='col-start-2 row-start-1 mt-[2%] flex flex-row gap-8'>
-                    {!addproject && getButtonBorder("green","Rajouter un project",()=>setAddproject(!addproject))}
+                    {!addproject && getButtonBorder("green","Add a project",()=>setAddproject(!addproject))}
                     {addproject && <div className='flex flex-row'>
                     <Select
                         defaultValue={""}
@@ -153,10 +153,10 @@ const Group = () =>{
                     </div>}
                   {!addproject && getButtonBorder("green","Rajouter un project")}
                 </div>
-                <table className="col-start-1  table text-lg text-center mt-[1%]">
+                <table className="col-start-1  table text-lg text-center mt-[7%]">
                     <thead className="flex">
                     <tr className="flex ">
-                        <th className="w-[100px]">position</th>
+                        <th className="w-[100px]">No.</th>
                         <th className="w-[250px]">Project</th>
                         <th className="w-[150px]"></th>
                         <th className="w-[250px]"></th>
