@@ -17,7 +17,7 @@ const Nav = () =>{
                 </div>
                 <div className='col-start-5 relative flex justify-end mr-10'>
                     
-                    {localStorage.getItem("userLastname") !== null ?
+                    {localStorage.getItem("userFirstname") !== null ?
                         <div>
                             <button className="font-bold" onClick={()=>setDropdown(!dropdown)}>{localStorage.getItem("userFirstname")} &nbsp; ▼ </button>
                             {dropdown && 
