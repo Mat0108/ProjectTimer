@@ -3,7 +3,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { getAllUsers } from '../../services/user';
 import { ModalContext } from '../../containers/Modal';
 import Select from 'react-select';
-import { saveProject } from "../../services/project";
+
+import { saveProject } from './../../services/project';
+
 const CreateProject = () => {
 
     const [admin, setAdmin] = useState();
@@ -89,6 +91,23 @@ const CreateProject = () => {
         });
     }
 
+    const CreateProject = async() =>{
+        setProject({
+            
+            admin: admin.value,
+            name:name
+
+        });
+        console.log('admin : ', admin.value)
+        console.log('name : ', name)
+        console.log(project)
+        if(admin  && name){
+            await  saveProject(project).then(e=>{console.log(e);}).catch(e=>console.log("err:",e))
+        }
+
+    }
+    
+
 
 
 
@@ -127,7 +146,7 @@ const CreateProject = () => {
                     <button onClick={() => { modalChange(<div></div>); displayModalChange(false); }} className="min-w-[30%] text-red bg-white2 border-2 border-red px-6 py-2 rounded-3xl" type="button">
                         <span className="font-[AvenirNextCyrDemi]">Annuler</span>
                     </button>
-                    <button onClick={""} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
+                    <button onClick={()=>CreateProject()} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
                         <span className="font-[AvenirNextCyrDemi] ">Confirmer</span>
                     </button>
                 </div></div>
