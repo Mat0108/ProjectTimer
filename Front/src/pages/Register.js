@@ -3,17 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import {register} from "../services/user";
 
 const Register = () => {
-    let navigate = useNavigate();
     const [user,setUser] = useState({
         
         'firstname':'',
         'lastname':'',
 
         'email':'',
-        'cf_email':'',
 
-        'password':'',
-        'cf_password':''
+        'password':''
         
     })
 
@@ -25,8 +22,7 @@ const Register = () => {
             user.password.length >= 10 && user.email !== ""){
             const res = await register(user);
             if (res.status === 200)
-            {
-                //navigate("/category/2"); 
+            { 
             }
             console.log(res);
         }else{
@@ -45,7 +41,7 @@ const Register = () => {
             {/* { messages.map(message => <div class={message.type}>
                 {message.msg}
             </div> )} */}
-            <form onSubmit={onClick}>
+            
 
                 <div className='bg-gray-gainsboro grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
                     <div className='hidden sm:block'>
@@ -72,87 +68,19 @@ const Register = () => {
                             </div>
 
                             <div className='flex flex-col text-black py-1 mb-2'>
-                                <label className="py-1">Confirm Email :</label>
-                                <input className='rounded-lg bg-gray-700 mt-2 py-2 px-4 focus:border-blue-500 focus:bg-black-800 focus:outline-none mb-2 form-control Cinput' type="text" onChange={onChangeHandler} value={user.cf_email} placeholder="Confirm email"id="cf_email"/>
-                            </div>
-
-                            <div className='flex flex-col text-black py-1 mb-2'>
                                 <label className="py-1">Password :</label>
                                 <input className='p-2 rounded-lg bg-gray-700 mt-2 py-2 px-4 focus:border-blue-500 focus:bg-gray-800 focus:outline-none form-control Cinput' type="password" onChange={onChangeHandler} value = {user.password} placeholder="Enter your password" id="password" />
                             </div>
 
-                            <div className='flex flex-col text-black py-1 mb-2'>
-                                <label className="py-1">Confirm Password :</label>
-                                <input className='p-2 rounded-lg bg-gray-700 mt-2 py-2 px-4 focus:border-blue-500 focus:bg-gray-800 focus:outline-none form-control Cinput' type="password" onChange={onChangeHandler} value = {user.cf_password} placeholder="Confirm password" id="cf_password" />
-                            </div>
-
-                            <button className='w-full my-5 py-2 bg-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg'>Sign In</button>
-                            <Link to='/Login' className="Clink text-blue-yale"><p class="underline md:underline-offset-4">I already have an account !</p></Link>
+                            <button onSubmit={onClick}
+                            className='w-full my-5 py-2 bg-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg '>Sign Up </button>
+                            <Link to='/Login' className="Clink text-blue-yale"><p className="underline md:underline-offset-4">I already have an account !</p></Link>
                             
                         </form>
                     </div>
                 </div>
-            </form>
         </div>
     )
-                    
-                    {/* <div class="col-2">
-                        <label class="Rlabel" for="firstname">Firstname</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.firstname} class="form-control Rinput" placeholder="Enter your firstname" id="firstname"></input>
-                        </div>
-                    
-
-                        <div class="col-2">
-                        <label class="Rlabel" for="lastname">Lastname</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.lastname} class="form-control Rinput" placeholder="Enter your lastname"  id="lastname"></input>
-                    </div>
-
-
-                    <div class="col-2">
-                        <label class="Rlabel" for="email">Email</label>
-                        </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.email} class="form-control Rinput" placeholder="Enter your email"  id="email"></input>
-                    </div>
-
-
-                    <div class="col-2">
-                        <label class="Rlabel" for="cf_email">Confirm Email</label>
-                        </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.cf_email} class="form-control Rinput" placeholder="Confirm your email"  id="cf_email"></input>
-                    </div>
-
-                    
-                    <div class="col-2">
-                        <label class="Rlabel" for="password">Password</label>
-                        </div>
-                    <div class="col-10">
-                        <input type="password" onChange={onChangeHandler} value = {user.password} class="form-control Rinput"  placeholder="Enter your password"  id="password"></input>
-                    </div>
-
-
-                    <div class="col-2">
-                        <label class="Rlabel" for="cf_password">Confirm Password</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="password" onChange={onChangeHandler} value = {user.cf_password} class="form-control Rinput" placeholder="Confirm your password" id="cf_password"></input>
-                    </div>
-
-
-                    <button className='w-full my-5 py-2 bg-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg'>Sign Up</button>
-
-                    <Link to='/Login' class="Rlink">Login</Link> */}
-
-
-                //</div>
-            //</form>
-//             </div>
-//     )
     
 }
    
