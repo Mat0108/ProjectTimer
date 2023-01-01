@@ -95,64 +95,6 @@ const Register = () => {
             </form>
         </div>
     )
-                    
-                    {/* <div class="col-2">
-                        <label class="Rlabel" for="firstname">Firstname</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.firstname} class="form-control Rinput" placeholder="Enter your firstname" id="firstname"></input>
-                        </div>
-                    
-
-                        <div class="col-2">
-                        <label class="Rlabel" for="lastname">Lastname</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.lastname} class="form-control Rinput" placeholder="Enter your lastname"  id="lastname"></input>
-                    </div>
-
-
-                    <div class="col-2">
-                        <label class="Rlabel" for="email">Email</label>
-                        </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.email} class="form-control Rinput" placeholder="Enter your email"  id="email"></input>
-                    </div>
-
-
-                    <div class="col-2">
-                        <label class="Rlabel" for="cf_email">Confirm Email</label>
-                        </div>
-                    <div class="col-10">
-                        <input type="text" onChange={onChangeHandler} value = {user.cf_email} class="form-control Rinput" placeholder="Confirm your email"  id="cf_email"></input>
-                    </div>
-
-                    
-                    <div class="col-2">
-                        <label class="Rlabel" for="password">Password</label>
-                        </div>
-                    <div class="col-10">
-                        <input type="password" onChange={onChangeHandler} value = {user.password} class="form-control Rinput"  placeholder="Enter your password"  id="password"></input>
-                    </div>
-
-
-                    <div class="col-2">
-                        <label class="Rlabel" for="cf_password">Confirm Password</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="password" onChange={onChangeHandler} value = {user.cf_password} class="form-control Rinput" placeholder="Confirm your password" id="cf_password"></input>
-                    </div>
-
-
-                    <button className='w-full my-5 py-2 bg-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg'>Sign Up</button>
-
-                    <Link to='/Login' class="Rlink">Login</Link> */}
-
-
-                //</div>
-            //</form>
-//             </div>
-//     )
     
 }
    
