@@ -16,7 +16,7 @@ import './index.css';
 import { ModalProvider } from "./containers/Modal";
 const App =() => {
   function getPage(elem){
-    return <div className='relative w-full h-[calc(100%-50px)] flex flex-row'> 
+    return <div className='relative w-full h-[calc(100%-50px)] flex flex-row' style={{zoom: "80%"}}> 
       <div className='w-[250px] h-full flex '>{<Menu />}</div>
       <div className='w-[calc(100%-250px)] h-full bg-grey-circle rounded-tl-[30px]'>
       {elem}
