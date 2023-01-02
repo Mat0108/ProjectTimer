@@ -14,9 +14,8 @@ const Nav = () =>{
 // LOGOUT 
     const Logout = async () => {
 
-        const [user,setUser] = useState({
-            'email':'',
-            'password':''
+        const [user] = useState({
+            'userId':''
         });
         const userData = await logout(user);
         let navigate = useNavigate();
