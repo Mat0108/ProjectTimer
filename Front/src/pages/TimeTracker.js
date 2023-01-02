@@ -100,14 +100,30 @@ const TimeTracker = () => {
     }
 
     const createTimer = async () => {
-        toggle();
-        const newTime = await startTime(timerName, localStorage.getItem("userEmail"), selectedProject._id);
-        setNewTimer(newTime);
+        console.log(timerName)
+        if(timerName !== "" && selectedProject.length !== 0){
+            console.log(timerName + "ok")
+            toggle();
+            const newTime = await startTime(timerName, localStorage.getItem("userEmail"), selectedProject._id);
+            setNewTimer(newTime);
+        }
+        else if(timerName === "" && selectedProject.length === 0){
+            alert("You must enter what you are working at the moment and select a project!")
+        }
+        else if(timerName === "" && selectedProject.length !== 0){
+            alert("You must enter what you are working at the moment!")
+        }
+        else if(timerName !== "" && selectedProject.length === 0){
+            alert("You must select a project!")
+        }
+       
     }
 
     const stopTimer = async (timerId) => {
         reset();
         await stopTime(timerId);
+        setTimerName("");
+        setRefreshData(!refreshData);
     }
 
     const continueTimer = async (timerId) => {
@@ -147,58 +163,60 @@ const TimeTracker = () => {
 
     return (
         <div>
-            <div className="mx-7 my-12 grid xl:grid-cols-9 xl:grid-rows-1 grid-cols-2 grid-rows-3 gap-y-7 gap-x-3 bg-white px-5 py-4 grid-rows-1">
-                <div className="xl:col-span-3 col-span-2">
-                    <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-full" id="timerName" onChange={handleChange} value={timerName}/>
-                </div>
-        
-                <div className="flex flex-row col-span-3">
-                    <Menu as="div" className="relative inline-block text-left">
-                        <div>
-                            <Menu.Button className="inline-flex w-full justify-center text-green rounded-md pt-3 ml-5 px-4 py-2 text-sm font-medium text-white hover:text-orange">
-                                {add} &nbsp; <span>Project</span>
-                            </Menu.Button>
+            <div className="mx-7 my-12 grid xl:grid-cols-12 xl:grid-rows-1 bg-white px-5 py-4">
+                <form method="POST" className="flex flex-row xl:col-span-10 xl:row-span-1">
+                    <div className="grid xl:grid-cols-12 xl:row-span-1 xl:grid-rows-1 grid-cols-12 grid-rows-3">
+                        <div className="xl:col-span-7 xl:row-span-1 col-span-12 row-span-1 flex flex-wrap">
+                            <input placeholder={"What are you working on at the moment ?"} className="border px-5 py-3 rounded-xl w-screen" id="timerName" onChange={handleChange} value={timerName} required/>
                         </div>
-                    
-                        <Menu.Items className="absolute left-0 mt-2 ml-12 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <div className="px-1 py-1 ">
-                                {projects.map((project, index) => {
-                                    return(
-                                        <Menu.Item key={`project-${index}`}>
-                                            <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-lightgrey hover:text-white" onClick={() => {setSelectedProject(project)}}>
-                                                {project.name}
-                                            </button>
-                                        </Menu.Item>
-                                    )}
-                                )}
-                            </div>
-                        </Menu.Items>
-                    </Menu>
-                    
-                    {selectedProject.length !== 0 ?
-                        <span className="ml-10 text-sm py-3 font-bold text-pink flex flex-row"> {star} &nbsp; {selectedProject.name}</span>
-                        :
-                        <span className="ml-10 text-sm py-3 font-bold text-pink flex flex-row"></span>
-                    }
-                </div>
+                
+                        <div className="flex flex-row xl:col-span-4 xl:row-span-1 col-span-9 row-span-2 my-auto">
+                            <Menu as="div" className="relative inline-block text-left">
+                                <div>
+                                    <Menu.Button className="inline-flex w-full justify-center text-green rounded-md pt-3 ml-5 px-4 py-2 text-sm font-medium text-white hover:text-orange">
+                                        {add} &nbsp; <span>Project</span>
+                                    </Menu.Button>
+                                </div>
+                            
+                                <Menu.Items className="absolute left-0 mt-2 ml-12 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div className="px-1 py-1 ">
+                                        {projects.map((project, index) => {
+                                            return(
+                                                <Menu.Item key={`project-${index}`}>
+                                                    <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-lightgrey hover:text-white" onClick={() => {setSelectedProject(project)}}>
+                                                        {project.name}
+                                                    </button>
+                                                </Menu.Item>
+                                            )}
+                                        )}
+                                    </div>
+                                </Menu.Items>
+                            </Menu>
+                            
+                            {selectedProject.length !== 0 ?
+                                <span className="ml-10 text-sm py-3 font-bold text-pink flex flex-row"> {star} &nbsp; {selectedProject.name}</span>
+                                :
+                                <span className="ml-10 text-sm py-3 font-bold text-pink flex flex-row"></span>
+                            }
+                        </div>
 
-                <div className="xl:col-span-1 col-span-1 xl:pt-3 font-bold text-right py-3 xl-py-0 mr-5 xl:mr-0">
-                    {addLeadingZeros(time)}
-                </div>
+                        <div className="xl:col-span-1 xl:row-span-1 xl:text-right xl:ml-2 xl:my-0 xl:pt-3 font-bold text-center py-3 xl:py-0 xl:mr-0 col-span-2 row-span-2 my-auto">
+                            {addLeadingZeros(time)}
+                        </div>
+                    </div>
+                </form>       
 
                 {!isActive ? 
-                    <button className="bg-green rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto" onClick={() => createTimer()}>
+                    <button type="submit" className="bg-green rounded-xl text-white font-bold w-36 h-12 xl:col-span-2 xl:row-span-1 row-span-1 mx-auto" onClick={() => createTimer()}>
                         Start
                     </button>
                     :
-                    <button className="bg-red rounded-xl text-white font-bold w-36 xl:col-span-2 col-span-1 mx-auto" onClick={() => {
-                        stopTimer(newTimer._id)
-                        setRefreshData(!refreshData)
-                    }}>
+                    <button type="submit" className="bg-red rounded-xl text-white font-bold w-36 xl:col-span-2 xl:row-span-1 row-span-1 mx-auto" onClick={() => stopTimer(newTimer._id)}>
                         Stop
                     </button>
                 }
             </div>
+            
 
 
             <Menu as="div" className="relative inline-block text-left">
@@ -271,6 +289,8 @@ const TimeTracker = () => {
                                                                     {getButton("text-red", bin, () => {
                                                                         deleteTimeById(timer._id, project._id)
                                                                         setRefreshData(!refreshData)
+                                                                        setFilteredName("Filter by project ▼")
+                                                                        
                                                                     })}
                                                                 </div>
 
