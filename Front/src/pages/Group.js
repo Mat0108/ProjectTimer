@@ -69,7 +69,7 @@ const Group = () =>{
         <td className="w-[150px] " ></td>
         <td className="w-[250px] " ></td>
         <td className='w-[200px]'> <div className='grid grid-cols-3 w-full'>
-        <div className='col-start-1'>{getButton("bg-blue",view)}</div>
+        <div className='col-start-1'>{getButton("bg-blue",view,()=>navigate(`/Projects/${item._id}`))}</div>
         <div className='col-start-2'>{getButton("bg-green",edit)}</div>
         <div className='col-start-3'>{getButton("bg-red",bin)}</div>
         </div></td>
