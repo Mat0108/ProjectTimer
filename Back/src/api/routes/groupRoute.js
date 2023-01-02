@@ -1,6 +1,9 @@
 module.exports = (server) => {
     const groupController = require("../controllers/groupController");
     const cors = require('cors');
+    
+
+
 
 server.post("/group", cors(), groupController.createGroup);
 
