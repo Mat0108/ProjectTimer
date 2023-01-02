@@ -14,6 +14,7 @@ import Menu from './pages/Menu';
 import Home from './pages/Home';
 import './index.css';
 import { ModalProvider } from "./containers/Modal";
+
 const App =() => {
   function getPage(elem){
     return <div className='relative w-full h-[calc(100%-50px)] flex flex-row' style={{zoom: "80%"}}> 
@@ -33,7 +34,12 @@ const App =() => {
             <div className='w-full'><Nav /></div> 
            
             <Routes>
-              <Route path="/" element={getPage(<TimeTracker/>)}></Route>
+              <Route path="/" element={
+                localStorage.getItem("userEmail") === "" ? 
+                    getLR(<Login />)
+                    :
+                    getPage(<TimeTracker/>)
+                }></Route>
               <Route path="/Login" element ={getLR(<Login />)}></Route>
               <Route path="/Register" element={getLR(<Register />)}></Route>
               <Route path="/Groups" element={getPage(<Groups/>)}></Route>
