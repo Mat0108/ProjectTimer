@@ -17,25 +17,38 @@ const Projects = () => {
     const [isActive, setIsActive] = useState(false);
     const [refreshData, setRefreshData] = useState(false);
 
+    console.log(localStorage.getItem("userEmail"))
+
     useEffect(() => {
         const fetchData = async () => {
             const projects = await getAllProjects();
-            setProjects(projects);
+            setProjects([])
             console.log(projects);
+
             const userProjects = [];
         
             projects.map(project => {
                 if(localStorage.getItem("userEmail") && project.admin.email === localStorage.getItem("userEmail")){
-                    userProjects.push(project)
+                    project.groups.map(group => {
+                        group.users.map(user => {
+                            if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
+                                userProjects.push(project)
+                            }
+                        })
+                    })
+                    
+                }else{
+                    project.groups.map(group => {
+                        group.users.map(user => {
+                            if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
+                                userProjects.push(project)
+                            }
+                        })
+                    })
+
                 }
                 
-                project.groups.map(group => {
-                    group.users.map(user => {
-                        if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
-                            userProjects.push(project)
-                        }
-                    })
-                })
+                
                 
             })
             setProjects(userProjects)
@@ -110,18 +123,18 @@ const Projects = () => {
 
 
         <div className='relative '>
-            <h1 className=' mb-20  text-3xl text-center mt-8'>liste des projets</h1>
+            <h1 className=' mb-20  text-3xl text-center mt-8'>LIST OF PROJECTS</h1>
 
 
 
 
 
-            <div className=' overflow-auto rounded-lg shadow '>
+            <div className=' overflow-auto rounded-lg shadow mx-5 '>
                 <table className=" w-full  ">
-                    <thead className="bg-gray-50 border-b-2 border-gray-200  ">
+                    <thead className="bg-gray-700 border-b-2 border-gray-700  ">
                         <tr className="">
 
-                            <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Nom du projet</td>
+                            <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Project name</td>
                             <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Admin</td>
 
 
@@ -151,7 +164,7 @@ const Projects = () => {
 
 
             </div>
-            <div>{getButton("absolute top-14 ml-16 bg-green hover:bg-white hover:text-green hover:border-green", "créer un projet", () => { modalChange(<CreateProject />); displayModalChange(true); })}</div>
+            <div>{getButton("absolute top-14 ml-16 bg-green hover:bg-white hover:text-green hover:border-green", "Create a project", () => { modalChange(<CreateProject />); displayModalChange(true); })}</div>
 
 
 

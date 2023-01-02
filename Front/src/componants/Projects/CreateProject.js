@@ -112,10 +112,10 @@ const CreateProject = () => {
         <>
             <div className='relative w-[500px] h-[500px] bg-gray-normal rounded-xl grid grid-rows-creategroup'>
                 <div className='row-start-1'>
-                    <h1 className='text-3xl text-center mt-2'>Créer un projet</h1>
+                    <h1 className='text-3xl text-center mt-2'>CREATE A PROJECT</h1>
                 </div>
                 <div className="row-start-2">
-                    <label className='ml-[38px]'>Nom du projet</label>
+                    <label className='ml-[38px]'>Project name :</label>
                     <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text" name="name" value={name} onChange={e=>setName(e.target.value)} />
 
                 </div>
@@ -123,10 +123,10 @@ const CreateProject = () => {
                     
                 <div className='row-start-5'><div className="space-x-5 ml-[22%]">
                     <button onClick={() => { modalChange(<div></div>); displayModalChange(false); }} className="min-w-[30%] text-red bg-white2 border-2 border-red px-6 py-2 rounded-3xl" type="button">
-                        <span className="font-[AvenirNextCyrDemi]">Annuler</span>
+                        <span className="font-[AvenirNextCyrDemi]">cancel</span>
                     </button>
                     <button onClick={()=>CreateProject()} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
-                        <span className="font-[AvenirNextCyrDemi] ">Confirmer</span>
+                        <span className="font-[AvenirNextCyrDemi] ">confirm</span>
                     </button>
                 </div></div>
             </div>
