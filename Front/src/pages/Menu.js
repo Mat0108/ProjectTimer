@@ -1,15 +1,12 @@
 import { Link } from 'react-router-dom';
+import { Group, Project, Timer } from '../componants/Image/Image';
 
-const Menu = ()=>{
-    const group = <img className="mr-3"src="/images/group.png" alt="image" width={40} height={20} ></img>
-    const project = <img className="mr-3"src="/images/project.png" alt="image" width={40} height={20} ></img>
-    const timer = <img className="mr-3"src="/images/timer.png" alt="image" width={40} height={20} ></img>
-    
+const Menu = ()=>{    
     return (
         <div className="flex flex-col text-white mt-[90%]">
-            <div><Link className="text-2xl flex hover:bg-white hover:bg-opacity-20 py-4 px-8" to="/Groups">{group} Groups </Link></div>
-            <div><Link className="text-2xl flex hover:bg-white hover:bg-opacity-20 py-4 px-8" to="/Projects">{project} Projects </Link></div>
-            <div><Link className="text-2xl flex hover:bg-white hover:bg-opacity-20 py-4 px-8" to="/TimeTracker">{timer} Time Tracker </Link></div>
+            <div><Link className="text-2xl flex hover:bg-white hover:bg-opacity-20 py-4 px-8" to="/Groups"><Group size={[40,40]}/> Groups </Link></div>
+            <div><Link className="text-2xl flex hover:bg-white hover:bg-opacity-20 py-4 px-8" to="/Projects"><Project size={[40,40]}/> Projects </Link></div>
+            <div><Link className="text-2xl flex hover:bg-white hover:bg-opacity-20 py-4 px-8" to="/TimeTracker"><Timer size={[40,40]}/> Time Tracker </Link></div>
         </div>
     )
 }
