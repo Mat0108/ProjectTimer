@@ -1,11 +1,30 @@
 import  React , { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+
+
+
 
 const Nav = () =>{
     
     const home = <img className="mr-3"src="/images/home.png" width={30} height={30}></img>
     const [dropdown,setDropdown] = useState(false);
+
+// LOGOUT 
+    const Logout = async () => {
+        let navigate = useNavigate();
+        try {
+            localStorage.setItem('token', null);
+            navigate("/Login");
+        }catch (error) {
+            console.log(error);
+        }
+    };
+
     
+
+    
+
     return (
         <nav className="px-2 bg-gray-silver text-white w-full h-[50px]">
             <div className="grid grid-cols-5 items-center  w-full h-full">
@@ -22,7 +41,7 @@ const Nav = () =>{
                             <button className="font-bold" onClick={()=>setDropdown(!dropdown)}>{localStorage.getItem("userLirstname")} &nbsp; ▼ </button>
                             {dropdown && 
                                 <div className='absolute top-8 rigth-0 flex flex-col bg-white z-[999] rounded-b-lg text-black'>
-                                    <div onClick className='hover:bg-black hover:bg-opacity-25 py-2 px-8 hover:text-white'>Logout</div>
+                                    <button onClick={Logout} className='hover:bg-black hover:bg-opacity-25 py-2 px-8 hover:text-white'>Logout</button>
                                 </div>}
                         </div>
                         :
