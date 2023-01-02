@@ -18,3 +18,6 @@ export const deleteUsertoGroup = async (groupId,users,admin) =>{
 export const createGroup = async (name,admin,users) => {
     const res = await axios.post(`http://localhost:3000/group`,{name,admin,users} )
 }
+export const deleteGroup = async(groupId,admin) =>{
+    const res = await axios.delete(`http://localhost:3000/groups/${groupId}`,{admin});
+}

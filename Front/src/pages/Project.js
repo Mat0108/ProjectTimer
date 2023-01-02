@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getProjectById, addGroupToProject } from '../services/project';
 import { getGroups, getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
 import Select from 'react-select';
+import { Check } from '../componants/Image/Image';
 
 
 const Project = () => {
@@ -78,15 +79,6 @@ const Project = () => {
     }
 
 
-
-
-    //=====================
-
-
-    const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
-    const view = <img src="/images/view.png" alt="image" width={20} height={20} ></img>
-    const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
-    const check = <img src="/images/check.png" alt="image" width={30} height={30} color="green"></img>
     function getButton(color, text, onclickvar) {
         return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
@@ -145,7 +137,7 @@ const Project = () => {
                                 classNamePrefix="select text-white"
                                 onChange={e => setListgroups(e)}
                             />
-                            {getButton("bg-green", check, () => { setAddGroup(!addgroup); addGroup() }, "p-1 rounded-full")}
+                            {getButton("bg-green", <Check size={[30,30]}/>, () => { setAddGroup(!addgroup); addGroup() }, "p-1 rounded-full")}
                         </div>}
                     </div>
 

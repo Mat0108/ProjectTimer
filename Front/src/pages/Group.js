@@ -1,12 +1,14 @@
 import React,{useState,useEffect,useMemo}  from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
 import { getAllUsers } from '../services/user';
 
 import Select from 'react-select';
+import { View, Bin, Check } from '../componants/Image/Image';
 
 const Group = () =>{
     const {groupId} = useParams();
+    let navigate = useNavigate();
     const [group, setGroup] = useState();  
     const [adduser,setAdduser] = useState(false);
     const [addproject,setAddproject] = useState();
@@ -36,16 +38,22 @@ const Group = () =>{
         setGroup(group);
     }
     const addUser = async ()=>{
-         await addUsertoGroup(groupId,{admin:"matthieubarnab@gmail.com",users:listusers.map(e=>{return e.value})}).then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
+         await addUsertoGroup(groupId,{admin:localStorage.getItem("user.email"),users:listusers.map(e=>{return e.value})}).then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
     }
     const removeUser = async (email)=>{
-        await deleteUsertoGroup(groupId,[email],"matthieubarnab@gmail.com").then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
+        await deleteUsertoGroup(groupId,[email],localStorage.getItem("user.email")).then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
     }
-    const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
-    const view = <img src="/images/view.png" alt="image" width={20} height={20} ></img>
-    const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
-    const check = <img src="/images/check.png" alt="image" width={30} height={30} color="green"></img>
-
+    
+    // const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
+    // const view = <img src="/images/view.png" alt="image" width={20} height={20} ></img>
+    // const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
+    // const check = <img src="/images/check.png" alt="image" width={30} height={30} color="green"></img>
+    
+ 
+    const view = <View size={[20,20]}/>
+    const bin = <Bin size={[20,20]} />
+    const check = <Check size={[30,30]} color={"green"}/>
+    
     const infogroup = useMemo(() => {return <>{group && <tr key={`info-00`} className="">
         <td className="text-center text-sm">{group.name}</td>
         <td className="text-center text-sm flex flex-col"><div className='text-center w-full'>{group.admin.firstname} {group.admin.lastname}</div><div className='text-center w-full'>{group.admin.email}</div></td>
@@ -69,9 +77,7 @@ const Group = () =>{
         <td className="w-[150px] " ></td>
         <td className="w-[250px] " ></td>
         <td className='w-[200px]'> <div className='grid grid-cols-3 w-full'>
-        <div className='col-start-1'>{getButton("bg-blue",view,()=>navigate(`/Projects/${item._id}`))}</div>
-        <div className='col-start-2'>{getButton("bg-green",edit)}</div>
-        <div className='col-start-3'>{getButton("bg-red",bin)}</div>
+            <div className='col-start-2'>{getButton("bg-blue",view,()=>navigate(`/Projects/${item._id}`))}</div>
         </div></td>
     </tr>)}</>},[group])
     
@@ -151,7 +157,7 @@ const Group = () =>{
                     />   
                     {getButton("bg-green",check,()=>setAddproject(!addproject),"p-1 rounded-full")}                 
                     </div>}
-                  {!addproject && getButtonBorder("green","Rajouter un project")}
+                  {!addproject && getButtonBorder("green","Create project")}
                 </div>
                 <table className="col-start-1  table text-lg text-center mt-[7%]">
                     <thead className="flex">
@@ -165,17 +171,7 @@ const Group = () =>{
                     </tr>
                     </thead>
                     <tbody className=" flex flex-col overflow-hidden hover:overflow-auto bg-gray-silver rounded-2xl divide-y max-h-[150px]" >
-                    <tr key={`vehicule-0`} >
-                        <td className="w-[100px] p-3" >0</td>
-                        <td className="w-[250px] " >test</td>
-                        <td className="w-[150px] " ></td>
-                        <td className="w-[250px] " ></td>
-                        <td className='w-[200px]'> <div className='grid grid-cols-3 w-full'>
-                        <div className='col-start-1'>{getButton("bg-blue",view)}</div>
-                        <div className='col-start-2'>{getButton("bg-green",edit)}</div>
-                        <div className='col-start-3'>{getButton("bg-red",bin)}</div>
-                        </div></td>
-                        </tr>
+ 
                     {projectgroup}
                     </tbody>                
                 </table>
