@@ -14,18 +14,15 @@ const Nav = () =>{
 // LOGOUT 
     const Logout = async () => {
 
-        const [user] = useState({
-            'userId':''
-        });
-        const userData = await logout(user);
+        const userData = await logout(localStorage.getItem("userId"));
         let navigate = useNavigate();
 
 
         try {
-            localStorage.setItem("userEmail", user.email == null);
-                localStorage.setItem("userId", userData.user.id == null);
-                localStorage.setItem("userFirstname", userData.user.firstname == null);
-                localStorage.setItem("userLastname", userData.user.lastname == null);
+            localStorage.setItem("userEmail", user.email, null);
+                localStorage.setItem("userId", userData.user.id, null);
+                localStorage.setItem("userFirstname", userData.user.firstname, null);
+                localStorage.setItem("userLastname", userData.user.lastname, null);
             navigate("/Login");
         }catch (error) {
             console.log(error);
