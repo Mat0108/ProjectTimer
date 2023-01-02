@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Rabbit } from "../componants/Image/Image";
 import {login} from "../services/user";
 
 const Login = () => {
@@ -50,7 +51,7 @@ const Login = () => {
             )}
             <div className='bg-gray-gainsboro grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
                 <div className='hidden sm:block'>
-                    <img className='w-full h-full object-cover' src="/images/rabbit.png" alt="image" />
+                    <Rabbit />
                 </div>
         
                 <div className='bg-gray flex flex-col justify-center'>

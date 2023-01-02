@@ -4,6 +4,7 @@ import { getAllProjects, deleteProjectById } from "../services/project";
 import Modal from '../componants/Modal/Modal';
 import { ModalContext } from './../containers/Modal';
 import CreateProject from "../componants/Projects/CreateProject";
+import { Bin, View } from "../componants/Image/Image";
 
 const Projects = () => {
 
@@ -63,10 +64,6 @@ const Projects = () => {
 
     }, [refreshData]);
 
-
-    const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
-    const view = <img src="/images/view.png" alt="image" width={20} height={20} ></img>
-    const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
     function getButton(color, text, onclickvar) {
         return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
@@ -120,27 +117,15 @@ const Projects = () => {
 
 
         {displayModal && <div className={`fixed inset-0 z-[99999] justify-center h-full w-full `}>{DriverModal}</div>}
-
-
         <div className='relative '>
             <h1 className=' mb-20  text-3xl text-center mt-8'>LIST OF PROJECTS</h1>
-
-
-
-
-
             <div className=' overflow-auto rounded-lg shadow mx-5 '>
                 <table className=" w-full  ">
                     <thead className="bg-gray-700 border-b-2 border-gray-700  ">
                         <tr className="">
-
                             <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Project name</td>
                             <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Admin</td>
-
-
                             <td className='p-3 text-sm front-semibold tracking-wide text-center'>Action</td>
-
-
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100  " >
@@ -152,9 +137,8 @@ const Projects = () => {
 
 
                             <td className='px-4 py-2'><div className='grid grid-cols-2 '>
-                                <div className='col-start-1'>{getButton("bg-blue", view, () => navigate(`/Projects/${item._id}`))}</div>
-                               
-                                <div className='col-start-2'>{getButton("bg-red", bin,()=>deleteProject(item._id))}</div>
+                                <div className='col-start-1'>{getButton("bg-blue",<View size={[20,20]}/>, () => navigate(`/Projects/${item._id}`))}</div>
+                                <div className='col-start-2'>{getButton("bg-red", <Bin size={[20,20]}/>,()=>deleteProject(item._id))}</div>
                             </div></td>
 
 

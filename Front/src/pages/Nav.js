@@ -1,6 +1,7 @@
 import  React , { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {logout} from "../services/user";
+import { Home } from './../componants/Image/Image';
 
 
 
@@ -8,7 +9,6 @@ import {logout} from "../services/user";
 
 const Nav = () =>{
     
-    const home = <img className="mr-3"src="/images/home.png" width={30} height={30}></img>
     const [dropdown,setDropdown] = useState(false);
 
 // Fonction LOGOUT
@@ -31,7 +31,7 @@ let navigate = useNavigate();
         <nav className="px-2 bg-gray-silver text-white w-full h-[50px]">
             <div className="grid grid-cols-5 items-center  w-full h-full">
                 <div className='col-start-1 col-span-2 ml-5 flex flex-row gap-4'>
-                    <div><Link className="" to="/">{home} </Link></div>
+                    <div><Link className="" to="/"><Home size={[20,20]} /> </Link></div>
                 </div>
                 <div className='col-start-3 flex flex-row gap-4 font-bold ml-20'>
                     <div>TIMEROO</div>
