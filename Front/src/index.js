@@ -33,7 +33,12 @@ const App =() => {
             <div className='w-full'><Nav /></div> 
            
             <Routes>
-              <Route path="/" element={getPage(<TimeTracker/>)}></Route>
+              <Route path="/" element={
+                localStorage.getItem("userEmail") === "" ? 
+                    getLR(<Login />)
+                    :
+                    getPage(<TimeTracker/>)
+                }></Route>
               <Route path="/Login" element ={getLR(<Login />)}></Route>
               <Route path="/Register" element={getLR(<Register />)}></Route>
               <Route path="/Groups" element={getPage(<Groups/>)}></Route>
