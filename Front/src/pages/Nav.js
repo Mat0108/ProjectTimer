@@ -11,27 +11,21 @@ const Nav = () =>{
     const home = <img className="mr-3"src="/images/home.png" width={30} height={30}></img>
     const [dropdown,setDropdown] = useState(false);
 
-// LOGOUT 
+// Fonction LOGOUT
+let navigate = useNavigate(); 
     const Logout = async () => {
 
-        await logout(localStorage.getItem("userId"));
-        let navigate = useNavigate();
-
-
         try {
-            localStorage.setItem("userEmail", null);
-                localStorage.setItem("userId", null);
-                localStorage.setItem("userFirstname", null);
-                localStorage.setItem("userLastname", null);
+            await logout(localStorage.getItem("userId"));
+            localStorage.setItem("userEmail", '');
+                localStorage.setItem("userId", '');
+                localStorage.setItem("userFirstname", '');
+                localStorage.setItem("userLastname", '');
             navigate("/Login");
         }catch (error) {
             console.log(error);
         }
     };
-
-    
-
-    
 
     return (
         <nav className="px-2 bg-gray-silver text-white w-full h-[50px]">
@@ -43,13 +37,13 @@ const Nav = () =>{
                     <div>TIMEROO</div>
                 </div>
                 <div className='col-start-5 relative flex justify-end mr-10'>
-                    
-                    {localStorage.getItem("userFirstname") !== null ?
+                    {console.log(localStorage.getItem("userLastname"))}
+                    {localStorage.getItem("userLastname") !== '' ?
                         <div>
-                            <button className="font-bold" onClick={()=>setDropdown(!dropdown)}>{localStorage.getItem("userFirstname")} &nbsp; ▼ </button>
+                            <button className="font-bold" onClick={()=>setDropdown(!dropdown)}>{localStorage.getItem("userLastname")} &nbsp; ▼ </button>
                             {dropdown && 
                                 <div className='absolute top-8 rigth-0 flex flex-col bg-white z-[999] rounded-b-lg text-black'>
-                                    <button onClick={Logout} className='hover:bg-black hover:bg-opacity-25 py-2 px-8 hover:text-white'>Logout</button>
+                                    <div onClick={Logout} className='hover:bg-black hover:bg-opacity-25 py-2 px-8 hover:text-white'>Logout</div>
                                 </div>}
                         </div>
                         :
