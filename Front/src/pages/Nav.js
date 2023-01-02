@@ -1,5 +1,6 @@
 import  React , { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {logout} from "../services/user";
 
 
 
@@ -12,9 +13,20 @@ const Nav = () =>{
 
 // LOGOUT 
     const Logout = async () => {
+
+        const [user,setUser] = useState({
+            'email':'',
+            'password':''
+        });
+        const userData = await logout(user);
         let navigate = useNavigate();
+
+
         try {
-            localStorage.setItem('token', null);
+            localStorage.setItem("userEmail", user.email == null);
+                localStorage.setItem("userId", userData.user.id == null);
+                localStorage.setItem("userFirstname", userData.user.firstname == null);
+                localStorage.setItem("userLastname", userData.user.lastname == null);
             navigate("/Login");
         }catch (error) {
             console.log(error);
