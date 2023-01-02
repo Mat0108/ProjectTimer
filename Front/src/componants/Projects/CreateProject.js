@@ -10,7 +10,7 @@ const CreateProject = () => {
 
     const [admin, setAdmin] = useState();
     const [users, setUsers] = useState();
-    const [name, setName] = useState();
+    const [name, setName] = useState([]);
     
     const [listusers, setListusers] = useState([]);
     const [project, setProject] = useState([
@@ -92,18 +92,13 @@ const CreateProject = () => {
     }
 
     const CreateProject = async() =>{
-        setProject({
-            
-            admin: localStorage.getItem("userId"),
-            name:name
-
-        });
-        console.log('admin : ', admin.value)
-        console.log('name : ', name)
-        console.log(project)
-        if(admin  && name){
-            await  saveProject(project).then(e=>{console.log(e);}).catch(e=>console.log("err:",e))
-        }
+       
+       
+        
+            await  saveProject(localStorage.getItem("userEmail"),name);
+            displayModalChange(false);
+            window.location.reload()
+        
 
     }
     

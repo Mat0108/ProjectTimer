@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllProjects } from "../services/project";
+import { getAllProjects, deleteProjectById } from "../services/project";
 import Modal from '../componants/Modal/Modal';
 import { ModalContext } from './../containers/Modal';
 import CreateProject from "../componants/Projects/CreateProject";
@@ -15,16 +15,40 @@ const Projects = () => {
     let navigate = useNavigate();
     const [time, setTime] = useState({ h: 0, m: 0, s: 0 });
     const [isActive, setIsActive] = useState(false);
+    const [refreshData, setRefreshData] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             const projects = await getAllProjects();
             setProjects(projects);
             console.log(projects);
+            const userProjects = [];
+        
+            projects.map(project => {
+                if(localStorage.getItem("userEmail") && project.admin.email === localStorage.getItem("userEmail")){
+                    userProjects.push(project)
+                }
+                
+                project.groups.map(group => {
+                    group.users.map(user => {
+                        if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
+                            userProjects.push(project)
+                        }
+                    })
+                })
+                
+            })
+            setProjects(userProjects)
+           
         };
+        
 
         fetchData();
-    }, []);
+        if (refreshData) {
+            fetchData();
+        }
+
+    }, [refreshData]);
 
 
     const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
@@ -49,55 +73,28 @@ const Projects = () => {
     }, [displayModal]);
 
 
+    const deleteProject = async (idProject) => {
 
-    function toggle() {
-        setIsActive(!isActive);
+        console.log(localStorage.getItem("userEmail"))
+        
+
+        await deleteProjectById(idProject, localStorage.getItem("userEmail"));
+        
+
+        setRefreshData(true); //refresh data
+
+
     }
 
-    function reset() {
-        setTime({ h: 0, m: 0, s: 0 });
-        setIsActive(false);
-    }
+    const handleDelete = (id) => {
+        // Call the delete function here
+        deleteProject(id);
+      };
 
-    useEffect(() => {
-        let interval = null;
-        if (isActive) {
-            interval = setInterval(() => {
-                setTime(prevTime => {
-                    let { h, m, s } = prevTime;
-                    s++;
-                    if (s === 60) {
-                        m++;
-                        s = 0;
-                    }
-                    if (m === 60) {
-                        h++;
-                        m = 0;
-                    }
-                    return { h, m, s };
-                });
-            }, 1000);
-        } else if (!isActive && time.s !== 0) {
-            clearInterval(interval);
-        }
-        return () => clearInterval(interval);
-    }, [isActive, time]);
 
-    function addLeadingZeros(time) {
-        let h = time.h;
-        let m = time.m;
-        let s = time.s;
-        if (h < 10) {
-            h = `0${h}`;
-        }
-        if (m < 10) {
-            m = `0${m}`;
-        }
-        if (s < 10) {
-            s = `0${s}`;
-        }
-        return `${h}:${m}:${s}`;
-    }
+
+
+
 
 
 
@@ -107,72 +104,56 @@ const Projects = () => {
 
 
     return (<div >
-        
+
 
         {displayModal && <div className={`fixed inset-0 z-[99999] justify-center h-full w-full `}>{DriverModal}</div>}
 
 
-        <div className='relative text-white'>
-            <h1 className='text-3xl text-center mt-2'>liste des projets</h1>
-
-             
+        <div className='relative '>
+            <h1 className=' mb-20  text-3xl text-center mt-8'>liste des projets</h1>
 
 
 
-            <div className='h-[300px] w-full '>
-                <table className="ml-[122px] table ">
-                    <thead className="flex">
-                        <tr className="flex">
-
-                            <td className='w-[200px] text-center'>Nom du projet</td>
-
-                            <td className='w-[300px] text-center'>Admin</td>
 
 
-                            <td className='w-[200px] text-center'>Action</td>
-                            <td className='w-[200px] text-center'>Timer</td>
+            <div className=' overflow-auto rounded-lg shadow '>
+                <table className=" w-full  ">
+                    <thead className="bg-gray-50 border-b-2 border-gray-200  ">
+                        <tr className="">
+
+                            <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Nom du projet</td>
+                            <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Admin</td>
+
+
+                            <td className='p-3 text-sm front-semibold tracking-wide text-center'>Action</td>
+
 
                         </tr>
                     </thead>
-                    <tbody className="max-h-[200px] flex flex-col overflow-hidden hover:overflow-auto bg-gray-silver rounded-2xl dark:bg-charleston-green divide-y" >
-                        {projects && projects.map((item, index) => <tr key={`project-${index}`} >
+                    <tbody className="divide-y divide-gray-100  " >
+                        {projects && projects.map((item, index) => <tr className="bg-white    mb-2" key={`project-${index}`} >
 
-                            <td className='w-[200px] text-center'>{item.name}</td>
-                            <td className='w-[300px] text-center'><div className='flex flex-col'><div>{item.admin.firstname} {item.admin.lastname}</div><div>{item.admin.email}</div></div></td>
+                            <td className=' px-4 py-2 text-center '>{item.name}</td>
+                            <td className=' px-4 py-2 text-center'><div className='flex flex-col'><div>{item.admin.firstname} {item.admin.lastname}</div><div>{item.admin.email}</div></div></td>
 
 
 
-                            <td className='w-[200px]'><div className='grid grid-cols-3 '>
+                            <td className='px-4 py-2'><div className='grid grid-cols-2 '>
                                 <div className='col-start-1'>{getButton("bg-blue", view, () => navigate(`/Projects/${item._id}`))}</div>
-                                <div className='col-start-2'>{getButton("bg-green", edit)}</div>
-                                <div className='col-start-3'>{getButton("bg-red", bin)}</div>
+                               
+                                <div className='col-start-2'>{getButton("bg-red", bin,()=>deleteProject(item._id))}</div>
                             </div></td>
 
-                            <td className='w-[200px]'><div className='grid grid-cols-3 '>
 
-                                <div className="app">
-                                    <div className="time">{addLeadingZeros(time)}</div>
-                                    <div className="row">
-                                        <button className={`button button-primary button-primary-${isActive ? 'active' : 'inactive'}`} onClick={toggle}>
-                                            {isActive ? 'Pause' : 'Start'}
-                                        </button>
-                                        <button className="button" onClick={reset}>
-                                            Reset
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                            </div></td>
                         </tr>)}
                     </tbody>
                 </table>
 
 
             </div>
-            <div>{getButton("absolute top-5 left-[300px] bg-green", "créer un projet",()=>{modalChange(<CreateProject />);displayModalChange(true);})}</div>
+            <div>{getButton("absolute top-14 ml-16 bg-green hover:bg-white hover:text-green hover:border-green", "créer un projet", () => { modalChange(<CreateProject />); displayModalChange(true); })}</div>
 
-           
+
 
         </div>
 
