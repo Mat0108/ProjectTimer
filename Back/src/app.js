@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 
+//SWAGGER (Documentation)
+//const swaggerJSDoc = require('swagger-jsdoc');
+//const swaggerUi = require('swagger-ui-express');
+
 const hostname = "0.0.0.0";
 const port = 3000;
 

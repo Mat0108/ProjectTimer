@@ -108,27 +108,25 @@ exports.continueTime = (req, res) => {
             }
         }
         else {
-            let timesUpdate = result.times;
+            let newTime = new Time({
+                times: [{
+                    name: lastTime.name,
+                    date: new Date(timer.startedAt()).toDateString(),
+                    timestampTotal: new Date(timer.startedAt()).toTimeString().slice(0, 8) + ' - ' + new Date(timer.startedAt()).toTimeString().slice(0, 8),
+                    timeTotal: msToTime(timer.ms()),
+                    history: [
+                        {
+                            user: req.body.user,
+                            startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
+                            endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
+                            start: msToTime(timer.ms()),
+                            end: msToTime(timer.ms())
+                        }
+                    ]
+                }]
+            });
 
-            let newTime = {
-                name: lastTime.name,
-                date: new Date(timer.startedAt()).toDateString(),
-                timestampTotal: new Date(timer.startedAt()).toTimeString().slice(0, 8) + ' - ' + new Date(timer.startedAt()).toTimeString().slice(0, 8),
-                timeTotal: msToTime(timer.ms()),
-                history: [
-                    {
-                        user: req.body.user,
-                        startTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
-                        endTimestamp: new Date(timer.startedAt()).toTimeString().slice(0, 8),
-                        start: msToTime(timer.ms()),
-                        end: msToTime(timer.ms())
-                    }
-                ]
-            };
-
-            timesUpdate.push(newTime);
-        
-            Time.findByIdAndUpdate(req.params.timeId, {times: timesUpdate}, {new: true}, (error, result) => {
+            newTime.save((error, time) => {
                 if(error){
                     res.status(401);
                     console.log(error);
@@ -136,9 +134,9 @@ exports.continueTime = (req, res) => {
                 }
                 else{
                     res.status(200);
-                    res.json(result);
+                    res.json(time);
                 }
-            })
+            });
         }
     })
 }
@@ -191,42 +189,44 @@ exports.stopTime = (req, res) => {
                     }
                 }
                 else{
-                    let timeHistory = lastTime.history;
-                    let historyLength = lastTime.history.length;
+                    Time.find({}, (error, result) => {
+                        let lastResult = result[result.length-1];
+                        let lastResultTimes = lastResult.times[result[result.length-1].times.length-1];
+                        let lastResultHistory = lastResultTimes.history[result[result.length-1].times[result[result.length-1].times.length-1].history.length-1];
 
-                    let newEnd = timeToMs(timeHistory[historyLength-1].end)+timer.ms()
-
-                    if(timeHistory[historyLength-1]){
-                        timeHistory[historyLength-1] = {
-                            startTimestamp: timeHistory[historyLength-1].startTimestamp,
-                            endTimestamp: new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
-                            start: timeHistory[historyLength-1].start,
-                            end: msToTime(newEnd),
-                            user: timeHistory[historyLength-1].user
-                        }
-
-                        let timeUpdate = {
-                            name: lastTime.name,
-                            date: lastTime.date + " - " + new Date(timer.stoppedAt()).toDateString(),
-                            timestampTotal: lastTime.timestampTotal.slice(0,8) + ' - ' + new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
-                            timeTotal: msToTime(newEnd),
-                            history: timeHistory
-                        }
-
-                        result.times[result.times.length-1] = timeUpdate
-            
-                        Time.findByIdAndUpdate(req.params.timeId, {times: result.times}, {new: true}, (error, result) => {
-                            if(error){
-                                res.status(401);
-                                console.log(error);
-                                res.json({message: "Rêquete invalide"});
+                        if(lastResultHistory){
+                            lastResultHistory = {
+                                user: lastResultHistory.user,
+                                startTimestamp: lastResultHistory.startTimestamp,
+                                endTimestamp: new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
+                                start: lastResultHistory.start,
+                                end: msToTime(timer.ms()),
                             }
-                            else{
-                                res.status(200);
-                                res.json(result);
+
+                            let timeUpdate = {
+                                name: lastResultTimes.name,
+                                date: new Date(timer.stoppedAt()).toDateString(),
+                                timestampTotal: lastResultTimes.timestampTotal.slice(0,8) + ' - ' + new Date(timer.stoppedAt()).toTimeString().slice(0, 8),
+                                timeTotal: msToTime(timer.ms()),
+                                history: [lastResultHistory]
                             }
-                        })
-                    }
+
+                            lastResultTimes = timeUpdate
+                
+                            Time.findByIdAndUpdate(result[result.length-1]._id, {times: result[result.length-1].times}, {new: true}, (error, result) => {
+                                if(error){
+                                    res.status(401);
+                                    console.log(error);
+                                    res.json({message: "Rêquete invalide"});
+                                }
+                                else{
+                                    res.status(200);
+                                    res.json(result);
+                                }
+                            })
+                        }
+                    })
+                    
                     
                 }
 

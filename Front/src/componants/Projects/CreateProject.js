@@ -3,12 +3,15 @@ import React, { useState, useContext, useEffect } from "react";
 import { getAllUsers } from '../../services/user';
 import { ModalContext } from '../../containers/Modal';
 import Select from 'react-select';
-import { saveProject } from "../../services/project";
+
+import { saveProject } from './../../services/project';
+
 const CreateProject = () => {
 
     const [admin, setAdmin] = useState();
     const [users, setUsers] = useState();
-    const [name, setName] = useState();
+    const [name, setName] = useState([]);
+    
     const [listusers, setListusers] = useState([]);
     const [project, setProject] = useState([
         {
@@ -62,17 +65,17 @@ const CreateProject = () => {
 
     //
 
-    const handleChange = (event) => {
+    // const handleChange = (event) => {
 
-        const { name, value } = event.target;
-        setProject(prevState => ({ ...prevState, [name]: value }));
+    //     const { name, value } = event.target;
+    //     setProject(prevState => ({ ...prevState, [name]: value }));
 
-        console.log(event);
-        console.log(event.target.name);
+    //     console.log(event);
+    //     console.log(event.target.name);
 
 
 
-    };
+    // };
 
     const handleSelectedChange=(event)=>{
         setProject({
@@ -88,51 +91,47 @@ const CreateProject = () => {
         });
     }
 
+    const CreateProject = async() =>{
+       
+       
+        
+            await  saveProject(localStorage.getItem("userEmail"),name);
+            displayModalChange(false);
+            window.location.reload()
+        
+
+    }
+    
+
 
 
 
 
 
     return (
-        <><form onSubmit={handleSubmit}>
+        <>
             <div className='relative w-[500px] h-[500px] bg-gray-normal rounded-xl grid grid-rows-creategroup'>
                 <div className='row-start-1'>
-                    <h1 className='text-3xl text-center mt-2'>Créer un projet</h1>
+                    <h1 className='text-3xl text-center mt-2'>CREATE A PROJECT</h1>
                 </div>
                 <div className="row-start-2">
-                    <label className='ml-[38px]'>Nom du projet</label>
-                    <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text" name="name" value={project.name} onChange={handleNameChange} />
+                    <label className='ml-[38px]'>Project name :</label>
+                    <input className='ml-[38px] w-[420px] rounded-md text-black bg-white2 mt-2 p-2 ' type="text" name="name" value={name} onChange={e=>setName(e.target.value)} />
 
                 </div>
-                {users && <><div className="row-start-3">
-                    <label className='ml-[40px]'>Admin</label>
-                    {<Select
-
+                
                     
-
-                        options={users}
-                        className="basic-multi-select bg-gray-normal ml-[22px] w-[450px] text-black px-4 border-solid "
-                        classNamePrefix="select text-white"
-                        name="admin"
-                        value={project.admin}
-                        onChange={handleSelectedChange}
-                    />}
-                </div>
-                    <div className="row-start-4">
-                        {/* <label className='ml-[40px]'>Timer</label> */}
-
-                    </div></>}
                 <div className='row-start-5'><div className="space-x-5 ml-[22%]">
                     <button onClick={() => { modalChange(<div></div>); displayModalChange(false); }} className="min-w-[30%] text-red bg-white2 border-2 border-red px-6 py-2 rounded-3xl" type="button">
-                        <span className="font-[AvenirNextCyrDemi]">Annuler</span>
+                        <span className="font-[AvenirNextCyrDemi]">cancel</span>
                     </button>
-                    <button className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="submit">
-                        <span className="font-[AvenirNextCyrDemi] ">Confirmer</span>
+                    <button onClick={()=>CreateProject()} className="min-w-[30%] text-green bg-white2 border-2 border-green px-6 py-2 rounded-3xl " type="button">
+                        <span className="font-[AvenirNextCyrDemi] ">confirm</span>
                     </button>
                 </div></div>
             </div>
 
-        </form>
+        
         </>
     )
 
