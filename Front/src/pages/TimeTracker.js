@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from "react";
 import { deleteTimeById, startTime, stopTime, continueTime, getAllTimes } from "../services/time";
 import { getAllProjects, getProjectById, updateTimer } from "../services/project";
 import { Disclosure, Menu } from '@headlessui/react'
+import { Link } from "react-router-dom";
 
 const TimeTracker = () => {
     const [projects, setProjects] = useState([]);  
@@ -270,7 +271,7 @@ const TimeTracker = () => {
                     </div>
                 </Menu.Items>
             </Menu>
-            <div className="overflow-y-scroll xl:h-[37rem] h-[28rem] mt-2">
+            <div className="overflow-y-scroll xl:h-[36rem] h-[28rem] mt-2">
                 {data.map((project, index) => {
                     return(
                         <div className="w-full px-7" key={`project-${index}`}>
@@ -293,7 +294,7 @@ const TimeTracker = () => {
                                                                     
                                                                     <div className="col-span-1 pt-2 text-left order-2">{time.name}</div>    
                                                                     <div className="text-pink xl:col-span-6 col-span-2 pt-2 text-left xl:order-3 order-4 row-span-1 xl:my-0 my-4 flex flex-row">
-                                                                        {star} &nbsp; {project.name}
+                                                                        {star} &nbsp; <Link to={"/Projects/" + project._id}><u>{project.name}</u></Link>
                                                                     </div> 
                                                                     <div className="text-black text-opacity-40 col-span-2 xl:pt-2 xl:border-r xl:border-l border-l xl:border-0 border-t border-black-100 border-dotted xl:order-4 order-5 pt-7">{time.timestampTotal.slice(0, 5)} - {time.timestampTotal.slice(11, 16)}</div>
                                                                     <div className="font-bold text-black text-opacity-40 col-span-2 pt-2 xl:border-r border-dotted border-l gap-2 xl:order-5 order-3">{time.timeTotal.slice(0, 8)}</div>

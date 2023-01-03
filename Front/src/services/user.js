@@ -15,7 +15,7 @@ export const logout = async (userId) => {
  
 }
 export const getAllUsers = async (user) => {
-    const res = await axios.get(`http://localhost:3000/users/`);
+    const res = await axios.get(`http://localhost:3000/users`);
     return res.data;
     
 }

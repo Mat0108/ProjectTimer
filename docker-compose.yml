@@ -7,11 +7,10 @@ services:
       dockerfile: ./Front/Dockerfile
     image: projecttimer:latest
     working_dir: /home/node/app
-
     command:
       - /bin/sh
       - '-c'
-      - 'npm run start'
+      - 'npm install && npm run start'
     ports:
       - '4000:4000'
     volumes:

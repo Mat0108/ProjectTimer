@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getProjectById, addGroupToProject, deleteGrouptoProject } from '../services/project';
 import { getGroups, getGroupbyId, addUsertoGroup, deleteUsertoGroup, } from '../services/group';
 import Select from 'react-select';
+import { Check } from '../componants/Image/Image';
 
 
 const Project = () => {
@@ -157,7 +158,7 @@ const Project = () => {
                                 classNamePrefix="select text-white"
                                 onChange={e => setListgroups(e)}
                             />
-                            {getButton("bg-green", check, () => { setAddGroup(!addgroup); addGroup() }, "p-1 rounded-full")}
+                            {getButton("bg-green", <Check size={[30,30]}/>, () => { setAddGroup(!addgroup); addGroup() }, "p-1 rounded-full")}
                         </div>}
                     </div>
 
