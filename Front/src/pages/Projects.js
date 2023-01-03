@@ -147,7 +147,7 @@ const Projects = () => {
 
 
         <div className='relative '>
-            <h1 className=' mb-20  text-3xl text-center mt-8'>LIST OF PROJECTS</h1>
+            <h1 className=' mb-20  text-3xl text-center mt-8 font-bold'>LIST OF PROJECTS</h1>
 
 
 
@@ -158,11 +158,11 @@ const Projects = () => {
                     <thead className="bg-gray-700 border-b-2 border-gray-700  ">
                         <tr className="">
 
-                            <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Project name</td>
-                            <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Admin</td>
+                            <td className='p-3 text-sm front-semibold tracking-wide  text-center font-bold'>Project name</td>
+                            <td className='p-3 text-sm front-semibold tracking-wide  text-center font-bold'>Admin</td>
 
 
-                            <td className='p-3 text-sm front-semibold tracking-wide text-center'>Action</td>
+                            
 
 
                         </tr>
