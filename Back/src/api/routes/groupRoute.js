@@ -7,11 +7,17 @@ module.exports = (server) => {
 /**
  * @openapi
  * paths:
- *  /groupsbyUser:
+ *  /group:
  *   post:
  *     tags:
  *       - Group
- *     description: Welcome to swagger-jsdoc!
+ *     description: get group by id
+ *     parameters:
+ *      - in: params
+ *        name: groupId
+ *        description: id of group
+ *        schema:
+ *          type: String
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -25,13 +31,15 @@ server.post("/group", cors(), groupController.createGroup);
  *   get:
  *     tags:
  *       - Group
- *     description: Welcome to swagger-jsdoc!
+ *     description: Get all groups
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns all group.
  */
 server.get("/groups", cors(), groupController.getAllGroups);
 
+server.route("/groups/:groupId")
+.all(cors())
 /**
  * @openapi
  * paths:
@@ -39,14 +47,17 @@ server.get("/groups", cors(), groupController.getAllGroups);
  *   get:
  *     tags:
  *       - Group
- *     description: Welcome to swagger-jsdoc!
+ *     description: get group by id
+ *     parameters:
+ *      - in: params
+ *        name: groupId
+ *        description: id of group
+ *        schema:
+ *          type: String
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
  */
-
-server.route("/groups/:groupId")
-.all(cors())
 .get(groupController.getGroupById)
 
 /**
@@ -90,4 +101,17 @@ server.route("/groups/:groupId")
  *         description: Returns a mysterious string.
  */
 server.patch("/groups/:groupId/deleteUsers", cors(), groupController.deleteUsers)
+/**
+ * @openapi
+ * paths:
+ *  /groupsbyUser
+ *   patch:
+ *     tags:
+ *       - Group
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
+server.post("/groupsbyUser", cors(), groupController.getGroupByUser)
 }
