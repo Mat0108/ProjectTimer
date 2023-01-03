@@ -39,7 +39,7 @@ cd ProjectTimer/
 docker-compose up --build
 ```
 
-To see the web application, you need to wait the docker finish running. Docker finished running when you see the log below : 
+To see the web application, you need to wait the docker finish running. It might take a while for the docker to finish running. You will see the log below if docker finished running : 
 
 ```
 front            | Starting the development server...
