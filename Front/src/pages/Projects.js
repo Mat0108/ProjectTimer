@@ -175,10 +175,10 @@ const Projects = () => {
 
 
 
-                            <td className='px-4 py-2'><div className='grid grid-cols-2 '>
-                                <div className='col-start-1'>{getButton("text-blue", view, () => navigate(`/Projects/${item._id}`))}</div>
+                            <td className='px-4 py-2'><div className="flex justify-center align-center" >
+                                <div >{getButton("text-blue", view, () => navigate(`/Projects/${item._id}`))}</div>
                                
-                                <div className='col-start-2'>{getButton("text-red", bin,()=>deleteProject(item._id))}</div>
+                                <div >{getButton("text-red", bin,()=>deleteProject(item._id))}</div>
                             </div></td>
 
 
@@ -188,7 +188,7 @@ const Projects = () => {
 
 
             </div>
-            <div>{getButton("absolute top-14 ml-16 bg-green hover:bg-white hover:text-green hover:border-green", "Create a project", () => { modalChange(<CreateProject />); displayModalChange(true); })}</div>
+            <div>{getButton("absolute text-white top-14 ml-16 bg-green hover:bg-white hover:text-green hover:border-green", "Create a project", () => { modalChange(<CreateProject />); displayModalChange(true); })}</div>
 
 
 
