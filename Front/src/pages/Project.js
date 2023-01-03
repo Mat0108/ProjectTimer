@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProjectById, addGroupToProject } from '../services/project';
-import { getGroups, getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
+import { getProjectById, addGroupToProject , deleteGrouptoProject } from '../services/project';
+import { getGroups, getGroupbyId, addUsertoGroup, deleteUsertoGroup,} from '../services/group';
 import Select from 'react-select';
 
 
 const Project = () => {
     const { projectId } = useParams();
     const [project, setProject] = useState([
-       
+
     ]);
     const [addgroup, setAddGroup] = useState(false);
     const [groups, setGroups] = useState([]);
@@ -39,30 +39,30 @@ const Project = () => {
     useEffect(() => {
         const fetchData = async () => {
             const groups = await getGroups();
-           
+
             console.log(groups)
 
             const userGroups = [];
-        
+
             groups.map(group => {
                 console.log(group.name)
-                if(localStorage.getItem("userEmail") && group.admin.email === localStorage.getItem("userEmail")){
+                if (localStorage.getItem("userEmail") && group.admin.email === localStorage.getItem("userEmail")) {
                     userGroups.push(group)
                 }
-                
-                
-                
+
+
+
             })
 
-            if(groups){setGroups(groups.map(e=>{return {value:e._id,label:e.name}}));}
-            
+            if (groups) { setGroups(groups.map(e => { return { value: e._id, label: e.name } })); }
+
             console.log(userGroups)
 
-            
-           
+
+
         };
 
-      
+
         fetchData();
         if (refreshData) {
             fetchData();
@@ -77,6 +77,13 @@ const Project = () => {
         await addGroupToProject(projectId, localStorage.getItem("userEmail"), listgroups.map(e => { return e.value }));
         setRefreshData(true)
 
+    }
+
+    const removeGroup = async (id) => {
+        const groups = [];
+        groups.push(id)
+        await deleteGrouptoProject(projectId, localStorage.getItem("userEmail"), groups)
+        setRefreshData(true)
     }
 
 
@@ -98,8 +105,7 @@ const Project = () => {
         return <div><button className={`p-2 border-2 bg-white border-${color} text-${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
 
-    var name =project.name;
-    var admin =project.admin
+
 
 
 
@@ -112,59 +118,41 @@ const Project = () => {
                 <div className='text-2xl'>PROJECT INFORMATION </div>
                 <div className="  ">
                     <div className="my-7">
-                        {/* <table className="text-lg">
-                            <thead className="w-full ">
-                                <tr className="border-b-2">
-                                    <th className="w-[150px] text-center text-sm">Project name</th>
-                                    <th className="w-[150px] text-sm">admin</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {project.length!==0 && <tr key={`info-00`}>
-                                    <td className="text-center text-sm">{project.name}</td>
-                                    <td className="text-center text-sm flex flex-col"><div className='text-center w-full'>{project.admin.firstname} {project.admin.lastname}</div><div className='text-center w-full'>{project.admin.email}</div></td>
 
 
 
-                                </tr>}
-                            </tbody>
-                        </table> */}
+                        {project.length !== 0 &&
+                            <div key={`info-01`} className="my-4">
+                                <h3 className="text">Nom du projet : {project.name}</h3>
 
 
-      {project.length!==0 &&
-        <div key={`info-01`} className="my-4">
-        <h3  className="text">Nom du projet : {project.name}</h3>
-        
-        
-      </div>
-      }
-      {project.length!==0 &&
-        <div key={`info-00`} className="my-4">
-        
-        <h3  className="text ">Admin : {project.admin.email}</h3>
-        
-      </div>
-      }
-    
+                            </div>
+                        }
+                        {project.length !== 0 &&
+                            <div key={`info-00`} className="my-4">
+
+                                <h3 className="text ">Admin : {project.admin.email}</h3>
+
+                            </div>
+                        }
+
                     </div>
 
 
                 </div>
 
-                {/* <div></div> */}
 
                 <div className="ml-2 my-7">
                     <label className=" col-start-1 text-2xl mt-3" htmlFor="username">LIST OF GROUPS</label>
                     <div className='col-start-2 row-start-1 mt-[2%]'>
                         {!addgroup && getButtonBorder("green", "Add a group", () => setAddGroup(!addgroup))}
-                        
+
                         {addgroup && <div className='flex flex-row'>
                             <Select
                                 defaultValue={""}
                                 isMulti
                                 name="colors"
-                                
+
                                 options={groups}
                                 className="basic-multi-select ml-[22px] w-[300px] text-black px-4 border-solid "
                                 classNamePrefix="select text-white"
@@ -177,29 +165,38 @@ const Project = () => {
                 </div>
 
                 <div className=' overflow-auto rounded-lg shadow mx-5 '>
-                <table className="w-full text-lg text-center">
-                    <thead className=" bg-gray-700 border-b-2 border-gray-700">
-                        <tr className="">
-                            <th className="p-3 text-sm front-semibold tracking-wide  text-center ">No.</th>
-                            <th className="p-3 text-sm front-semibold tracking-wide  text-center ">Group name</th>
-                           
+                    <table className="w-full text-lg text-center">
+                        <thead className=" bg-gray-700 border-b-2 border-gray-700">
+                            <tr className="">
+                                <th className="p-3 text-sm front-semibold tracking-wide  text-center ">No.</th>
+                                <th className="p-3 text-sm front-semibold tracking-wide  text-center ">Group name</th>
+                                <th className="p-3 text-sm front-semibold tracking-wide  text-center ">Action</th>
 
 
-                        </tr>
-                    </thead>
-                    <tbody  className="divide-y divide-gray-100  "  >
-                        
-                        <>{project.groups && project.groups.map((item, index) => <tr className="bg-white    mb-2"  key={`vehicule-${index}`} > <td className="w-[100px] p-3" >{index}</td>
-                            <td className="w-[250px] " >{item.name}</td>
-                            <td className="w-[150px] " ></td>
-                            <td className="w-[250px] " ></td>
 
-                        </tr>)}</>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100  "  >
 
-                        
+                            <>{project.groups && project.groups.map((item, index) => <tr className="bg-white    mb-2" key={`vehicule-${index}`} > <td className="w-[100px] p-3" >{index}</td>
+                                <td className="w-[250px] " >{item.name}</td>
+                                <td className="w-[150px] " >
 
-                    </tbody>
-                </table>
+                                {getButton("text-red", bin, () => {
+                                                                        removeGroup(item._id)
+                                                                        setRefreshData(!refreshData)
+                                                                       
+                                                                        
+                                                                    })}
+                                </td>
+                                
+
+                            </tr>)}</>
+
+
+
+                        </tbody>
+                    </table>
                 </div>
 
 
