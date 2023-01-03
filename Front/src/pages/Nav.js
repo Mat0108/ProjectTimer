@@ -43,7 +43,7 @@ let navigate = useNavigate();
                             <button className="font-bold" onClick={()=>setDropdown(!dropdown)}>{localStorage.getItem("userFirstname")} &nbsp; ▼ </button>
                             {dropdown && 
                                 <div className='absolute top-8 rigth-0 flex flex-col bg-white z-[999] rounded-b-lg text-black'>
-                                    <div onClick={Logout} className='hover:bg-black hover:bg-opacity-25 py-2 px-8 hover:text-white'>Logout</div>
+                                    <div onClick={Logout} className='hover:bg-black hover:bg-opacity-25 py-2 px-8 hover:text-white cursor-pointer'>Logout</div>
                                 </div>}
                         </div>
                         :
