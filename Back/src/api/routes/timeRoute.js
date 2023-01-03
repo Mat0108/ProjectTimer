@@ -10,7 +10,6 @@ module.exports = (server) => {
  *   get:
  *     tags:
  *       - Timer
- *     description: Welcome to swagger-jsdoc!
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -27,7 +26,6 @@ server.route("/times/:timeId")
  *   get:
  *     tags:
  *       - Timer
- *     description: Welcome to swagger-jsdoc!
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -41,7 +39,6 @@ server.route("/times/:timeId")
  *   delete:
  *     tags:
  *       - Timer
- *     description: Welcome to swagger-jsdoc!
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -55,7 +52,6 @@ server.route("/times/:timeId")
  *   post:
  *     tags:
  *       - Timer
- *     description: Welcome to swagger-jsdoc!
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -69,7 +65,6 @@ server.post("/time", cors(), timeController.startTime);
  *   patch:
  *     tags:
  *       - Timer
- *     description: Welcome to swagger-jsdoc!
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -83,7 +78,6 @@ server.patch("/times/:timeId/stop", cors(), timeController.stopTime);
  *   patch:
  *     tags:
  *       - Timer
- *     description: Welcome to swagger-jsdoc!
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
