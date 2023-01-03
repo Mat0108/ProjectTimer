@@ -63,11 +63,11 @@ const CreateGroup =()=>{
                 </div></>
             }
             <div className='row-start-5 mt-12'><div className="space-x-5 ml-[22%]">
-                <button onClick={()=>{modalChange(<div></div>);displayModalChange(false)}} className="min-w-[30%] text-white font-bold bg-red hover:text-red hover:bg-white border-2 border-red px-6 py-2 rounded-3xl" type="button">
-                <span>Annuler</span>
+                <button onClick = {() => { modalChange(<div></div>); displayModalChange(false) }} className="min-w-[30%] text-white font-bold bg-red hover:text-red hover:bg-white border-2 border-red px-6 py-2 rounded-3xl" type="button">
+                    <span>Cancel</span>
                 </button>
-                <button onClick={()=>CreateGroup()} className="min-w-[30%] text-white font-bold bg-green hover:text-green hover:bg-white border-2 border-green px-6 py-2 rounded-3xl " type="button">
-                    <span>Confirmer</span>
+                <button onClick={() => CreateGroup()} className="min-w-[30%] text-white font-bold bg-green hover:text-green hover:bg-white border-2 border-green px-6 py-2 rounded-3xl" type="button">
+                    <span>Confirm</span>
                 </button>
             </div>
             </div>
