@@ -44,11 +44,6 @@ const Login = () => {
 
     return (
         <div>
-            { messages.map(message => 
-                <div className={message.type}>
-                    {message.msg}
-                </div> 
-            )}
             <div className='bg-gray-gainsboro grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
                 <div className='hidden sm:block'>
                     <Rabbit />
