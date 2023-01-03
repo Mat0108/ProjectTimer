@@ -11,12 +11,26 @@ module.exports = (server) => {
  *     tags:
  *       - User
  *     description: API allowing the user to register for the first time on the web application.
- *     requestBody:
- *      content:
- *       application/json:
+ *     parameters:
+ *      - in: query
+ *        name: firstname
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: lastname
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: email
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: password
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Utilisateur crée.
+ *         description: Created user.
  */
 server.post("/user/register", cors(), userController.userRegister);
 
@@ -27,10 +41,19 @@ server.post("/user/register", cors(), userController.userRegister);
  *   post:
  *     tags:
  *       - User
- *     description: API allowing the user to connect
+ *     description: 
+ *     parameters:
+ *      - in: query
+ *        name: email
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: password
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Connection user.
  */
 server.post("/user/login", cors(), userController.userLogin);
 
@@ -41,10 +64,15 @@ server.post("/user/login", cors(), userController.userLogin);
  *   post:
  *     tags:
  *       - User
- *     description: Api allowing the user to disconnect and to confirm this disconnection.
+ *     description: User disconnection by Id. 
+ *     parameters:
+ *      - in: query
+ *        name: id
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: User disconnection.
  */
 server.post("/user/logout/:userId", cors(), userController.userLogout);
 
@@ -55,10 +83,16 @@ server.post("/user/logout/:userId", cors(), userController.userLogout);
  *   get:
  *     tags:
  *       - User
- *     description: Api to retrieve a list of users.
+ *     description: Get all users
+ *     parameters:
+ *      - in: params
+ *        name: users
+ *        description: List all of users
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns all users.
  */
 server.get("/users", cors(), userController.getAllUsers);
 
@@ -69,14 +103,24 @@ server.get("/users", cors(), userController.getAllUsers);
  *   get:
  *     tags:
  *       - User
- *     description: Api allowing to retrieve a user by his Id.
+ *     description: Get user by Id.
+ *     parameters:
+ *      - in: params
+ *        name: userId
+ *        description: Get user by Id
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns user by Id.
  */
 server.route("/users/:userId")
 .all(cors())
+
+
 .get(userController.getUserById)
+
+
 
 /**
  * @openapi
@@ -92,6 +136,8 @@ server.route("/users/:userId")
  */
 .put(userController.updateUser)
 
+
+
 /**
  * @openapi
  * paths:
@@ -100,9 +146,15 @@ server.route("/users/:userId")
  *     tags:
  *       - User
  *     description: Api to delete a user.
+ *     parameters:
+ *      - in: params
+ *        name: userId
+ *        description: Delete user by Id
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: User supprimé.
  */
 .delete(userController.deleteUser)
 
