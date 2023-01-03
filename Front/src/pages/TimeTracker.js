@@ -236,16 +236,13 @@ const TimeTracker = () => {
                 }
             </div>
             
-
-
             <Menu as="div" className="relative inline-block text-left">
                 <div className="flex flex-row">
                     <Menu.Button className="inline-flex w-full justify-center text-black bg-white rounded-md pt-2 ml-7 px-4 py-2 text-sm font-medium hover:bg-black hover:bg-opacity-25 hover:text-white">
                         {filteredName.length !== 0 ? filteredName : <span>Filter by project &nbsp; ▼</span>}
                     </Menu.Button>
                 </div>
-                
-                
+    
                 <Menu.Items className="absolute left-0 mt-2 ml-12 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="px-1 py-1 ">
                         <Menu.Item>
@@ -271,7 +268,8 @@ const TimeTracker = () => {
                     </div>
                 </Menu.Items>
             </Menu>
-            <div className="overflow-y-scroll xl:h-[36rem] h-[28rem] mt-2">
+            
+            <div className="overflow-y-scroll xl:h-[36rem] h-[27rem] mt-2">
                 {data.map((project, index) => {
                     return(
                         <div className="w-full px-7" key={`project-${index}`}>
@@ -279,61 +277,61 @@ const TimeTracker = () => {
                                 {project.timer && project.timer.map((timer, i) => {
                                     return(
                                         <div key={`timer-${i}`} className="mt-4 bg-white">
-                                        {timer.times.map((time, i) => {
-                                            return(
-                                                <div key={`time-${i}`}>
-                                                    <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5 font-bold">{time.date}</div>
-                                                
-                                                    <Disclosure>
-                                                        {({ open }) => (
-                                                            <>
-                                                                <div className="grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-2 w-full px-5 py-3 pt-6 pb-6 text-center text-base border font-medium">
-                                                                    <Disclosure.Button className="col-span-1 order-1 hover:bg-black hover:bg-opacity-10 bg-blue bg-opacity-25 text-white text-center rounded-3xl w-7 h-8 ml-2 mt-1">
-                                                                        {time.history.length}
-                                                                    </Disclosure.Button>  
-                                                                    
-                                                                    <div className="col-span-1 pt-2 text-left order-2">{time.name}</div>    
-                                                                    <div className="text-pink xl:col-span-6 col-span-2 pt-2 text-left xl:order-3 order-4 row-span-1 xl:my-0 my-4 flex flex-row">
-                                                                        {star} &nbsp; <Link to={"/Projects/" + project._id}><u>{project.name}</u></Link>
-                                                                    </div> 
-                                                                    <div className="text-black text-opacity-40 col-span-2 xl:pt-2 xl:border-r xl:border-l border-l xl:border-0 border-t border-black-100 border-dotted xl:order-4 order-5 pt-7">{time.timestampTotal.slice(0, 5)} - {time.timestampTotal.slice(11, 16)}</div>
-                                                                    <div className="font-bold text-black text-opacity-40 col-span-2 pt-2 xl:border-r border-dotted border-l gap-2 xl:order-5 order-3">{time.timeTotal.slice(0, 8)}</div>
-                                                                </div>
-                                                                <div className="col-span-1 flex flex-row justify-evenly border-dotted order-6 border xl:border-0">
-                                                                    {getButton("text-green", play, () => {
-                                                                        setIsActive(true)
-                                                                        continueTimer(timer._id, project._id, time)
-                                                                        setNewTimer(timer)
-                                                                    })}
-                                                                    {getButton("text-red", bin, () => {
-                                                                        deleteTimeById(timer._id, project._id)
-                                                                        setRefreshData(!refreshData)
-                                                                        setFilteredName("Filter by project ▼")
+                                            {timer.times.map((time, i) => {
+                                                return(
+                                                    <div key={`time-${i}`}>
+                                                        <div className="mx-auto w-full max-w-l bg-black bg-opacity-25 py-3 px-5 font-bold">{time.date}</div>
+                                                    
+                                                        <Disclosure>
+                                                            {({ open }) => (
+                                                                <>
+                                                                    <div className="grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-2 w-full px-5 py-3 pt-6 pb-6 text-center text-base border font-medium">
+                                                                        <Disclosure.Button className="col-span-1 order-1 hover:bg-black hover:bg-opacity-10 bg-blue bg-opacity-25 text-white text-center rounded-3xl w-7 h-8 ml-2 mt-1">
+                                                                            {time.history.length}
+                                                                        </Disclosure.Button>  
                                                                         
-                                                                    })}
-                                                                </div>
+                                                                        <div className="col-span-1 pt-2 text-left order-2">{time.name}</div>    
+                                                                        <div className="text-pink xl:col-span-6 col-span-2 pt-2 text-left xl:order-3 order-4 row-span-1 xl:my-0 my-4 flex flex-row">
+                                                                            {star} &nbsp; <Link to={"/Projects/" + project._id}><u>{project.name}</u></Link>
+                                                                        </div> 
+                                                                        <div className="text-black text-opacity-40 col-span-2 xl:pt-2 xl:border-r xl:border-l border-l xl:border-0 border-t border-black-100 border-dotted xl:order-4 order-5 pt-7">{time.timestampTotal.slice(0, 5)} - {time.timestampTotal.slice(11, 16)}</div>
+                                                                        <div className="font-bold text-black text-opacity-40 col-span-2 pt-2 xl:border-r border-dotted border-l gap-2 xl:order-5 order-3">{time.timeTotal.slice(0, 8)}</div>
+                                                                    </div>
+                                                                    <div className="col-span-1 flex flex-row justify-evenly border-dotted order-6 border xl:border-0">
+                                                                        {getButton("text-green", play, () => {
+                                                                            setIsActive(true)
+                                                                            continueTimer(timer._id, project._id, time)
+                                                                            setNewTimer(timer)
+                                                                        })}
+                                                                        {getButton("text-red", bin, () => {
+                                                                            deleteTimeById(timer._id, project._id)
+                                                                            setRefreshData(!refreshData)
+                                                                            setFilteredName("Filter by project ▼")
+                                                                            
+                                                                        })}
+                                                                    </div>
 
-                                                                {time.history.map((history, i) => {
-                                                                    return(
-                                                                        <Disclosure.Panel as="ul" className="px-5 pt-6 pb-6 text-sm font-medium grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-3 border text-base text-center bg-black bg-opacity-5 hover:bg-black hover:bg-opacity-20" key={`history-${i}`}>
-                                                                            <li className="col-span-2 text-left pl-2 pt-2 pb-2 order-1">{time.name}</li>    
-                                                                            <li className="text-pink xl:col-span-3 col-span-2 text-left pt-2 pb-2 flex flex-row xl:my-0 my-4 row-span-1 order-3 xl:order-2">
-                                                                                {star} &nbsp; {project.name}
-                                                                            </li> 
-                                                                            <li className="text-orange xl:col-span-3 col-span-4 xl:text-left text-center xl:pt-2 xl:pb-2 pt-8 flex flex-row xl:my-0 my-4 row-span-1 order-5 xl:border-0 border-t border-dotted border-black-100 justify-center xl:order-3 xl:justify-start">
-                                                                                {user} &nbsp; {history.user}
-                                                                            </li> 
-                                                                            <li className="col-span-2 xl:border-r xl:border-l xl:border-0 border-l border-black-100 border-dotted xl:pt-2 xl:pb-2 pt-8 order-4">{history.startTimestamp.slice(0, 5)} - {history.endTimestamp.slice(0, 5)}</li>
-                                                                            <li className="font-bold col-span-2 xl:pt-2 xl:pb-2 pt-7 xl:border-r border-dotted xl:border-0 border-l border-b order-2 xl:order-5">{history.end.slice(0, 8)}</li>
-                                                                        </Disclosure.Panel>
-                                                                    )
-                                                                })}
-                                                            </>
-                                                        )}
-                                                    </Disclosure>
-                                                </div>
-                                            );
-                                        })}
+                                                                    {time.history.map((history, i) => {
+                                                                        return(
+                                                                            <Disclosure.Panel as="ul" className="px-5 pt-6 pb-6 text-sm font-medium grid xl:grid-cols-12 xl:grid-rows-1 grid-cols-4 grid-rows-3 border text-base text-center bg-black bg-opacity-5 hover:bg-black hover:bg-opacity-20" key={`history-${i}`}>
+                                                                                <li className="col-span-2 text-left pl-2 pt-2 pb-2 order-1">{time.name}</li>    
+                                                                                <li className="text-pink xl:col-span-3 col-span-2 text-left pt-2 pb-2 flex flex-row xl:my-0 my-4 row-span-1 order-3 xl:order-2">
+                                                                                    {star} &nbsp; {project.name}
+                                                                                </li> 
+                                                                                <li className="text-orange xl:col-span-3 col-span-4 xl:text-left text-center xl:pt-2 xl:pb-2 pt-8 flex flex-row xl:my-0 my-4 row-span-1 order-5 xl:border-0 border-t border-dotted border-black-100 justify-center xl:order-3 xl:justify-start">
+                                                                                    {user} &nbsp; {history.user}
+                                                                                </li> 
+                                                                                <li className="col-span-2 xl:border-r xl:border-l xl:border-0 border-l border-black-100 border-dotted xl:pt-2 xl:pb-2 pt-8 order-4">{history.startTimestamp.slice(0, 5)} - {history.endTimestamp.slice(0, 5)}</li>
+                                                                                <li className="font-bold col-span-2 xl:pt-2 xl:pb-2 pt-7 xl:border-r border-dotted xl:border-0 border-l border-b order-2 xl:order-5">{history.end.slice(0, 8)}</li>
+                                                                            </Disclosure.Panel>
+                                                                        )
+                                                                    })}
+                                                                </>
+                                                            )}
+                                                        </Disclosure>
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     )
                                 })}

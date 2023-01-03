@@ -6,13 +6,10 @@ import {register} from "../services/user";
 const Register = () => {
     let navigate = useNavigate();
     const [user,setUser] = useState({
-        
         'firstname':'',
         'lastname':'',
-
         'email':'',
         'password':''
-        
     })
 
     const onClick = async (event) =>{

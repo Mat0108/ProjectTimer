@@ -3,21 +3,22 @@ import { ModalContext } from '../../containers/Modal';
 
 const Modal = ({ modalWidth, modalHeight,noAnimation }) => {
   const { displayModal, modal } = useContext(ModalContext);
-  const [displayAnimation, setDisplayAnimation] =
-    useState("animate-scale-zero");
+  const [displayAnimation, setDisplayAnimation] = useState("animate-scale-zero");
+  
   useEffect(() => {
     if (displayModal) {
       setDisplayAnimation("scale-0");
+
       setTimeout(() => {
         setDisplayAnimation("animate-scale");
       }, 50);
-    } else {
+
+    }
+    else {
       setDisplayAnimation("animate-sc");
     }
   }, [displayModal]);
 
-  //  
-  //  
   return (
     <div
       className={`${modalWidth ? modalWidth : "w-full"}
