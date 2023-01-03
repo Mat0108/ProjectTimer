@@ -3,26 +3,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import {logout} from "../services/user";
 import { Home } from './../componants/Image/Image';
 
-
-
-
-
 const Nav = () =>{
-    
+
     const [dropdown,setDropdown] = useState(false);
+    let navigate = useNavigate(); 
 
-// Fonction LOGOUT
-let navigate = useNavigate(); 
     const Logout = async () => {
-
         try {
             await logout(localStorage.getItem("userId"));
+
             localStorage.setItem("userEmail", '');
-                localStorage.setItem("userId", '');
-                localStorage.setItem("userFirstname", '');
-                localStorage.setItem("userLastname", '');
+            localStorage.setItem("userId", '');
+            localStorage.setItem("userFirstname", '');
+            localStorage.setItem("userLastname", '');
+
             navigate("/Login");
-        }catch (error) {
+        }
+        catch (error) {
             console.log(error);
         }
     };
@@ -37,7 +34,6 @@ let navigate = useNavigate();
                     <div>TIMEROO</div>
                 </div>
                 <div className='col-start-5 relative flex justify-end mr-10'>
-                   
                     {localStorage.getItem("userFirstname") !== '' ?
                         <div>
                             <button className="font-bold px-1" onClick={()=>setDropdown(!dropdown)}>{localStorage.getItem("userFirstname")} &nbsp; ▼ </button>
