@@ -14,18 +14,18 @@ const swaggerOptions={
     definition:{
         openapi:'3.0.0',
         info:{
-            title:'Employee Management API',
+            title:'ProjectTimer Documentation API',
             version:'1.0.0',
-            description:'Employe Api for employee management',
+            description:'Documentation for the ProjectTimer',
             contact:{
-                name:'Jayaramachandran Augustin',
-                url:'https://whizpath.com',
-                email:'jayaramachandran@whizpath.com'
+                name:'OLIVIA Tania',
+                email:'coumba.diankha@my-digital-school.org', 
             },
-            servers:["http://localhost:3000"]
-        }
+            servers:["http://localhost:3000"],
+        },
+        
     },
-    apis:["app.js"]
+    apis:["./api/routes/*.js"]
 }
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
@@ -47,8 +47,9 @@ mongoose.connect("mongodb://mongo/timerdb", {
 });
 
 server.use(express.urlencoded());
-server.use(express.json());
 server.use(cors());
+server.use(express.json());
+
 
 const userRoute = require("./api/routes/userRoute");
 const groupRoute = require("./api/routes/groupRoute");
@@ -57,6 +58,7 @@ const timeRoute = require("./api/routes/timeRoute");
 const { application } = require('express');
 
 userRoute(server);
+- 
 groupRoute(server);
 projectRoute(server);
 timeRoute(server);
