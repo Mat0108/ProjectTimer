@@ -91,6 +91,8 @@ exports.getAllGroups = (req, res) => {
 }
 
 exports.getGroupByUser = (req, res) =>{
+    
+    console.log('req.body.email : ', req.body.email)
     User.find({email: req.body.email}, (error, user) => {
         if(error){
             res.status(500);
