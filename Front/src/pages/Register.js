@@ -49,7 +49,7 @@ const Register = () => {
                     </div>
             
                     <div className='bg-gray flex flex-col justify-center'>
-                        <form className='max-w-[400px] w-full mx-auto rounded-lg bg-black-900 p-8 px-8'>
+                        <form className='max-w-[400px] w-full mx-auto rounded-lg bg-black-900'>
                             <h2 className='text-4xl text-black font-bold text-center pb-6'>REGISTER</h2>
 
                             <div className='flex flex-col text-black py-1 mb-2'>
