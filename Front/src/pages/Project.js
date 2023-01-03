@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProjectById, addGroupToProject , deleteGrouptoProject } from '../services/project';
-import { getGroups, getGroupbyId, addUsertoGroup, deleteUsertoGroup,} from '../services/group';
+import { getProjectById, addGroupToProject, deleteGrouptoProject } from '../services/project';
+import { getGroups, getGroupbyId, addUsertoGroup, deleteUsertoGroup, } from '../services/group';
 import Select from 'react-select';
 
 
@@ -115,26 +115,23 @@ const Project = () => {
         <div className='mx-auto w-full'>
 
             <div className='mx-3 my-7'>
-                <div className='text-2xl'>PROJECT INFORMATION </div>
+                <div className='text-2xl '>PROJECT INFORMATION </div>
                 <div className="  ">
-                    <div className="my-7">
+                    <div className="my-7 ml-4  overflow-auto rounded-lg shadow mx-5 bg-white">
 
 
 
                         {project.length !== 0 &&
-                            <div key={`info-01`} className="my-4">
-                                <h3 className="text">Nom du projet : {project.name}</h3>
+                            
 
+                            <ul className="my-7 ml-4  overflow-auto rounded-lg  mx-5 bg-white">
 
-                            </div>
+                                <li className='mb-2' ><span style={{ color: '#6c757d' }} className="text-lg font-bold">Project name :</span> {project.name}</li>
+                                <li ><span style={{ color: '#6c757d' }} className="text-lg font-bold">Admin :</span> {project.admin.email}</li>
+
+                            </ul>
                         }
-                        {project.length !== 0 &&
-                            <div key={`info-00`} className="my-4">
-
-                                <h3 className="text ">Admin : {project.admin.email}</h3>
-
-                            </div>
-                        }
+                        
 
                     </div>
 
@@ -170,7 +167,7 @@ const Project = () => {
                             <tr className="">
                                 <th className="p-3 text-sm front-semibold tracking-wide  text-center ">No.</th>
                                 <th className="p-3 text-sm front-semibold tracking-wide  text-center ">Group name</th>
-                                <th className="p-3 text-sm front-semibold tracking-wide  text-center ">Action</th>
+                                <th className="p-3 text-sm front-semibold tracking-wide  text-center "></th>
 
 
 
@@ -182,14 +179,14 @@ const Project = () => {
                                 <td className="w-[250px] " >{item.name}</td>
                                 <td className="w-[150px] " >
 
-                                {getButton("text-red", bin, () => {
-                                                                        removeGroup(item._id)
-                                                                        setRefreshData(!refreshData)
-                                                                       
-                                                                        
-                                                                    })}
+                                    {getButton("text-red", bin, () => {
+                                        removeGroup(item._id)
+                                        setRefreshData(!refreshData)
+
+
+                                    })}
                                 </td>
-                                
+
 
                             </tr>)}</>
 
