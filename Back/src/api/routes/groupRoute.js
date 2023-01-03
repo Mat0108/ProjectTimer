@@ -7,7 +7,7 @@ module.exports = (server) => {
 /**
  * @openapi
  * paths:
- *  /groups/:groupId:
+ *  /group:
  *   post:
  *     tags:
  *       - Group
