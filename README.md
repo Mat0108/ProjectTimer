@@ -56,13 +56,14 @@ docker-compose down
 
 ## Swagger
 
-Swagger is used to documentate all the APIs available in the project Timer by visualising it on another route. To see the Swagger documentation, you only need to access http://localhost:3000/api-docs 
+Swagger is used to documentate all the APIs available in the project Timer by visualising it on another route. To see the Swagger documentation, you only need to access http://localhost:3000/api-docs
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
    [react]:<https://fr.reactjs.org>
    [tailwind]:<https://tailwindcss.com>
    [node.js]: <http://nodejs.org>
    [express]: <http://expressjs.com>
-   [mongosse]:<https://mongoosejs.com>
+   [mongoose]:<https://mongoosejs.com>
+   [mongodb]:<https://www.mongodb.com>
    [projectTimer]:<https://github.com/Mat0108/ProjectTimer>
    
