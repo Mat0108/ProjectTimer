@@ -1,13 +1,14 @@
 module.exports = (server) => {
     const projectController = require("../controllers/projectController");
     const cors = require('cors');
+
 /**
  * @openapi
  * paths:
  *  /project:
  *   post:
  *     tags:
- *       - Project
+ *      - Project
  *     description: Creation of project with an admin
  *     parameters:
  *      - in: body
@@ -20,10 +21,9 @@ module.exports = (server) => {
  *        description: Mail of admin of project
  *        schema:
  *          type: string
- *      - in: body
  *     responses:
  *       200:
- *         description: Returns project created.
+ *         description: Returns project created
  */
 server.post("/project", cors(), projectController.createProject);
 
@@ -33,11 +33,11 @@ server.post("/project", cors(), projectController.createProject);
  *  /projects:
  *   get:
  *     tags:
- *       - Project
- *     description: Get all projects.
+ *      - Project
+ *     description: Get all projects
  *     responses:
  *       200:
- *         description: Returns a list of all project.
+ *         description: Returns a list of all project
  */
 server.get("/projects", cors(), projectController.getAllProjects);
 
@@ -50,8 +50,8 @@ server.route("/projects/:projectId")
  *  /projects/:projectId:
  *   get:
  *     tags:
- *       - Project
- *     description: Welcome to swagger-jsdoc!
+ *      - Project
+ *     description: Get a project by Id
  *     parameters:
  *      - in: params
  *        name: projectId
@@ -60,7 +60,7 @@ server.route("/projects/:projectId")
  *          type: string
  *     responses:
  *       200:
- *         description: Returns a project.
+ *         description: Return a project
  */
 .get(projectController.getProjectById)
 
@@ -70,8 +70,8 @@ server.route("/projects/:projectId")
  *  /projects/:projectId:
  *   patch:
  *     tags:
- *       - Project
- *     description: Add groups in project.
+ *      - Project
+ *     description: Add groups in project
  *     parameters:
  *      - in: params
  *        name: projectId
@@ -80,7 +80,7 @@ server.route("/projects/:projectId")
  *          type: string
  *      - in: body
  *        name: admin
- *        description: The user who add group in project.
+ *        description: The user who add group in project
  *        schema:
  *          type: string
  *      - in: body
@@ -90,7 +90,7 @@ server.route("/projects/:projectId")
  *          type: array
  *     responses:
  *       200:
- *         description: Returns a list.
+ *         description: Returns a list
  */
 .patch(projectController.addGroups)
 
@@ -100,8 +100,8 @@ server.route("/projects/:projectId")
  *  /projects/:projectId:
  *   delete:
  *     tags:
- *       - Project
- *     description: Delete project.
+ *      - Project
+ *     description: Delete project
  *     parameters:
  *      - in: params
  *        name: projectId
@@ -110,12 +110,12 @@ server.route("/projects/:projectId")
  *          type: string
  *      - in: body
  *        name: admin
- *        description: The user who add created project.
+ *        description: The user who add created project
  *        schema:
  *          type: string
  *     responses:
  *       200:
- *         description: Returns a succes message.
+ *         description: Returns a succes message
  */
 .delete(projectController.deleteProjectById);
 
@@ -125,8 +125,8 @@ server.route("/projects/:projectId")
  *  /projects/:projectId/deleteGroups:
  *   patch:
  *     tags:
- *       - Project
- *     description: Delete groups in project.
+ *      - Project
+ *     description: Delete groups in project
  *      parameters:
  *      - in: params
  *        name: projectId
@@ -135,17 +135,17 @@ server.route("/projects/:projectId")
  *          type: string
  *      - in: body
  *        name: admin
- *        description: The user who add created project.
+ *        description: The user who add created project
  *        schema:
  *          type: string
  *      - in: body
  *        name: groups
- *        description: List of groups in project.
+ *        description: List of groups in project
  *        schema:
  *          type: array
  *     responses:
  *       200:
- *         description: Returns a succes message.
+ *         description: Returns a succes message
  */
 server.patch("/projects/:projectId/deleteGroups", cors(), projectController.deleteGroups)
 
@@ -155,8 +155,8 @@ server.patch("/projects/:projectId/deleteGroups", cors(), projectController.dele
  *  /projects/:projectId/updateTimer:
  *   patch:
  *     tags:
- *       - Project
- *     description: Modification of Timer.
+ *      - Project
+ *     description: Modification of Timer
  *     parameters:
  *      - in: params
  *        name: projectId
@@ -165,17 +165,17 @@ server.patch("/projects/:projectId/deleteGroups", cors(), projectController.dele
  *          type: string
  *      - in: body
  *        name: admin
- *        description: The user who has created project.
+ *        description: The user who has created project
  *        schema:
  *          type: string
  *      - in: body
  *        name: groups
- *        description: List of groups in project.
+ *        description: List of groups in project
  *        schema:
  *          type: array
  *     responses:
  *       200:
- *         description: Returns a succes message.
+ *         description: Returns a succes message
  */
 server.patch("/projects/:projectId/updateTimer", cors(), projectController.updateTimer);
 }
