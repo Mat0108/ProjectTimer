@@ -35,7 +35,7 @@ const App =() => {
            
             <Routes>
               <Route path="/" element={
-                localStorage.getItem("userEmail") === "" ? 
+                localStorage.getItem("userEmail") === null ? 
                     getLR(<Login />)
                     :
                     getPage(<TimeTracker/>)
