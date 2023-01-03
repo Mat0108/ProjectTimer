@@ -34,8 +34,9 @@ const App =() => {
             <div className='w-full'><Nav /></div> 
            
             <Routes>
+              {console.log(localStorage.getItem("userEmail"))}
               <Route path="/" element={
-                localStorage.getItem("userEmail") === null ? 
+                localStorage.getItem("userEmail") === null || localStorage.getItem("userEmail") === "" ? 
                     getLR(<Login />)
                     :
                     getPage(<TimeTracker/>)
