@@ -1,8 +1,7 @@
-import React,{useState,useEffect,useMemo}  from 'react';
+import React,{ useState, useEffect, useMemo}  from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
 import { getAllUsers } from '../services/user';
-import { getAllProjects } from './../services/project';
 import Select from 'react-select';
 import { View, Bin, Check } from '../componants/Image/Image';
 
@@ -17,6 +16,7 @@ const Group = () =>{
     const [projects, setProjects] = useState([]);
     const [listproject, setListproject] = useState([]);
     let update = 0;
+
     useEffect(()=>{
         const fetchData = async() =>{
             const group = await getGroupbyId(groupId);
@@ -38,26 +38,24 @@ const Group = () =>{
         };
         fetchDataUser();
     },[]);
+
     useEffect(()=>{
         
     },[update]);
+
     const updateGroup = async () =>{
         const group = await getGroupbyId(groupId);
         setGroup(group);
     }
+
     const addUser = async ()=>{
          await addUsertoGroup(groupId,{admin:localStorage.getItem("user.email"),users:listusers.map(e=>{return e.value})}).then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
     }
+
     const removeUser = async (email)=>{
         await deleteUsertoGroup(groupId,[email],localStorage.getItem("user.email")).then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
     }
-    
-    // const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
-    // const view = <img src="/images/view.png" alt="image" width={20} height={20} ></img>
-    // const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
-    // const check = <img src="/images/check.png" alt="image" width={30} height={30} color="green"></img>
-    
- 
+
     const view = <View size={[20,20]}/>
     const bin = <Bin size={[20,20]} />
     const check = <Check size={[30,30]} color={"green"}/>
@@ -92,9 +90,11 @@ const Group = () =>{
     function getButton(color,text,onclickvar,className){
         return <div><button className={` ${color} ${className ? className : "p-2 rounded-xl"}`} onClick={onclickvar}>{text}</button></div>
     }
+
     function getButtonBorder(color,text,onclickvar){
         return <div><button className={`p-2 border-2 bg-white border-${color} text-${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
+    
     return (<div className=''>
         <div className='grid grid-cols-3 grid-rows-group mt-5'>
             <div className='col-span-1 text-3xl ml-20'>GROUP INFORMATION</div>

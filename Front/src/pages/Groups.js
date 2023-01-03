@@ -1,46 +1,61 @@
-import React,{useState,useEffect, useContext, useMemo}  from 'react';
+import React,{ useState, useEffect, useContext, useMemo}  from 'react';
 import { getGroups, getGroupbyUser, deleteGroup} from '../services/group';
 import { useNavigate } from "react-router-dom";
 import Modal from '../componants/Modal/Modal';
 import { ModalContext } from './../containers/Modal';
 import CreateGroup from './../componants/Groups/CreateGroup';
-import { Bin, View, Link} from '../componants/Image/Image';
+import { View} from '../componants/Image/Image';
 
 const Groups =()=>{
     const [groups, setGroups] = useState([]);  
-    
     const { displayModal, modalChange, displayModalChange } =useContext(ModalContext);
+    const [refreshData, setRefreshData] = useState(false);
     let navigate = useNavigate(); 
+
     useEffect(()=>{
         const fetchData = async() =>{
             const groupslocal = await getGroups()
 
-            if(groupslocal){setGroups(groupslocal);}
+            if(groupslocal){
+                setGroups(groupslocal);
+            }
             
         };
-        const fetchDataLogin = async() =>{
-            console.log(localStorage.getItem("userEmail"))
+        const fetchDataLogin = async() => {
             const groupslocal = await getGroupbyUser(localStorage.getItem("userEmail"))
-            console.log(groupslocal)
-            if(groups){setGroups(groupslocal);}
+            
+            if(groups){
+                setGroups(groupslocal);
+            }
             
         };
-        if(localStorage.getItem("userEmail")){fetchDataLogin()}else{fetchData();}
-    },[]);
-    // const link = <img src="/images/Link.png" alt="image" width={20} height={20} ></img>
-    // const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
-    // const view = <img src="/images/view.png" alt="image" width={20} height={20} ></img>
-    // const bin = <img src="/images/bin.png" alt="image" width={20} height={20} ></img>
+
+        if(localStorage.getItem("userEmail")){
+            fetchDataLogin()
+        }
+        else{
+            fetchData();
+        }
+
+        if(refreshData){
+            fetchDataLogin();
+        }
+    },[refreshData]);
+
     
-    const view = <View size={[20,20]}/>
-    const bin = <Bin size={[20,20]} />
-    const link = <Link size={[20,20]}/>
+    const view = <View size={[25,25]}/>
+    const bin = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+    </svg>
+    
     function getButton(color,text,onclickvar){
         return <div><button className={`p-2 ${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
+
     function getButtonBorder(className,color,text,onclickvar){
         return <div><button className={`${className} p-2 border-2 bg-${color} border-${color} text-white rounded-xl`} onClick={onclickvar}>{text}</button></div>
     }
+
     const DriverModal = useMemo(() => {
         if (displayModal) {
           return (<Modal 
@@ -49,47 +64,60 @@ const Groups =()=>{
               noAnimation={true}
             />
           );
-        } else {
+        } 
+        else {
           return <Modal noAnimation={true} />;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [displayModal]);
 
-    const deleteProject = async (groupId)=>{
-        await deleteGroup(groupId, localStorage.getItem("user.email")).then().catch(e=>console.log("err:",e))
+    const deleteAGroup = async (groupId, admin)=>{
+        if(admin === localStorage.getItem("userEmail")){
+            await deleteGroup(groupId, localStorage.getItem("userEmail"))
+            setRefreshData(true)
+        }
+        else{
+            alert("You can't delete this group because you're not the admin of the group !")
+        }
     }
+
     return (<>       
         {displayModal && <div className={`fixed inset-0 z-[99999] justify-center h-full w-full `}>{DriverModal}</div>}
-        <div className='relative text-white'>
+        <div className='relative'>
             <h1 className='text-3xl text-center mt-8 text-black font-bold mb-20'>LIST OF GROUPS</h1>
-            <div className='h-[300px] w-full text-black'>
-                <table className="mx-auto mt-[30px] table ">
-                        <thead className="flex">
-                            <tr className="flex font-medium">
-                                <td className='w-[100px] text-center'>No.</td>
-                                <td className='w-[200px] text-center'>Group name</td>
-                                <td className='w-[300px] text-center'>Admin</td>
-                                <td className='w-[300px] text-center'>Users</td>
-                                <td className='w-[300px] text-center'>Projects</td>
-                                <td className='w-[200px] text-center'>Actions</td>
+            <div className='overflow-auto rounded-lg shadow mx-9'>
+                <table className=" w-full">
+                        <thead className="bg-gray-700 border-b-2 border-gray-700">
+                            <tr className="font-bold">
+                                <td className='p-3 text-sm front-semibold tracking-wide  text-center'>No.</td>
+                                <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Group name</td>
+                                <td className='p-3 text-sm front-semibold tracking-wide  text-center'>Admin</td>
                             </tr>
                         </thead>
-                        <tbody className="max-h-[200px] flex flex-col bg-white rounded-2xl dark:bg-charleston-green divide-y text-black mt-5" >
-                        {groups && groups.map((item, index) => <tr key={`group-${index}`} >
-                                <td className='w-[100px] text-center'>{index}</td>
-                                <td className='w-[200px] text-center'>{item.name}</td>
-                                <td className='w-[300px] text-center'><div className='flex flex-col'><div>{item.admin.firstname} {item.admin.lastname}</div><div>{item.admin.email}</div></div></td>
-                                <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>Users associated : {item.users ? Object.keys(item.users).length : 0}</div></div></td>
-                                <td className='w-[300px] text-center'><div className='flex flex-row gap-2'><div className='w-[70%]'>Project associated : {item.projects ? Object.keys(item.projects).length : 0}</div></div></td>
-                                <td className='w-[200px]'><div className='grid grid-cols-2 w-full'>
-                                    <div className='col-start-1'>{getButton("bg-blue",view,()=>navigate(`/Groups/${item._id}`))}</div>
-                                    <div className='col-start-2'>{getButton("bg-red",bin,()=>deleteProject(item._id))}</div>
-                                </div></td>
-                            </tr>)} 
+                        <tbody className="divide-y divide-gray-100" >
+                        {groups && groups.map((item, index) => 
+                            <tr key={`group-${index}`} className="bg-white mb-2">
+                                <td className='px-4 py-2 text-center '>{index}</td>
+                                <td className='px-4 py-2 text-center '>{item.name}</td>
+                                <td className='px-4 py-2 text-center '>
+                                    <div className='flex flex-col'>
+                                        <div>{item.admin.firstname} {item.admin.lastname}</div>
+                                        <div>{item.admin.email}</div>
+                                    </div>
+                                </td>
+                                <td className='px-4 py-2 text-center'>
+                                    <div className='flex justify-center align-center'>
+                                        <div className='mr-10'>{getButton("hover:bg-black hover:bg-opacity-25", view, () => navigate(`/Groups/${item._id}`))}</div>
+                                        <div>{getButton("text-red hover:bg-black hover:bg-opacity-25", bin, () => {
+                                            deleteAGroup(item._id, item.admin.email)
+                                        })}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        )} 
                         </tbody>
                 </table>    
             </div>
-            <div>{getButtonBorder("absolute top-12 ml-10 hover:bg-white hover:text-green hover:border-green","green", "Create a group",()=>{modalChange(<CreateGroup />);displayModalChange(true);})}</div>
+            <div>{getButtonBorder("absolute top-12 ml-10 hover:bg-white hover:text-green hover:border-green font-bold","green", "Create a group",()=>{modalChange(<CreateGroup />);displayModalChange(true);})}</div>
         </div>
         </>
         )
