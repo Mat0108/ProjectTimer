@@ -4,6 +4,7 @@ import { getAllProjects, deleteProjectById } from "../services/project";
 import Modal from '../componants/Modal/Modal';
 import { ModalContext } from './../containers/Modal';
 import CreateProject from "../componants/Projects/CreateProject";
+import { Bin, View } from "../componants/Image/Image";
 
 const Projects = () => {
 
@@ -144,8 +145,6 @@ const Projects = () => {
 
 
         {displayModal && <div className={`fixed inset-0 z-[99999] justify-center h-full w-full `}>{DriverModal}</div>}
-
-
         <div className='relative '>
             <h1 className=' mb-20  text-3xl text-center mt-8 font-bold'>LIST OF PROJECTS</h1>
 

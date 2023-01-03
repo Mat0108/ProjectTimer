@@ -15,7 +15,6 @@ export const saveProject= async (admin,name)=>{
     return res.data;
 }
 
-
 export const deleteProjectById= async (projectId,admin)=>{
     const res = await axios.delete(`http://localhost:3000/projects/${projectId}`,{data:{admin:admin}});
     return res.data;
