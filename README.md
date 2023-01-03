@@ -1,6 +1,6 @@
 # Project Timer
 
-Our project timer is named "Timeroo". Timeroo is a web application that allows you to manage and see all the times, you have passed on your projects which you also able to assign one or more groups to a project you wanted. This group contains all the users that you wanted to invite or add.
+Our project timer named "Timeroo". Timeroo is a web application that allows you to manage and see all the times, you have passed on your projects which you also able to assign one or more groups to a project you wanted. This group contains all the users that you wanted to invite or add.
 
 ## Team members
 
