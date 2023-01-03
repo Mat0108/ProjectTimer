@@ -1,8 +1,6 @@
 module.exports = (server) => {
     const projectController = require("../controllers/projectController");
     const cors = require('cors');
-
-
 /**
  * @openapi
  * paths:
