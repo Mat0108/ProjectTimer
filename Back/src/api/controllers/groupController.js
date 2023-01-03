@@ -90,6 +90,28 @@ exports.getAllGroups = (req, res) => {
     });
 }
 
+exports.getGroupByUser = (req, res) =>{
+    User.find({email: req.body.email}, (error, user) => {
+        if(error){
+            res.status(500);
+            console.log(error);
+            res.json({message: "Erreur serveur"});
+        }else{
+            Group.find({$or:[{admin:user[0]._id},{users:user[0]._id}]}).populate("users").populate("admin").populate("projects").exec(function (error, groups){
+                if(error){
+                    res.status(500);
+                    console.log(error);
+                    res.json({message: "Erreur serveur"});
+                }
+                else{
+                    res.status(200);
+                    res.json(groups);
+                }
+            });
+        }
+    })
+    
+}
 // Afficher un groupe par id
 exports.getGroupById = (req, res) => {
     Group.findById(req.params.groupId).populate("users").populate("admin").populate("projects").exec(function (error, group){

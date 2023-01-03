@@ -1,5 +1,5 @@
 import React,{useState,useEffect, useContext, useMemo}  from 'react';
-import { getGroups, deleteGroup} from '../services/group';
+import { getGroups, getGroupbyUser, deleteGroup} from '../services/group';
 import { useNavigate } from "react-router-dom";
 import Modal from '../componants/Modal/Modal';
 import { ModalContext } from './../containers/Modal';
@@ -13,9 +13,11 @@ const Groups =()=>{
     let navigate = useNavigate(); 
     useEffect(()=>{
         const fetchData = async() =>{
-            const groups = await getGroups();
+            const groups = [];
+            localStorage.getItem("userEmail") === "" ? groups = await getGroups() : groups = await getGroupbyUser(localStorage.getItem("userEmail"))
             if(groups){setGroups(groups);}
         };
+        
         fetchData();
         
     },[]);

@@ -21,3 +21,6 @@ export const createGroup = async (name,admin,users) => {
 export const deleteGroup = async(groupId,admin) =>{
     const res = await axios.delete(`http://localhost:3000/groups/${groupId}`,{admin});
 }
+export const getGroupbyUser = async (email)=>{
+    const res = await axios.get(`https://localhost:3000/groups/getbyName`,{email})
+}
