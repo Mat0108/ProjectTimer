@@ -9,28 +9,28 @@ module.exports = (server) => {
  *  /user/register:
  *   post:
  *     tags:
- *       - User
- *     description: API allowing the user to register for the first time on the web application.
+ *      - User
+ *     description: API allowing the user to register for the first time on the web application
  *     parameters:
- *      - in: body
+ *      - in: params
  *        name: firstname
  *        schema:
  *          type: string
- *      - in: body
+ *      - in: params
  *        name: lastname
  *        schema:
  *          type: string
- *      - in: body
+ *      - in: params
  *        name: email
  *        schema:
  *          type: string
- *      - in: body
+ *      - in: params
  *        name: password
  *        schema:
  *          type: string
  *     responses:
  *       200:
- *         description: Created user.
+ *         description: Created user
  */
 server.post("/user/register", cors(), userController.userRegister);
 
@@ -40,7 +40,7 @@ server.post("/user/register", cors(), userController.userRegister);
  *  /user/login:
  *   post:
  *     tags:
- *       - User
+ *      - User
  *     description: 
  *     parameters:
  *      - in: body
@@ -53,7 +53,7 @@ server.post("/user/register", cors(), userController.userRegister);
  *          type: string
  *     responses:
  *       200:
- *         description: Connection user.
+ *         description: Connection user
  */
 server.post("/user/login", cors(), userController.userLogin);
 
@@ -63,21 +63,21 @@ server.post("/user/login", cors(), userController.userLogin);
  *  /user/logout/:userId:
  *   post:
  *     tags:
- *       - User
- *     description: User disconnection by Id. 
+ *      - User
+ *     description: User disconnection by Id
  *     parameters:
  *      - in: params
  *        name: userId
  *        schema:
  *          type: string
- *       - in: body
+ *      - in: body
  *        name: message
- *        description: Message confirmed the logout.
+ *        description: Message confirmed the logout
  *        schema:
  *          type: string
  *     responses:
  *       200:
- *         description: User disconnection.
+ *         description: User disconnection
  */
 server.post("/user/logout/:userId", cors(), userController.userLogout);
 
@@ -87,7 +87,7 @@ server.post("/user/logout/:userId", cors(), userController.userLogout);
  *  /users:
  *   get:
  *     tags:
- *       - User
+ *      - User
  *     description: Get all users
  *     parameters:
  *      - in: params
@@ -97,7 +97,7 @@ server.post("/user/logout/:userId", cors(), userController.userLogout);
  *          type: string
  *     responses:
  *       200:
- *         description: Returns all users.
+ *         description: Returns all users
  */
 server.get("/users", cors(), userController.getAllUsers);
 
@@ -107,8 +107,8 @@ server.get("/users", cors(), userController.getAllUsers);
  *  /users/:userId:
  *   get:
  *     tags:
- *       - User
- *     description: Get user by Id.
+ *      - User
+ *     description: Get user by Id
  *     parameters:
  *      - in: params
  *        name: userId
@@ -117,7 +117,7 @@ server.get("/users", cors(), userController.getAllUsers);
  *          type: string
  *     responses:
  *       200:
- *         description: Returns user by Id.
+ *         description: Returns user by Id
  */
 server.route("/users/:userId")
 .all(cors())
@@ -133,8 +133,8 @@ server.route("/users/:userId")
  *  /users/:userId:
  *   put:
  *     tags:
- *       - User
- *     description: Modification of user information by Id.
+ *      - User
+ *     description: Modification of user information by Id
  *     parameters:
  *      - in: params
  *        name: userId
@@ -183,7 +183,7 @@ server.route("/users/:userId")
  *          type: array
  *     responses:
  *       200:
- *         description: Return a succes message.
+ *         description: Return a succes message
  */
 .put(userController.updateUser)
 
@@ -195,8 +195,8 @@ server.route("/users/:userId")
  *  /users/:userId:
  *   delete:
  *     tags:
- *       - User
- *     description: Api to delete a user.
+ *      - User
+ *     description: Api to delete a user
  *     parameters:
  *      - in: params
  *        name: userId
@@ -205,7 +205,7 @@ server.route("/users/:userId")
  *          type: string
  *     responses:
  *       200:
- *         description: User supprimé.
+ *         description: User supprimé
  */
 .delete(userController.deleteUser)
 
@@ -215,11 +215,11 @@ server.route("/users/:userId")
  *  /users/:userId:
  *   patch:
  *     tags:
- *       - User
- *     description: Modification of user information.
+ *      - User
+ *     description: Modification of user information
  *     responses:
  *       200:
- *         description: Return a succes message.
+ *         description: Return a succes message
  */
 .patch(userController.patchUser);
 }
