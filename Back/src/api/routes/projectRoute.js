@@ -23,7 +23,7 @@ module.exports = (server) => {
  *          type: string
  *     responses:
  *       200:
- *         description: Returns project created
+ *         description: Returns a list of all project
  */
 server.post("/project", cors(), projectController.createProject);
 
@@ -127,7 +127,7 @@ server.route("/projects/:projectId")
  *     tags:
  *      - Project
  *     description: Delete groups in project
- *      parameters:
+ *     parameters:
  *      - in: params
  *        name: projectId
  *        description: Project id
