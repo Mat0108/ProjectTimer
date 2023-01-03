@@ -2,7 +2,7 @@ import React,{useState,useEffect,useMemo}  from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
 import { getAllUsers } from '../services/user';
-
+import { getAllProjects } from './../services/project';
 import Select from 'react-select';
 import { View, Bin, Check } from '../componants/Image/Image';
 
@@ -14,6 +14,8 @@ const Group = () =>{
     const [addproject,setAddproject] = useState();
     const [users,setUsers] = useState();
     const [listusers, setListusers] = useState([]); 
+    const [projects, setProjects] = useState([]);
+    const [listproject, setListproject] = useState([]);
     let update = 0;
     useEffect(()=>{
         const fetchData = async() =>{
@@ -22,15 +24,21 @@ const Group = () =>{
             
         };
         if(groupId){fetchData();}
-        
-    },[]);
-    useEffect(()=>{
-        const fetchData = async() =>{
+        const fetchDataUser = async() =>{
             const users = await getAllUsers();
             if(users){setUsers(users.map(e=>{return {value:e.email,label:e.firstname+" "+e.lastname}}));}
 
         };
-        fetchData();
+        fetchDataUser();
+        
+        const fetchDataProject = async() =>{
+            const project = await getAllUsers();
+            if(project){setProjects(project.map(e=>{return {value:e._id,label:e.name}}));}
+
+        };
+        fetchDataUser();
+    },[]);
+    useEffect(()=>{
         
     },[update]);
     const updateGroup = async () =>{
@@ -136,29 +144,13 @@ const Group = () =>{
             
                     </tr>
                     </thead>
-                    <tbody className=" flex flex-col overflow-hidden hover:overflow-auto bg-gray-silver rounded-2xl divide-y max-h-[150px]" >
+                    <tbody className=" flex flex-col overflow-hidden hover:overflow-auto bg-white rounded-2xl divide-y max-h-[150px]" >
                         {usergroup}
                     </tbody>                
                 </table>
             </div>
             <div className="col-start-1 col-span-3 row-start-3 ml-[122px] grid grid-cols-2 grid-rows-group2 ">
                 <label className=" col-start-1 text-2xl mt-3" htmlFor="username">LIST OF PROJECTS</label>
-                <div className='col-start-2 row-start-1 mt-[2%] flex flex-row gap-8'>
-                    {!addproject && getButtonBorder("green","Add a project",()=>setAddproject(!addproject))}
-                    {addproject && <div className='flex flex-row'>
-                    <Select
-                        defaultValue={""}
-                        isMulti
-                        name="colors"
-                        options={users}
-                        className="basic-multi-select ml-[22px] w-[300px] text-black px-4 border-solid "
-                        classNamePrefix="select text-white"
-                        onChange={e=>setListusers(e)}
-                    />   
-                    {getButton("bg-green",check,()=>setAddproject(!addproject),"p-1 rounded-full")}                 
-                    </div>}
-                  {!addproject && getButtonBorder("green","Create project")}
-                </div>
                 <table className="col-start-1  table text-lg text-center mt-[7%]">
                     <thead className="flex">
                     <tr className="flex ">
@@ -170,7 +162,7 @@ const Group = () =>{
             
                     </tr>
                     </thead>
-                    <tbody className=" flex flex-col overflow-hidden hover:overflow-auto bg-gray-silver rounded-2xl divide-y max-h-[150px]" >
+                    <tbody className=" flex flex-col overflow-hidden hover:overflow-auto bg-white rounded-2xl divide-y max-h-[150px]" >
  
                     {projectgroup}
                     </tbody>                
