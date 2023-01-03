@@ -75,8 +75,45 @@ server.route("/users/:userId")
 .all(cors())
 .get(userController.getUserById)
 
-
+/**
+ * @openapi
+ * paths:
+ *  /users/:userId:
+ *   put:
+ *     tags:
+ *       - User
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
 .put(userController.updateUser)
+
+/**
+ * @openapi
+ * paths:
+ *  /users/:userId:
+ *   delete:
+ *     tags:
+ *       - User
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
 .delete(userController.deleteUser)
+
+/**
+ * @openapi
+ * paths:
+ *  /users/:userId:
+ *   patch:
+ *     tags:
+ *       - User
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
 .patch(userController.patchUser);
 }
