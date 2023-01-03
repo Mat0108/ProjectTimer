@@ -9,7 +9,7 @@ server.post("/group", cors(), groupController.createGroup);
 
 server.get("/groups", cors(), groupController.getAllGroups);
 
-server.get("/groups/getbyName",cors(),groupController.getGroupByUser)
+server.post("/groupsbyUser", cors(), groupController.getGroupByUser)
 
 server.route("/groups/:groupId")
 .all(cors())
