@@ -13,13 +13,19 @@ const Groups =()=>{
     let navigate = useNavigate(); 
     useEffect(()=>{
         const fetchData = async() =>{
-            const groups = [];
-            localStorage.getItem("userEmail") === "" ? groups = await getGroups() : groups = await getGroupbyUser(localStorage.getItem("userEmail"))
-            if(groups){setGroups(groups);}
+            const groupslocal = await getGroups()
+
+            if(groupslocal){setGroups(groupslocal);}
+            
         };
-        
-        fetchData();
-        
+        const fetchDataLogin = async() =>{
+            console.log(localStorage.getItem("userEmail"))
+            const groupslocal = await getGroupbyUser(localStorage.getItem("userEmail"))
+            console.log(groupslocal)
+            if(groups){setGroups(groupslocal);}
+            
+        };
+        if(localStorage.getItem("userEmail")){fetchDataLogin()}else{fetchData();}
     },[]);
     // const link = <img src="/images/Link.png" alt="image" width={20} height={20} ></img>
     // const edit = <img src="/images/editer.png" alt="image" width={20} height={20} ></img>
@@ -68,7 +74,7 @@ const Groups =()=>{
                                 <td className='w-[200px] text-center'>Actions</td>
                             </tr>
                         </thead>
-                        <tbody className="max-h-[200px] flex flex-col bg-gray-silver rounded-2xl dark:bg-charleston-green divide-y text-black mt-5" >
+                        <tbody className="max-h-[200px] flex flex-col bg-white rounded-2xl dark:bg-charleston-green divide-y text-black mt-5" >
                         {groups && groups.map((item, index) => <tr key={`group-${index}`} >
                                 <td className='w-[100px] text-center'>{index}</td>
                                 <td className='w-[200px] text-center'>{item.name}</td>
