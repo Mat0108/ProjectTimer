@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import { getProjectById, addGroupToProject, deleteGrouptoProject } from '../services/project';
 import { getGroups, getGroupbyId, addUsertoGroup, deleteUsertoGroup, } from '../services/group';
 import Select from 'react-select';
@@ -15,6 +16,7 @@ const Project = () => {
     const [listgroups, setListgroups] = useState([]);
     const [refreshData, setRefreshData] = useState(false);
     let update = 0;
+    let navigate = useNavigate();
 
     console.log(projectId)
 
@@ -122,7 +124,7 @@ const Project = () => {
 
 
                         {project.length !== 0 &&
-                            
+
 
                             <ul className="my-7 ml-4  overflow-auto rounded-lg  mx-5 bg-white">
 
@@ -131,7 +133,7 @@ const Project = () => {
 
                             </ul>
                         }
-                        
+
 
                     </div>
 
@@ -179,13 +181,27 @@ const Project = () => {
                                 <td className="w-[250px] " >{item.name}</td>
                                 <td className="w-[150px] " >
 
-                                    {getButton("text-red", bin, () => {
-                                        removeGroup(item._id)
-                                        setRefreshData(!refreshData)
 
-
-                                    })}
                                 </td>
+
+                                <td className='px-4 py-2'><div className="flex justify-center align-center" >
+
+                                    <div>
+                                        {getButton("text-red", bin, () => {
+                                            removeGroup(item._id)
+                                            setRefreshData(!refreshData)
+
+
+                                        })}
+                                    </div>
+
+
+                                    <div className='col-start-1'>{getButton("text-blue", view, () => navigate(`/Groups/${item._id}`))}</div>
+
+
+
+
+                                </div></td>
 
 
                             </tr>)}</>
