@@ -1,11 +1,10 @@
 import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Rabbit } from "../componants/Image/Image";
-import {login} from "../services/user";
+import {login, getAllUsers} from "../services/user";
 
 const Login = () => {
     let navigate = useNavigate();
-    const [messages,setMessages] = useState([]);
     const [user,setUser] = useState({
         'email':'',
         'password':''
@@ -13,27 +12,24 @@ const Login = () => {
 
     const onClick = async (event) =>{
         event.preventDefault();
-        console.log(user);
-        setMessages([])
+
         if(user.password !== "" && user.email !== ""){
-            try{
+            const allUsers = await getAllUsers();
+
+            if(allUsers.some(u => u.email === user.email)){
                 const userData = await login(user);
-                setMessages([...messages,{type:"alert alert-success",msg:"vous êtes connecté !"}]);
 
                 localStorage.setItem("userEmail", user.email)
                 localStorage.setItem("userId", userData.user.id)
                 localStorage.setItem("userFirstname", userData.user.firstname)
                 localStorage.setItem("userLastname", userData.user.lastname)
                 navigate("/TimeTracker");
-            }catch (error){
-                if (error.response){
-                    setMessages([...messages,{type:"alert alert-danger",msg:error.response.data}]);
-                }else{
-                    setMessages([...messages,{type:"alert alert-danger",msg:"erreur : "+error.message}]);
-                }
+            }
+            else{
+                alert("Account doesn't exist !")
             }
         }else{
-            setMessages([...messages,{type:"alert alert-info",msg:"merci de remplir les deux champs "}]);
+            alert("Please fill all the fields !")
         }
     }
 
