@@ -10,10 +10,13 @@ module.exports = (server) => {
  *   post:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: API allowing the user to register for the first time on the web application.
+ *     requestBody:
+ *      content:
+ *       application/json:
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Utilisateur crée.
  */
 server.post("/user/register", cors(), userController.userRegister);
 
@@ -24,7 +27,7 @@ server.post("/user/register", cors(), userController.userRegister);
  *   post:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: API allowing the user to connect
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -38,7 +41,7 @@ server.post("/user/login", cors(), userController.userLogin);
  *   post:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: Api allowing the user to disconnect and to confirm this disconnection.
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -52,7 +55,7 @@ server.post("/user/logout/:userId", cors(), userController.userLogout);
  *   get:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: Api to retrieve a list of users.
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -66,7 +69,7 @@ server.get("/users", cors(), userController.getAllUsers);
  *   get:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: Api allowing to retrieve a user by his Id.
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -82,7 +85,7 @@ server.route("/users/:userId")
  *   put:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: Modification of user information by Id.
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -96,7 +99,7 @@ server.route("/users/:userId")
  *   delete:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: Api to delete a user.
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
@@ -110,7 +113,7 @@ server.route("/users/:userId")
  *   patch:
  *     tags:
  *       - User
- *     description: Welcome to swagger-jsdoc!
+ *     description: Modification of user information.
  *     responses:
  *       200:
  *         description: Returns a mysterious string.
