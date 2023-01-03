@@ -31,6 +31,11 @@ export const  updateTimer = async(projectId, timer) => {
     return res.data;
 }
 
+export const deleteGrouptoProject = async (projectId,admin,groups) =>{
+    const res = await axios.patch(`http://localhost:3000/projects/${projectId}/deleteGroups`,{admin:admin,groups:groups});
+    return res.data;
+}
+
 
 
 
