@@ -9,14 +9,28 @@ module.exports = (server) => {
  *  /user/register:
  *   post:
  *     tags:
- *       - User
- *     description: API allowing the user to register for the first time on the web application.
- *     requestBody:
- *      content:
- *       application/json:
+ *      - User
+ *     description: API allowing the user to register for the first time on the web application
+ *     parameters:
+ *      - in: params
+ *        name: firstname
+ *        schema:
+ *          type: string
+ *      - in: params
+ *        name: lastname
+ *        schema:
+ *          type: string
+ *      - in: params
+ *        name: email
+ *        schema:
+ *          type: string
+ *      - in: params
+ *        name: password
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Utilisateur crée.
+ *         description: Created user
  */
 server.post("/user/register", cors(), userController.userRegister);
 
@@ -26,11 +40,20 @@ server.post("/user/register", cors(), userController.userRegister);
  *  /user/login:
  *   post:
  *     tags:
- *       - User
- *     description: API allowing the user to connect
+ *      - User
+ *     description: 
+ *     parameters:
+ *      - in: body
+ *        name: email
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: password
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Connection user
  */
 server.post("/user/login", cors(), userController.userLogin);
 
@@ -40,11 +63,21 @@ server.post("/user/login", cors(), userController.userLogin);
  *  /user/logout/:userId:
  *   post:
  *     tags:
- *       - User
- *     description: Api allowing the user to disconnect and to confirm this disconnection.
+ *      - User
+ *     description: User disconnection by Id
+ *     parameters:
+ *      - in: params
+ *        name: userId
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: message
+ *        description: Message confirmed the logout
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: User disconnection
  */
 server.post("/user/logout/:userId", cors(), userController.userLogout);
 
@@ -54,11 +87,17 @@ server.post("/user/logout/:userId", cors(), userController.userLogout);
  *  /users:
  *   get:
  *     tags:
- *       - User
- *     description: Api to retrieve a list of users.
+ *      - User
+ *     description: Get all users
+ *     parameters:
+ *      - in: params
+ *        name: users
+ *        description: List all of users
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns all users
  */
 server.get("/users", cors(), userController.getAllUsers);
 
@@ -68,15 +107,25 @@ server.get("/users", cors(), userController.getAllUsers);
  *  /users/:userId:
  *   get:
  *     tags:
- *       - User
- *     description: Api allowing to retrieve a user by his Id.
+ *      - User
+ *     description: Get user by Id
+ *     parameters:
+ *      - in: params
+ *        name: userId
+ *        description: Get user by Id
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns user by Id
  */
 server.route("/users/:userId")
 .all(cors())
+
+
 .get(userController.getUserById)
+
+
 
 /**
  * @openapi
@@ -84,13 +133,61 @@ server.route("/users/:userId")
  *  /users/:userId:
  *   put:
  *     tags:
- *       - User
- *     description: Modification of user information by Id.
+ *      - User
+ *     description: Modification of user information by Id
+ *     parameters:
+ *      - in: params
+ *        name: userId
+ *        description: user Id
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: id
+ *        description: user Id
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: firstname
+ *        description: user firstname
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: lastname
+ *        description: user lastname
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: email
+ *        description: user email
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: password
+ *        description: user password
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: connected
+ *        description: user connected
+ *        schema:
+ *          type: boolean
+ *      - in: body
+ *        name: groups
+ *        description: Groups to which the user belongs
+ *        schema:
+ *          type: array
+ *      - in: body
+ *        name: projects
+ *        description: Projects to which the user belongs
+ *        schema:
+ *          type: array
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message
  */
 .put(userController.updateUser)
+
+
 
 /**
  * @openapi
@@ -98,11 +195,17 @@ server.route("/users/:userId")
  *  /users/:userId:
  *   delete:
  *     tags:
- *       - User
- *     description: Api to delete a user.
+ *      - User
+ *     description: Api to delete a user
+ *     parameters:
+ *      - in: params
+ *        name: userId
+ *        description: Delete user by Id
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: User supprimé
  */
 .delete(userController.deleteUser)
 
@@ -112,11 +215,11 @@ server.route("/users/:userId")
  *  /users/:userId:
  *   patch:
  *     tags:
- *       - User
- *     description: Modification of user information.
+ *      - User
+ *     description: Modification of user information
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message
  */
 .patch(userController.patchUser);
 }
