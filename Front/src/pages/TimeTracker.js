@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from "react";
-import { deleteTimeById, startTime, stopTime, continueTime } from "../services/time";
-import { getAllProjects } from "../services/project";
+import { deleteTimeById, startTime, stopTime, continueTime, getAllTimes } from "../services/time";
+import { getAllProjects, getProjectById, updateTimer } from "../services/project";
 import { Disclosure, Menu } from '@headlessui/react'
 
 const TimeTracker = () => {
@@ -13,29 +13,29 @@ const TimeTracker = () => {
     const [filteredName, setFilteredName] = useState([]);
     const [data, setData] = useState([]);
     const [refreshData, setRefreshData] = useState(false);
-
+    
     useEffect(() => {
-        console.log(localStorage.getItem("userEmail"))
         const fetchData = async () => {
-            const projects = await getAllProjects();
+            const projectsData = await getAllProjects();
             const userProjects = [];
-        
-            projects.map(project => {
+
+            projectsData.map(project => {
+               
                 if(localStorage.getItem("userEmail") && project.admin.email === localStorage.getItem("userEmail")){
                     userProjects.push(project)
                 }
-                
-                project.groups.map(group => {
-                    group.users.map(user => {
-                        if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
-                            userProjects.push(project)
-                        }
+                else{
+                    project.groups.map(group => {
+                        group.users.map(user => {
+                            if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
+                                userProjects.push(project)
+                            }
+                        })
                     })
-                })
-                
+                }
             })
             setProjects(userProjects)
-            setData(projects)
+            setData(userProjects)
         };
 
         fetchData();
@@ -100,9 +100,7 @@ const TimeTracker = () => {
     }
 
     const createTimer = async () => {
-        console.log(timerName)
         if(timerName !== "" && selectedProject.length !== 0){
-            console.log(timerName + "ok")
             toggle();
             const newTime = await startTime(timerName, localStorage.getItem("userEmail"), selectedProject._id);
             setNewTimer(newTime);
@@ -126,8 +124,10 @@ const TimeTracker = () => {
         setRefreshData(!refreshData);
     }
 
-    const continueTimer = async (timerId) => {
+    const continueTimer = async (timerId, projectId, time) => {
         await continueTime(timerId, localStorage.getItem("userEmail"));
+
+        updateProjectTimer(projectId, time)
     }
 
     const getButton = (color, text, onclickvar) => {
@@ -141,6 +141,24 @@ const TimeTracker = () => {
 
     const allProjects = () => {
         setData(projects)
+    }
+
+    const updateProjectTimer = async (projectId, time) => {
+        const times = await getAllTimes();
+        const project = await getProjectById(projectId)
+
+        if(new Date().toDateString() !== time.date){
+            if(project.timer.some(time => time._id !== times[times.length-1]._id)){
+                setTime({h: 0, m: 0, s: 0})
+                setNewTimer(times[times.length-1])
+                project.timer.push(times[times.length-1]);
+                await updateTimer(projectId, project.timer)
+            }
+        }
+        else{
+            setTime({h: time.timeTotal.slice(1, 2), m: time.timeTotal.slice(4, 5), s: time.timeTotal.slice(7, 8)})
+            await updateTimer(projectId, project.timer)
+        }
     }
 
     const bin = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
@@ -211,7 +229,7 @@ const TimeTracker = () => {
                         Start
                     </button>
                     :
-                    <button type="submit" className="bg-red rounded-xl text-white font-bold w-36 xl:col-span-2 xl:row-span-1 row-span-1 mx-auto" onClick={() => stopTimer(newTimer._id)}>
+                    <button type="submit" className="bg-red rounded-xl text-white font-bold w-36 h-12 xl:col-span-2 xl:row-span-1 row-span-1 mx-auto" onClick={() => stopTimer(newTimer._id)}>
                         Stop
                     </button>
                 }
@@ -255,11 +273,11 @@ const TimeTracker = () => {
             <div className="overflow-y-scroll xl:h-[37rem] h-[28rem] mt-2">
                 {data.map((project, index) => {
                     return(
-                        <div className="w-full px-7 pt-2" key={`project-${index}`}>
-                            <div className="mx-auto w-full max-w-l bg-white">
+                        <div className="w-full px-7" key={`project-${index}`}>
+                            <div className="mx-auto w-full max-w-l">
                                 {project.timer && project.timer.map((timer, i) => {
                                     return(
-                                        <div key={`timer-${i}`}>
+                                        <div key={`timer-${i}`} className="mt-4 bg-white">
                                         {timer.times.map((time, i) => {
                                             return(
                                                 <div key={`time-${i}`}>
@@ -282,9 +300,9 @@ const TimeTracker = () => {
                                                                 </div>
                                                                 <div className="col-span-1 flex flex-row justify-evenly border-dotted order-6 border xl:border-0">
                                                                     {getButton("text-green", play, () => {
-                                                                        setTime({h: time.timeTotal.slice(1, 2), m: time.timeTotal.slice(4, 5), s: time.timeTotal.slice(7, 8)})
                                                                         setIsActive(true)
-                                                                        continueTimer(timer._id)
+                                                                        continueTimer(timer._id, project._id, time)
+                                                                        setNewTimer(timer)
                                                                     })}
                                                                     {getButton("text-red", bin, () => {
                                                                         deleteTimeById(timer._id, project._id)
