@@ -73,9 +73,9 @@ server.get("/users", cors(), userController.getAllUsers);
  */
 server.route("/users/:userId")
 .all(cors())
-
-
 .get(userController.getUserById)
+
+
 .put(userController.updateUser)
 .delete(userController.deleteUser)
 .patch(userController.patchUser);
