@@ -1,8 +1,4 @@
 # Project Timer
-## _Time Control Solution_
-
-
-Project Timer is a time control solution 
 
 ## Features
 
@@ -12,38 +8,55 @@ Project Timer is a time control solution
 - Timer view : List all logged time by the connected user.
 - Timer view action : Play / Stop action with a project assigned.
 
-
-This text you see here is *actually- written in Markdown! To get a feel
-for Markdown's syntax, type some text into the left window and
-watch the results in the right.
-
-## Tech
-
+## Technologies
 
 - [react] - framework js 
 - [tailwind] - framework css
 - [node.js] - evented I/O for the backend
 - [Express] - fast node.js network app framework 
-- [mongosse] - BDD
+- [mongodb] - BDD
+- [mongoose] - make schema for mongodb
 
-And of course Project timer itself is open source with a [public repository][projectTimer]
- on GitHub.
+Project timer itself is open source with a [public repository][projectTimer] on GitHub.
 
 ## Installation
 
 Project Timer requires [Node.js](https://nodejs.org/) v10+ to run.
 
-Install docker and launch docker containers and start the server.
+Install and launch docker to start the server for both API and the web application.
 
 ```sh
 cd ProjectTimer/
-docker-compose build
-docker-compose up
+docker-compose up --build
 ```
 
-## License
+To see the web application, you need to wait the docker finish running. Docker is finished running when you see the log below : 
 
-MIT
+```
+front            | Starting the development server...
+front            | 
+front            | Compiled successfully!
+front            | 
+front            | You can now view landing_page in the browser.
+front            | 
+front            |   Local:            http://localhost:4000
+front            |   On Your Network:  http://192.168.128.2:4000
+front            | 
+front            | Note that the development build is not optimized.
+front            | To create a production build, use npm run build.
+front            | 
+front            | webpack compiled successfully
+```
+
+Stop docker
+
+```sh
+docker-compose down
+```
+
+## Swagger
+
+Swagger is used to documentate all the APIs available in the project Timer by visualising it on another route. To see the Swagger documentation, you only need to access http://localhost:3000/api-docs 
 
 **Free Software, Hell Yeah!**
 
