@@ -1,5 +1,12 @@
 # Project Timer
 
+## Team members
+
+- Matthieu Barnabé
+- Coumba DIANKHA
+- Tania OLIVIA
+- Nihel OUANASSI
+
 ## Features
 
 - Sign up / Login.
