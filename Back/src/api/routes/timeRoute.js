@@ -10,9 +10,10 @@ module.exports = (server) => {
  *   get:
  *     tags:
  *       - Timer
+ *     description: Get all timers
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message.
  */
 server.get("/times", cors(), timeController.getAllTimes);
 
@@ -26,9 +27,16 @@ server.route("/times/:timeId")
  *   get:
  *     tags:
  *       - Timer
+ *     description: Get time by Id
+ *     parameters:
+ *      - in: params
+ *        name: timeId
+ *        description: timeId
+ *        schema:
+ *          type: array
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns a succes message.
  */
 .get(timeController.getTimeById)
 
@@ -39,9 +47,16 @@ server.route("/times/:timeId")
  *   delete:
  *     tags:
  *       - Timer
+ *     description: Delete time by Id
+ *     parameters:
+ *      - in: params
+ *        name: timeId
+ *        description: timeId
+ *        schema:
+ *          type: array
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Returns a succes message.
  */
 .delete(timeController.deleteTimeById);
 
@@ -52,9 +67,20 @@ server.route("/times/:timeId")
  *   post:
  *     tags:
  *       - Timer
+ *     parameters:
+ *      - in: body
+ *        name: name
+ *        description: Task
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: user
+ *        description: The user who creates the project.
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message.
  */
 server.post("/time", cors(), timeController.startTime);
 
@@ -65,9 +91,15 @@ server.post("/time", cors(), timeController.startTime);
  *   patch:
  *     tags:
  *       - Timer
+ *     parameters:
+ *      - in: params
+ *        name: timeId
+ *        description: Time id
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message.
  */
 server.patch("/times/:timeId/stop", cors(), timeController.stopTime);
 
@@ -78,9 +110,20 @@ server.patch("/times/:timeId/stop", cors(), timeController.stopTime);
  *   patch:
  *     tags:
  *       - Timer
+ *     parameters:
+ *      - in: params
+ *        name: timeId
+ *        description: TimeId
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: user
+ *        description: The user who creates the project.
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message.
  */
 server.patch("/times/:timeId/continue", cors(), timeController.continueTime);
 }
