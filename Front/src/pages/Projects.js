@@ -20,46 +20,68 @@ const Projects = () => {
     console.log(localStorage.getItem("userEmail"))
 
     useEffect(() => {
+
         const fetchData = async () => {
+
             const projects = await getAllProjects();
+
             setProjects([])
+
             console.log(projects);
 
+
+
             const userProjects = [];
+
         
+
             projects.map(project => {
+
                 if(localStorage.getItem("userEmail") && project.admin.email === localStorage.getItem("userEmail")){
+
+                    userProjects.push(project)
+
+                }
+
+                else{
+
                     project.groups.map(group => {
+
                         group.users.map(user => {
+
                             if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
+
                                 userProjects.push(project)
+
                             }
+
                         })
-                    })
-                    
-                }else{
-                    project.groups.map(group => {
-                        group.users.map(user => {
-                            if(localStorage.getItem("userId") && user === localStorage.getItem("userId")){
-                                userProjects.push(project)
-                            }
-                        })
+
                     })
 
                 }
-                
-                
-                
+
             })
+
             setProjects(userProjects)
+
            
+
         };
+
         
 
+
+
         fetchData();
+
         if (refreshData) {
+
             fetchData();
+
         }
+
+
 
     }, [refreshData]);
 
