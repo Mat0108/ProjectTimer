@@ -30,7 +30,7 @@ cd ProjectTimer/
 docker-compose up --build
 ```
 
-To see the web application, you need to wait the docker finish running. Docker is finished running when you see the log below : 
+To see the web application, you need to wait the docker finish running. Docker finished running when you see the log below : 
 
 ```
 front            | Starting the development server...
@@ -57,8 +57,6 @@ docker-compose down
 ## Swagger
 
 Swagger is used to documentate all the APIs available in the project Timer by visualising it on another route. To see the Swagger documentation, you only need to access http://localhost:3000/api-docs 
-
-**Free Software, Hell Yeah!**
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
    [react]:<https://fr.reactjs.org>
