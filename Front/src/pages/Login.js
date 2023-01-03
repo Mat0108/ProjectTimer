@@ -50,22 +50,17 @@ const Login = () => {
                 </div>
         
                 <div className='bg-gray flex flex-col justify-center'>
-                    <form className='max-w-[400px] w-full mx-auto rounded-lg bg-black-900 py-8 px-8'>
+                    <form className='max-w-[400px] w-full mx-auto rounded-lg bg-black-900'>
                         <h2 className='text-4xl dark:text-white font-bold text-center pb-8'>LOGIN</h2>
 
                         <div className='flex flex-col text-black py-2 mb-2'>
                             <label className="py-1">Email :</label>
-                            <input className='rounded-lg bg-gray-700 mt-2 py-2 px-4 focus:border-blue-500 focus:bg-black-800 focus:outline-none form-control Cinput' type="text" onChange={onChangeHandler} value={user.email} placeholder="Enter your email "id="email"/>
+                            <input className='rounded-lg bg-gray-700 mt-2 py-2 px-4 focus:border-blue-500 focus:bg-black-800 focus:outline-none form-control Cinput' type="text" onChange={onChangeHandler} value={user.email} placeholder="Enter your email "id="email" required/>
                         </div>
 
                         <div className='flex flex-col text-black py-2 mb-2'>
                             <label className="py-1">Password :</label>
-                            <input className='py-2 px-4 rounded-lg bg-gray-700 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none form-control Cinput' type="password" onChange={onChangeHandler} value = {user.password} placeholder="Enter your password" id="password" />
-                        </div>
-
-                        <div className='flex justify-between text-black py-2'>
-                            <p className='flex items-center'><input className='mr-2' type="checkbox" />Remember Me</p>
-                            <p>Forgot Password</p>
+                            <input className='py-2 px-4 rounded-lg bg-gray-700 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none form-control Cinput' type="password" onChange={onChangeHandler} value = {user.password} placeholder="Enter your password" id="password" required />
                         </div>
 
                         <button className='w-full my-5 py-2 bg-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg' onClick={onClick}>Sign In</button>
