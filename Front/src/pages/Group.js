@@ -1,175 +1,185 @@
 import React,{ useState, useEffect, useMemo}  from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getGroupbyId, addUsertoGroup, deleteUsertoGroup } from '../services/group';
+import { getGroupbyId, addUsertoGroup, deleteUserfromGroup } from '../services/group';
 import { getAllUsers } from '../services/user';
 import Select from 'react-select';
-import { View, Bin, Check } from '../componants/Image/Image';
+import { View, Check } from '../componants/Image/Image';
 
 const Group = () =>{
     const {groupId} = useParams();
     let navigate = useNavigate();
     const [group, setGroup] = useState();  
     const [adduser,setAdduser] = useState(false);
-    const [addproject,setAddproject] = useState();
     const [users,setUsers] = useState();
     const [listusers, setListusers] = useState([]); 
-    const [projects, setProjects] = useState([]);
-    const [listproject, setListproject] = useState([]);
-    let update = 0;
+    const check = <Check size={[30,30]} color={"green"}/>
+    const view = <View size={[25,25]}/>
+    const bin = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 25" strokeWidth="1.5" stroke="currentColor" className="w-7 h-7">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+    </svg>
 
     useEffect(()=>{
         const fetchData = async() =>{
             const group = await getGroupbyId(groupId);
             setGroup(group);
-            
         };
-        if(groupId){fetchData();}
-        const fetchDataUser = async() =>{
+
+        if(groupId){
+            fetchData();
+        }
+
+        const fetchDataUser = async() => {
             const users = await getAllUsers();
-            if(users){setUsers(users.map(e=>{return {value:e.email,label:e.firstname+" "+e.lastname}}));}
+            if(users){
+                setUsers(users.map(e => {
+                    return {
+                        value: e.email, label: e.firstname + " " + e.lastname
+                    }
+                }));
+            }
 
         };
-        fetchDataUser();
-        
-        const fetchDataProject = async() =>{
-            const project = await getAllUsers();
-            if(project){setProjects(project.map(e=>{return {value:e._id,label:e.name}}));}
 
-        };
         fetchDataUser();
     },[]);
-
-    useEffect(()=>{
-        
-    },[update]);
 
     const updateGroup = async () =>{
         const group = await getGroupbyId(groupId);
         setGroup(group);
     }
 
-    const addUser = async ()=>{
-         await addUsertoGroup(groupId,{admin:localStorage.getItem("user.email"),users:listusers.map(e=>{return e.value})}).then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
+    const addUser = async () => {
+        if(group.admin.email === localStorage.getItem("userEmail")){
+            await addUsertoGroup(groupId, {admin: localStorage.getItem("userEmail"), users: listusers.map(e=>{return e.value})})
+                .then(e => {
+                    updateGroup();
+                })
+                .catch(e => console.log("err:",e)
+            )
+        }
+        else{
+            alert("You can't add users to this group because you're not the admin of this group !")
+        }
+         
     }
 
     const removeUser = async (email)=>{
-        await deleteUsertoGroup(groupId,[email],localStorage.getItem("user.email")).then(e=>{updateGroup();}).catch(e=>console.log("err:",e))
+        if(group.admin.email === localStorage.getItem("userEmail")){
+            await deleteUserfromGroup(groupId, email, localStorage.getItem("userEmail"))
+                .then(e =>{ 
+                    updateGroup();
+                })
+                .catch(e => 
+                    console.log("err:",e)
+            )
+        }
+        else{
+            alert("You can't delete users from this group because you're not the admin of this group !")
+        }
     }
-
-    const view = <View size={[20,20]}/>
-    const bin = <Bin size={[20,20]} />
-    const check = <Check size={[30,30]} color={"green"}/>
     
-    const infogroup = useMemo(() => {return <>{group && <tr key={`info-00`} className="">
-        <td className="text-center text-sm">{group.name}</td>
-        <td className="text-center text-sm flex flex-col"><div className='text-center w-full'>{group.admin.firstname} {group.admin.lastname}</div><div className='text-center w-full'>{group.admin.email}</div></td>
-        <td className="text-center text-sm">{group.users ? Object.keys(group.users).length : 0}</td>
-        <td className="text-center text-sm">{group.projects ? Object.keys(group.projects).length : 0}</td>
-    </tr>}</>}, [group])
+    const usergroup = useMemo(() => {return <> {group && group.users.map((item, index) => 
+        <tr key={`vehicule-${index}`} className="bg-white mb-2">
+            <td className="w-[100px] p-3" >{index}</td>
+            <td className="w-[250px]" >{item.firstname}</td>
+            <td className="w-[150px]" >{item.lastname}</td>
+            <td className="w-[250px]" >{item.email}</td>
+            <td className='w-[200px]'> 
+                {getButton("text-red", bin, () => removeUser(item.email))}
+            </td>
+        </tr>
+    )}</>}, [group])
 
-    const usergroup = useMemo(() => {return <>{group && group.users.map((item, index) => <tr key={`vehicule-${index}`} >
-        <td className="w-[100px] p-3" >{index}</td>
-        <td className="w-[250px] " >{item.firstname}</td>
-        <td className="w-[150px] " >{item.lastname}</td>
-        <td className="w-[250px] " >{item.email}</td>
-        <td className='w-[200px]'> <div className='grid grid-cols-3 w-full'>
-        <div className='col-start-2'>{getButton("bg-red",bin,()=>removeUser(item.email))}</div>
-        </div></td>
-    </tr>)}</>}, [group])
-
-    const projectgroup = useMemo(()=>{return <>{group && group.projects && group.projects.map((item, index) => <tr key={`vehicule-${index}`} >
-        <td className="w-[100px] p-3" >{index}</td>
-        <td className="w-[250px] " >{item.name}</td>
-        <td className="w-[150px] " ></td>
-        <td className="w-[250px] " ></td>
-        <td className='w-[200px]'> <div className='grid grid-cols-3 w-full'>
-            <div className='col-start-2'>{getButton("bg-blue",view,()=>navigate(`/Projects/${item._id}`))}</div>
-        </div></td>
-    </tr>)}</>},[group])
+    const projectgroup = useMemo(()=>{return <>{group && group.projects && group.projects.map((item, index) => 
+        <tr key={`vehicule-${index}`} className="bg-white mb-2">
+            <td className="w-[100px] p-3" >{index}</td>
+            <td className="w-[250px]">{item.name}</td>
+            <td className='w-[200px]'> 
+                {getButton("", view, () => navigate(`/Projects/${item._id}`))}
+            </td>
+        </tr>)}</>
+    },[group])
     
     function getButton(color,text,onclickvar,className){
-        return <div><button className={` ${color} ${className ? className : "p-2 rounded-xl"}`} onClick={onclickvar}>{text}</button></div>
+        return <div>
+            <button className={` ${color} ${className ? className : "p-2 rounded-xl"}`} onClick={onclickvar}>{text}</button>
+        </div>
     }
 
     function getButtonBorder(color,text,onclickvar){
-        return <div><button className={`p-2 border-2 bg-white border-${color} text-${color} rounded-xl`} onClick={onclickvar}>{text}</button></div>
+        return <div>
+            <button className={`p-2 border-2 bg-white border-${color} text-${color} rounded-xl`} onClick={onclickvar}>{text}</button>
+        </div>
     }
-    
-    return (<div className=''>
-        <div className='grid grid-cols-3 grid-rows-group mt-5'>
-            <div className='col-span-1 text-3xl ml-20'>GROUP INFORMATION</div>
-            <div className="col-start-2 row-start-1 col-span-2 flex justify-end  ">
-                    <div className="mr-[5%]">
-                        <table className="text-lg">
-                            <thead className="w-full ">
-                            <tr className="border-b-2">
-                                <th className="w-[150px] text-center text-sm">Group name</th>
-                                <th className="w-[150px] text-sm">Admin</th>
-                                <th className="w-[150px] text-sm">Number of users</th>
-                                <th className="w-[150px] text-sm">Number of projects</th>
-                            </tr>
+
+    return (
+        <div className='mx-auto w-full'>
+            <div className='mx-3 my-10' style={{zoom: "80%"}}>
+                <div className='text-3xl ml-20 font-bold'>GROUP INFORMATION</div>
+                <div className="my-7 overflow-auto rounded-lg shadow mx-20 bg-white">
+                    {group &&
+                        <ul className="my-7 ml-4 overflow-auto rounded-lg mx-5 bg-white">
+                            <li className='mb-2' ><span style={{ color: '#6c757d' }} className="text-lg font-bold">Group name :</span> {group.name}</li>
+                            <li ><span style={{ color: '#6c757d' }} className="text-lg font-bold">Admin :</span> {group.admin.email}</li>
+                        </ul>
+                    }
+                </div>
+            
+                <div className=" my-16 mx-20">
+                    <label className="text-2xl font-bold" htmlFor="username">LIST OF USERS</label>
+                    <div className='mt-8 mb-5'>
+                        {!adduser && getButtonBorder("green","Add a user",()=>setAdduser(!adduser))}
+                        {adduser && 
+                            <div className='flex flex-row'>
+                                <Select
+                                    defaultValue={""}
+                                    isMulti
+                                    name="colors"
+                                    options={users}
+                                    className="basic-multi-select w-[300px] text-black border-solid "
+                                    classNamePrefix="select text-white"
+                                    onChange={e=>setListusers(e)}
+                                />   
+                            {getButton("bg-green",check,()=>{setAdduser(!adduser);addUser()},"p-1 rounded-full ml-5")}                 
+                            </div>
+                        }
+                    </div>
+
+                    <div className='overflow-auto rounded-lg shadow mt-5'>
+                        <table className="w-full text-lg text-center">
+                            <thead className=" bg-gray-700 border-b-2 border-gray-700">
+                                <tr className="">
+                                    <th className="p-3 text-sm front-semibold tracking-wide text-center">No.</th>
+                                    <th className="p-3 text-sm front-semibold tracking-wide text-center">First name</th>
+                                    <th className="p-3 text-sm front-semibold tracking-wide text-center">Last name</th>
+                                    <th className="p-3 text-sm front-semibold tracking-wide text-center">Email</th>
+                                </tr>
                             </thead>
-                            <tbody>
-                             {infogroup}
-                            </tbody>                
+                            <tbody className="divide-y divide-gray-100" >
+                                {usergroup}
+                            </tbody>  
                         </table>
                     </div>
-            </div>
-         
-            <div className="col-start-1 col-span-3 row-start-2 ml-[122px] grid grid-cols-2 grid-rows-group2 ">
-                <label className=" col-start-1 text-2xl mt-3" htmlFor="username">LIST OF USERS</label>
-                <div className='col-start-2 row-start-1 mt-[2%]'>
-                    {!adduser && getButtonBorder("green","Add a user",()=>setAdduser(!adduser))}
-                   {adduser && <div className='flex flex-row'>
-                    <Select
-                        defaultValue={""}
-                        isMulti
-                        name="colors"
-                        options={users}
-                        className="basic-multi-select ml-[22px] w-[300px] text-black px-4 border-solid "
-                        classNamePrefix="select text-white"
-                        onChange={e=>setListusers(e)}
-                    />   
-                    {getButton("bg-green",check,()=>{setAdduser(!adduser);addUser()},"p-1 rounded-full")}                 
-                    </div>}
                 </div>
-                <table className="col-start-1 table text-lg text-center mt-[5%]">
-                    <thead className="flex">
-                    <tr className="flex ">
-                        <th className="w-[100px]">No.</th>
-                        <th className="w-[250px]">First name</th>
-                        <th className="w-[150px]">Last name</th>
-                        <th className="w-[250px]">Email</th>
-                        <th className="w-[200px]">Action</th>
-            
-                    </tr>
-                    </thead>
-                    <tbody className=" flex flex-col overflow-hidden hover:overflow-auto bg-white rounded-2xl divide-y max-h-[150px]" >
-                        {usergroup}
-                    </tbody>                
-                </table>
-            </div>
-            <div className="col-start-1 col-span-3 row-start-3 ml-[122px] grid grid-cols-2 grid-rows-group2 ">
-                <label className=" col-start-1 text-2xl mt-3" htmlFor="username">LIST OF PROJECTS</label>
-                <table className="col-start-1  table text-lg text-center mt-[7%]">
-                    <thead className="flex">
-                    <tr className="flex ">
-                        <th className="w-[100px]">No.</th>
-                        <th className="w-[250px]">Project</th>
-                        <th className="w-[150px]"></th>
-                        <th className="w-[250px]"></th>
-                        <th className="w-[200px]">Action</th>
-            
-                    </tr>
-                    </thead>
-                    <tbody className=" flex flex-col overflow-hidden hover:overflow-auto bg-white rounded-2xl divide-y max-h-[150px]" >
- 
-                    {projectgroup}
-                    </tbody>                
-                </table>
+
+                <div className=" my-16 mx-20">
+                    <label className="text-2xl font-bold" htmlFor="username">LIST OF PROJECTS</label>
+                    <div className='overflow-auto rounded-lg shadow mt-5'>
+                        <table className="w-full text-lg text-center">
+                            <thead className=" bg-gray-700 border-b-2 border-gray-700">
+                                <tr className="">
+                                    <th className="p-3 text-sm front-semibold tracking-wide text-center">No.</th>
+                                    <th className="p-3 text-sm front-semibold tracking-wide text-center">Project name</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100" >
+                                {projectgroup}
+                            </tbody>  
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>)
+    )
 }
 export default Group

@@ -10,18 +10,18 @@ export const getGroupbyId = async (groupId) => {
     return res.data;
 }
 
-export const addUsertoGroup = async (groupId,users) =>{
-    const res = await axios.patch(`http://localhost:3000/groups/${groupId}`,users);
+export const addUsertoGroup = async (groupId, data) =>{
+    const res = await axios.patch(`http://localhost:3000/groups/${groupId}`, data);
     return res.data;
 }
 
-export const deleteUsertoGroup = async (groupId,users,admin) =>{
-    const res = await axios.patch(`http://localhost:3000/groups/${groupId}/deleteUsers`,{users,admin});
+export const deleteUserfromGroup = async (groupId, users, admin) =>{
+    const res = await axios.patch(`http://localhost:3000/groups/${groupId}/deleteUsers`,{users: users, admin: admin});
     return res.data;
 }
 
-export const createGroup = async (name,admin,users) => {
-    const res = await axios.post(`http://localhost:3000/group`,{name,admin,users} )
+export const createGroup = async (name, admin, users) => {
+    const res = await axios.post(`http://localhost:3000/group`,{name, admin, users} )
     return res.data;
 }
 
@@ -31,6 +31,6 @@ export const deleteGroup = async(groupId, admin) =>{
 }
 
 export const getGroupbyUser = async (email) => {
-    const res = await axios.post("http://localhost:3000/groupsbyUser",{email:email})
+    const res = await axios.post("http://localhost:3000/groupsbyUser",{email: email})
     return res.data;
 }
