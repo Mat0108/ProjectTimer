@@ -26,7 +26,7 @@ watch the results in the right.
 - [Express] - fast node.js network app framework 
 - [mongosse] - BDD
 
-And of course Dillinger itself is open source with a [public repository][projectTimer]
+And of course Project timer itself is open source with a [public repository][projectTimer]
  on GitHub.
 
 ## Installation
