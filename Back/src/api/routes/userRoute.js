@@ -12,19 +12,19 @@ module.exports = (server) => {
  *       - User
  *     description: API allowing the user to register for the first time on the web application.
  *     parameters:
- *      - in: query
+ *      - in: body
  *        name: firstname
  *        schema:
  *          type: string
- *      - in: query
+ *      - in: body
  *        name: lastname
  *        schema:
  *          type: string
- *      - in: query
+ *      - in: body
  *        name: email
  *        schema:
  *          type: string
- *      - in: query
+ *      - in: body
  *        name: password
  *        schema:
  *          type: string
@@ -43,11 +43,11 @@ server.post("/user/register", cors(), userController.userRegister);
  *       - User
  *     description: 
  *     parameters:
- *      - in: query
+ *      - in: body
  *        name: email
  *        schema:
  *          type: string
- *      - in: query
+ *      - in: body
  *        name: password
  *        schema:
  *          type: string
@@ -66,8 +66,13 @@ server.post("/user/login", cors(), userController.userLogin);
  *       - User
  *     description: User disconnection by Id. 
  *     parameters:
- *      - in: query
- *        name: id
+ *      - in: params
+ *        name: userId
+ *        schema:
+ *          type: string
+ *       - in: body
+ *        name: message
+ *        description: Message confirmed the logout.
  *        schema:
  *          type: string
  *     responses:
@@ -130,9 +135,55 @@ server.route("/users/:userId")
  *     tags:
  *       - User
  *     description: Modification of user information by Id.
+ *     parameters:
+ *      - in: params
+ *        name: userId
+ *        description: user Id
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: id
+ *        description: user Id
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: firstname
+ *        description: user firstname
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: lastname
+ *        description: user lastname
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: email
+ *        description: user email
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: password
+ *        description: user password
+ *        schema:
+ *          type: string
+ *      - in: body
+ *        name: connected
+ *        description: user connected
+ *        schema:
+ *          type: boolean
+ *      - in: body
+ *        name: groups
+ *        description: Groups to which the user belongs
+ *        schema:
+ *          type: array
+ *      - in: body
+ *        name: projects
+ *        description: Projects to which the user belongs
+ *        schema:
+ *          type: array
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message.
  */
 .put(userController.updateUser)
 
@@ -168,7 +219,7 @@ server.route("/users/:userId")
  *     description: Modification of user information.
  *     responses:
  *       200:
- *         description: Returns a mysterious string.
+ *         description: Return a succes message.
  */
 .patch(userController.patchUser);
 }
