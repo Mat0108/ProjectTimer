@@ -1,6 +1,6 @@
 # Project Timer
 
-Our project timer named "Timeroo". Timeroo is a web application that allows you to manage and see all the times, you have passed on your projects which you also able to assign one or more groups to a project you wanted. This group contains all the users that you wanted to invite or add.
+Our project timer is named "Timeroo". Timeroo is a web application that allows you to manage and see all the times, you have passed on your projects. You're also able to assign one or more groups to a project you wanted. This group contains all the users that you wanted to invite or add.
 
 ## Team members
 
@@ -14,7 +14,7 @@ Our project timer named "Timeroo". Timeroo is a web application that allows you 
 - Sign up / Login.
 - Team view to add, modify or remove a group with users
 - Project view to add, modify or remove a project
-- Timer view : List all logged time by the connected user.
+- Timer view : List all logged time by the connected user and see the detail of each time (user who start and stop the time, project assigned, ...)
 - Timer view action : Play / Stop action with a project assigned.
 
 ## Technologies
@@ -39,7 +39,7 @@ cd ProjectTimer/
 docker-compose up --build
 ```
 
-To see the web application, you need to wait the docker finish running. It might take à while for the docker to finish. You will see the log below when docker has finished running : 
+To see the web application, you need to wait for the docker to finish running. It might take a while for the docker to finish. You will see the log below when docker has finished running : 
 
 ```
 front            | Starting the development server...
@@ -67,7 +67,7 @@ You can find our web application Timeroo, by going to http://localhost:4000. If 
 
 ## Database
  
- This project use mongodb for the databse to save all the datas. We also use mongo-express to see all the datas visually. To access the mongo-express, you need to go to http://localhost:8081 and a username and password will be demanded to have access to the data.
+ This project use mongodb for the database to save all the data. We also use mongo-express to see all the data visually. To access the mongo-express, you need to go to http://localhost:8081 and a username and password will be demanded to have access to the data.
  ```
  Username : timer
  Password : timerpass
@@ -75,7 +75,7 @@ You can find our web application Timeroo, by going to http://localhost:4000. If 
  
 ## Swagger documentation
 
-Swagger is used to documentate all the APIs available in the project Timer by visualising it on another route. To see the Swagger documentation, you only need to go to http://localhost:3000/api-docs
+Swagger is used to document all the APIs available in the project Timer by visualizing it on another route. To see the Swagger documentation, you only need to go to http://localhost:3000/api-docs
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
